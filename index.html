@@ -31,7 +31,7 @@
     <button onclick="Tab(1)" class="tabButton">Ordinals</button><text class="invisible invisTab">0</text>
     <button onclick="Tab(2)" class="tabButton">Options</button><text class="invisible invisTab">0</text>
     <button onclick="Tab(4)" class="tabButton">Objectives</button><text class="invisible invisTab">0</text>
-    <button onclick="Tab(5)" id="infinityTabButton" class="infinityTabButton">Markup</button><text class="invisible invisTab">0</text>
+    <button onclick="Tab(5);subTab(1)" id="infinityTabButton" class="infinityTabButton">Markup</button><text class="invisible invisTab">0</text>
     <button onclick="Tab(6)" id="boosterTabButton" class="boosterTabButton">Boosters</button><text class="invisible invisTab">0</text>
     <button onclick="Tab(7)" id="collapseTabButton" class="collapseTabButton">Collapse</button><text class="invisible invisTab">0</text>
     <p></p>
@@ -173,8 +173,8 @@ Only to find the exact same climb once more.</p>-->
     <div id="Tab5">
       <text id="ordinalPointsDisplay">You have 100 Ordinal Points</text><text class="invisible">____</text><button onclick="infinity(1)" id="infinityButton2" class="infinityButton">Reach 10240 to Ma</button>
       <p></p>
-      <button onclick="subTab(2)" class="infinityButton subtab" style="display: none;">Factors</button>
       <button onclick="subTab(1)" class="infinityButton subtab">Upgrades</button>
+      <button onclick="subTab(2)" class="infinityButton subtab" style="display: none;">Factors</button>
       <button onclick="subTab(3)" class="infinityButton subtab" id="dynamicFactorButton">Extra Factors</button>
       <button onclick="subTab(4)" class="darkButton subtab" id="darkUpButton">Dark Upgrades</button>
       <p></p>
