@@ -124,6 +124,7 @@ Tab(1);
 reset();
 load();
 render();
+randerAutoIncr();
 
 function buyAutoIncr(num) {
   if (num == 10) {
@@ -136,6 +137,7 @@ function buyAutoIncr(num) {
     game.autoIncrBought[num]++;
     game.autoIncrCost[num] = Number((autoIncrCostBase[num]*(10.3**(num+1))**game.autoIncrBought[num]).toExponential(0));
   }
+  randerAutoIncr();
 }
 function buyAutoIncrMax(num) {
   while (game.ord >= game.autoIncrCost[num]) {
@@ -143,6 +145,12 @@ function buyAutoIncrMax(num) {
     game.autoIncrHave[num]++;
     game.autoIncrBought[num]++;
     game.autoIncrCost[num] = Number((autoIncrCostBase[num]*(10.3**(num+1))**game.autoIncrBought[num]).toExponential(0));
+  }
+}
+function randerAutoIncr() {
+  for (var i = 0; i < 10; i++) {
+    get("autoCost" + i).innerHTML = 'cost: ' + displayOrd(game.autoIncrCost[i], game.base);
+    get("autoHave" + i).innerHTML = beautifyEN(game.autoIncrHave[i]) + '(x' + beautifyEN(2**game.autoIncrBought[i]) + ')';
   }
 }
 
@@ -201,6 +209,7 @@ function loop(unadjusted, off = 0) {
     game.autoIncrCost[i] = Number((autoIncrCostBase[i]*(10.3**(i+1))**game.autoIncrBought[i]).toExponential(0));
   }
   game.ord += game.autoIncrHave[0]*ms/1000*2**game.autoIncrBought[0];
+  game.subTab = 2;
   game.autoIncrCost[0] = Number((autoIncrCostBase[0]*(10.3**(0+1))**game.autoIncrBought[0]).toExponential(0));
   if (game.incrementy.lt(0)) game.incrementy = EN(0);
   if (game.collapseUnlock === 0) game.leastBoost = Infinity;
@@ -525,10 +534,6 @@ function render() {
           : `=${beautifyEN(outSize)}`)}`,
       ordColor
     )}`
-  for (var i = 0; i < 10; i++) {
-    get("autoCost" + i).innerHTML = 'cost: ' + displayOrd(game.autoIncrCost[i], game.base);
-    get("autoHave" + i).innerHTML = beautifyEN(game.autoIncrHave[i]) + '(x' + beautifyEN(2**game.autoIncrBought[i]) + ')';
-  }
   game.canInf = game.ord >= 1e100;
   if (game.infUnlock === 1) {
     get("infinityTabButton").style.display = "inline-block";
@@ -1740,9 +1745,10 @@ function beautifyEN(n, f = 0) {
 }
 
 function calcOrdPoints(ord = game.ord, base = game.base, over = game.over) {
-  if (!(ord > 3 ** 27 && base <= 3)) {
+  return Math.floor(1.1**Math.log10(ord/1e100)*Math.log10(ord/1e100)+1 + over);
+  /* if (!(ord > 3 ** 27 && base <= 3)) {
     if (ord < base) {
-      return ord + over;
+      return Math.log10(ord/1e100)**10+1 + over;
     } else {
       let tempvar = Math.floor(Math.log(ord + 0.1) / Math.log(base));
       let tempvar2 = Math.pow(base, tempvar);
@@ -1755,7 +1761,7 @@ function calcOrdPoints(ord = game.ord, base = game.base, over = game.over) {
     }
   } else {
     return Math.round(ord / 1e270 + 1) * 1e270;
-  }
+  } */
 }
 
 function Tab(t) {
