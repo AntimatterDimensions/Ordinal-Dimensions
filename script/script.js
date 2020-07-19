@@ -100,7 +100,7 @@ const aupCost = [
   2 ** 256,
   2 ** 512
 ];
-const autoIncrCostBase = [1e2, 5e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e10, 1e12];
+const autoIncrCostBase = [1e2, 5e2, 1e3, 1e4, 1e6, 1e8, 1e10, 1e12, 1e14, 1e16];
 let AF = 0;
 const d = new Date();
 if (
@@ -186,8 +186,10 @@ function loop(unadjusted, off = 0) {
   }
   for (var i = 9; i > 0; i--) {
     game.autoIncrHave[i-1] += game.autoIncrHave[i]*ms/1000*2**game.autoIncrBought[i];
+    game.autoIncrCost[i] = autoIncrCostBase[i]*(10**(i+1))**game.autoIncrBought[i];
   }
   game.ord += game.autoIncrHave[0]*ms/1000*2**game.autoIncrBought[0];
+  game.autoIncrCost[i] = autoIncrCostBase[0]*(10**(0+1))**game.autoIncrBought[0];
   if (game.incrementy.lt(0)) game.incrementy = EN(0);
   if (game.collapseUnlock === 0) game.leastBoost = Infinity;
   if (isNaN(game.leastBoost)) game.leastBoost = Infinity;
