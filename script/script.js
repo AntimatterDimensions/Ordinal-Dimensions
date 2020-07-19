@@ -100,7 +100,7 @@ const aupCost = [
   2 ** 256,
   2 ** 512
 ];
-const autoIncrCostBase = [1e2, 5e2, 1e3, 1e4, 1e6, 1e8, 1e10, 1e12, 1e14, 1e16];
+const autoIncrCostBase = [1e2, 5e2, 1e3, 1e4, 1e6, 1e8, 1e10, 1e14, 1e18, 1e25];
 let AF = 0;
 const d = new Date();
 if (
