@@ -104,6 +104,11 @@
   width: 100%;
 }
 
+#maxmizeAuto {
+  margin: 0.5vh 0 0 40vw;
+  width: 10vw; height: 3vh;
+}
+
 .ordAuto > span {
   display: block; float: left;
   width: 20%; height: 5vh;

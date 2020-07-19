@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Ordinal Dimensions u5</title>
+    <title>Ordinal Dimensions u6</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,7 +22,7 @@
     <script src="script/singfunc.js" defer></script>
     <script src="script/canvas.js" defer></script>
     <script src="script/stats.js" defer></script>
-    <script src="script/script.js?ver=5" defer></script>
+    <script src="script/script.js?ver=6" defer></script>
   </head>
   <body id="body">
     <audio src="https://cdn.glitch.com/03a4b67b-6f18-4f6d-8d37-50a18fb615c8%2FGoing%20Down%20by%20Jake%20Chudnow%20%5BHD%5D.mp3?v=1581538237884" id="music"></audio>
@@ -41,6 +41,9 @@
         <button onclick="maximize(1)" class="normalButton thicc canThicc" style="display:none;">Maximize ordinal, but number does not increase<sup> </sup></button>
         <button onclick="infinity(1)" id="infinityButton" class="normalButton thicc canThicc">Reach ω<sup>ω<sup>2</sup></sup> to Markup</button>
       </div>
+      <button id="maxmizeAuto" onclick="buyAutoIncr(10)" class="normalButton">
+        Max (M)
+      </button>
       <div id="autobuyersLayer">
         <div class="ordAuto">
           <span>Auto Incrementer 1</span>
@@ -93,7 +96,6 @@
           <button onclick="buyAutoIncr(9)" id="autoCost9">cost: ω<sup>8</sup></button>
         </div>
       </div>
-      <p>Press M to buy all</p>
     </div>
     <div id="Tab2">
       <button onclick="save()" class="normalButton" style="border:2px solid #00FF00">Save your game</button>

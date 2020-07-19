@@ -126,7 +126,11 @@ load();
 render();
 
 function buyAutoIncr(num) {
-  if (game.ord >= game.autoIncrCost[num]) {
+  if (num == 10) {
+    for (var i = 9; i > -1; i--) {
+      buyAutoIncr(i);
+    }
+  } else if (game.ord >= game.autoIncrCost[num]) {
     game.ord -= game.autoIncrCost[num];
     game.autoIncrHave[num]++;
     game.autoIncrBought[num]++;
