@@ -1234,7 +1234,7 @@ function changeOrdLengthLess() {
     "Please type in the new max length. Type in 0 for no maximum (max 10)"
   );
   if (!isNaN(Number(newms))) {
-    if (newms >= 10) {
+    if (newms >= 10 || Math.round(newms) == 0) {
       newms = 10;
     }
     game.maxOrdLength.less = Math.round(Number(newms));
