@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Ordinal Markup</title>
+    <title>Ordinal Dimensions</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,7 @@
     <script src="script/canvas.js" defer></script>
     <script src="script/stats.js" defer></script>
     <script src="script/script.js" defer></script>
-  </head>  
+  </head>
   <body id="body">
     <audio src="https://cdn.glitch.com/03a4b67b-6f18-4f6d-8d37-50a18fb615c8%2FGoing%20Down%20by%20Jake%20Chudnow%20%5BHD%5D.mp3?v=1581538237884" id="music"></audio>
     <b id="decrementyText">There is 1 decrementy</b>
@@ -36,9 +36,64 @@
     <button onclick="Tab(7)" id="collapseTabButton" class="collapseTabButton">Collapse</button><text class="invisible invisTab">0</text>
     <p></p>
     <div id="Tab1">
-      <button onclick="increment(1)" class="normalButton thicc canThicc">Increase Ordinal by 1</button>
-        <button onclick="maximize(1)" class="normalButton thicc canThicc">Maximize ordinal, but number does not increase</button>
-      <p><button onclick="infinity(1)" id="infinityButton" class="normalButton thicc canThicc">Reach 10240 to Markup</button></p>
+      <div id="warpBasic">
+        <button onclick="increment(1)" class="normalButton thicc canThicc">Increase Ordinal by 1<sup> </sup></button>
+        <button onclick="maximize(1)" class="normalButton thicc canThicc" style="display:none;">Maximize ordinal, but number does not increase<sup> </sup></button>
+        <button onclick="infinity(1)" id="infinityButton" class="normalButton thicc canThicc">Reach ω<sup>ω<sup>2</sup></sup> to Markup</button>
+      </div>
+      <div id="autobuyersLayer">
+        <div class="ordAuto">
+          <span>Auto Incrementer 1</span>
+          <span id="autoHave0">0(0)</span>
+          <button onclick="buyAutoIncr(0)" id="autoCost0">cost: ω<sup>2</sup></button>
+        </div>
+        <div class="ordAuto">
+          <span>Auto Incrementer 2</span>
+          <span id="autoHave1">0(0)</span>
+          <button onclick="buyAutoIncr(1)" id="autoCost1">cost: ω<sup>3</sup></button>
+        </div>
+        <div class="ordAuto">
+          <span>Auto Incrementer 3</span>
+          <span id="autoHave2">0(0)</span>
+          <button onclick="buyAutoIncr(2)" id="autoCost2">cost: ω<sup>4</sup></button>
+        </div>
+        <div class="ordAuto">
+          <span>Auto Incrementer 4</span>
+          <span id="autoHave3">0(0)</span>
+          <button onclick="buyAutoIncr(3)" id="autoCost3">cost: ω<sup>6</sup></button>
+        </div>
+        <div class="ordAuto">
+          <span>Auto Incrementer 5</span>
+          <span id="autoHave4">0(0)</span>
+          <button onclick="buyAutoIncr(4)" id="autoCost4">cost: ω<sup>8</sup></button>
+        </div>
+        <div class="ordAuto">
+          <span>Auto Incrementer 6</span>
+          <span id="autoHave5">0(0)</span>
+          <button onclick="buyAutoIncr(5)" id="autoCost5">cost: ω<sup>8</sup></button>
+        </div>
+        <div class="ordAuto">
+          <span>Auto Incrementer 7</span>
+          <span id="autoHave6">0(0)</span>
+          <button onclick="buyAutoIncr(6)" id="autoCost6">cost: ω<sup>8</sup></button>
+        </div>
+        <div class="ordAuto">
+          <span>Auto Incrementer 8</span>
+          <span id="autoHave7">0(0)</span>
+          <button onclick="buyAutoIncr(7)" id="autoCost7">cost: ω<sup>8</sup></button>
+        </div>
+        <div class="ordAuto">
+          <span>Auto Incrementer 9</span>
+          <span id="autoHave8">0(0)</span>
+          <button onclick="buyAutoIncr(8)" id="autoCost8">cost: ω<sup>8</sup></button>
+        </div>
+        <div class="ordAuto">
+          <span>Auto Incrementer 10</span>
+          <span id="autoHave9">0(0)</span>
+          <button onclick="buyAutoIncr(9)" id="autoCost9">cost: ω<sup>8</sup></button>
+        </div>
+      </div>
+      <p>Press M to buy all</p>
     </div>
     <div id="Tab2">
       <button onclick="save()" class="normalButton" style="border:2px solid #00FF00">Save your game</button>
@@ -145,9 +200,9 @@ Only to find the exact same climb once more.</p>-->
           </ul>
           <text id="factorMult">Your factors are multiplying your autoclickers by 1</text>
        </div>
-        
+
         <p id="noFactors">You have no factors. Perform a Factor Shift to get one!</p>
-          
+
         <p class="invisible">.</p></div>
         <text id="factorShift">Factor Shift (0): Requires 200 OP</text> <button onclick="factorShift(1)" class="infinityButton">Do a Factor Shift (S)</button>
         <p>When you Factor Shift, you gain a new factor and the base decreases by 1</p>
@@ -289,7 +344,7 @@ Only to find the exact same climb once more.</p>-->
         <tr>
           <td><button class="challenge boosterButton" onclick="enterChallenge(7)" id="challenge7" style="font-size: 10pt">Challenge 7<br><b>ALL PREVIOUS CHALLENGES AT ONCE,</b> and Challenge 6 Completions boost OP gain from Markups<p></p><text id="challenge7Goal">Goal: 1.000e33 OP</text><br>Reward: Factor 7 boosts Tier 1 and 2<br>Currently: <text id="challenge7Effect">x1.00 (0/3)</text></button></td>
           <td><button class="challenge boosterButton" onclick="enterChallenge8()" id="challenge8" style="font-size: 8pt">Challenge 8<br>There's exponentially rising decrementy dividing Tier 1 production, immediately Refund if you have any Booster Upgrades, all challenge effects are disabled, Challenge 7 completions boost OP, keep no OP on Markup, you can do a maximum of 1000 manual successor clicks per Markup, Quadrupler is disabled<p></p><text id="challenge8Goal">Goal: 1.000e33 OP</text><br>Reward: Dynamic Factor Cap boosts Tier 1 and 2<text id="chal8Incrementy"> and Incrementy</text>, Currently: <text id="challenge8Effect">x1.00 (0/3)</text><text id="chal8IncrementyBoost"><br>To Incrementy: x1.00</text></button></td>
-        </tr> 
+        </tr>
         </table>
         <p><i>Note: In challenge 8, if you have less than 1.00e10 decrementy, all ticks simulates 50 milliseconds, regardless of the millisecond interval.<br>That also means that offline progression in Challenge 8 is disabled if you have less than 1.00e10 decrementy in the challenge.</i></p>
       </div>
@@ -490,7 +545,7 @@ Only to find the exact same climb once more.</p>-->
         </div>
         <table id="singTable" style="width: 100%"><tbody class="trueCenter">
           <tr style="width: 100%;margin-bottom:30px" class="long trueCenter">
-            <td style="width: 100%;display:inline;display:inline;margin-left:10px;margin-right:10px"  class="long trueCenter"><button class="treeButton trueCenter singularity" id="SF11" onclick="singfunctions[0].buy()">Start. Singularity doesn't consume Dark Manifolds <br> Free</button></td>           
+            <td style="width: 100%;display:inline;display:inline;margin-left:10px;margin-right:10px"  class="long trueCenter"><button class="treeButton trueCenter singularity" id="SF11" onclick="singfunctions[0].buy()">Start. Singularity doesn't consume Dark Manifolds <br> Free</button></td>
           </tr>
           <tr style="width: 100%;margin-bottom:30px" class="long trueCenter">
             <td style="width: 30%;display:inline;margin-left:10px;margin-right:10px"  class="long trueCenter"><button class="treeButton singularity" id="SF21" onclick="singfunctions[1].buy()">Reduce ℵ<sub>ω</sub> singularity scaling to x30. <br> Cost: 24 Functions</button></td>
@@ -515,15 +570,15 @@ Only to find the exact same climb once more.</p>-->
             <td style="width: 30%;display:inline;margin-left:10px;margin-right:10px"  class="long trueCenter"><button class="treeButton singularity" id="SF61" onclick="singfunctions[10].buy()">You can reach w^w4 in challenge 8, but in base 5 only<br> Cost: 17 Functions</button></td>
             <td style="width: 30%;display:inline;margin-left:10px;margin-right:10px"  class="long trueCenter"><button class="treeButton singularity" id="SF62" onclick="singfunctions[11].buy()">Manifolds are buffed. (x^4)<br> Cost: 15 Functions</button></td>
             <td style="width: 30%;display:inline;margin-left:10px;margin-right:10px"  class="long trueCenter"><button class="treeButton singularity" id="SF63" onclick="singfunctions[12].buy()">ℵ<sub>0</sub> multiplier divides Challenge 8 goals<br> Cost: 42 Functions</button></td>
-          </tr> 
+          </tr>
           <tr style="width: 100%;margin-bottom:30px" class="long trueCenter">
             <td style="width: 30%;display:inline;margin-left:10px;margin-right:10px"  class="long trueCenter"><button class="treeButton singularity" id="SF71" onclick="singfunctions[13].buy()" style="font-size:11pt">Each unspent function increases ℵ<sub>2</sub> effect by 40%<br>Need: 36 Challenge Completions</button></td>
             <td style="width: 30%;display:inline;margin-left:10px;margin-right:10px"  class="long trueCenter"><button class="treeButton singularity" id="SF72" onclick="singfunctions[14].buy()">Singularity effect is raised to the 1.4<br> Cost: 16 Functions</button></td>
             <td style="width: 30%;display:inline;margin-left:10px;margin-right:10px"  class="long trueCenter"><button class="treeButton singularity" id="SF73" onclick="singfunctions[15].buy()">Classified</button></td>
-          </tr> 
+          </tr>
           <tr style="width: 100%;margin-bottom:30px" class="long trueCenter">
             <td style="width: 30%;display:inline;margin-left:10px;margin-right:10px"  class="long trueCenter"><button class="treeButton singularity" id="SF81" onclick="singfunctions[16].buy()">Classified</button></td>
-          </tr> 
+          </tr>
         </tbody></table> <!--uhhhhhhh, still can't click anything...--> <!-- The canvas doesn't account for scrolling-->
           <div style="height: 100px"></div>
         <canvas id="tree" style="position:absolute;top:0px;left:0px;z-index:-1;display:block;" width="100%" height="100%"></canvas>
@@ -547,4 +602,3 @@ Only to find the exact same climb once more.</p>-->
     </div>
   </body>
 </html>
-

@@ -83,7 +83,10 @@ function reset() {
   sfEver: [],
   mostChal4: 0,
   refundPoints: 0,
-  refundPointProg: 0
+  refundPointProg: 0,
+  autoIncrCost : [1e2, 5e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e10, 1e12],
+  autoIncrBought : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  autoIncrHave : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   };
   document.getElementById("infinityTabButton").style.display = "none";
   render();
@@ -122,7 +125,7 @@ function handleVeryOldSaves(loadgame) {
     if (game.boostUnlock === 1 && game.boosters + (game.upgrades.includes(1) ? 1 : 0) >= 2) {
       game.boosters -= 1;
     } else if (game.boostUnlock === 1) game.factorBoosts += 1;
-    
+
   }
 }
 

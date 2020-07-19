@@ -40,11 +40,11 @@ function HSL(hue) {
     B = X;
     R = 255;
   }
-  return convertHex(R, G, B);  
+  return convertHex(R, G, B);
 }
 
 function colorWrap(string, coloring) {
-  return (coloring === "no" || game.colors === 0 ? string : `<span style='color:${coloring}'>${string}</span>`);
+  return (coloring === "no" || game.colors === 0 ? string : `<span style='color:${coloring};text-shadow: 6px 6px 6px ${coloring}, 1px 0 1px black, -1px 0 1px black, 0 1px 1px black, 0 -1px 1px black;'>${string}</span>`);
 }
 
 function color(string, searches, col) {

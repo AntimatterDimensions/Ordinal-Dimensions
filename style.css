@@ -59,6 +59,15 @@
   color: #000080;
 }
 
+#warpBasic {
+  margin: 0 auto;
+  text-align: center;
+}
+.warpBasic > button {
+  margin-right: 3vw;
+  float: left;
+}
+
 .normalButton {
   font-family: sans-serif;
   color: #000000;
@@ -88,6 +97,29 @@
 .infinityButton:hover {
   background: #B67F33;
   color: #000000;
+}
+
+#autobuyersLayer > div {
+  margin-top: 1%;
+  width: 100%;
+}
+
+.ordAuto > span {
+  display: block; float: left;
+  width: 20%; height: 5vh;
+  text-align: center; font-size: 2vh;
+}
+.ordAuto > span:first-child {
+  color: #888;
+}
+.ordAuto > button {
+  display: block;
+  width: 40%; height: 5vh;
+  text-align: center; font-size: 2vh;
+  background-color: white;
+  border-radius: 2px;
+  border-color: #aaa;
+  border-width: 2px;
 }
 
 .treeButton {
@@ -438,8 +470,8 @@ invisible {
 }
 
 .thicc {
-  font-size: 20px;
-  height: 60px;
+  font-size: 2vh;
+  height: 6vh;
 }
 
 .singularityFunction {

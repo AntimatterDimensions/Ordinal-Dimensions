@@ -100,6 +100,7 @@ const aupCost = [
   2 ** 256,
   2 ** 512
 ];
+const autoIncrCostBase = [1e2, 5e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e10, 1e12];
 let AF = 0;
 const d = new Date();
 if (
@@ -123,6 +124,15 @@ Tab(1);
 reset();
 load();
 render();
+
+function buyAutoIncr(num) {
+  if (game.ord >= game.autoIncrCost[num]) {
+    game.ord -= game.autoIncrCost[num];
+    game.autoIncrHave[num]++;
+    game.autoIncrBought[num]++;
+    game.autoIncrCost[num] = autoIncrCostBase[num]*(10**(num+1))**game.autoIncrBought[num];
+  }
+}
 
 function increment(manmade = 0) {
   if (manmade === 0 || game.manualClicksLeft >= 0.5) {
@@ -165,6 +175,7 @@ let deltaTime;
 const calculate = window.setInterval(() => {
   deltaTime = Date.now() - game.lastTick;
   loop(deltaTime);
+  maximize(1e300);
   clickCoolDown--;
 }, game.msint);
 
@@ -173,6 +184,10 @@ function loop(unadjusted, off = 0) {
   if (game.chal8==1&&game.decrementy<10) {
     ms=50
   }
+  for (var i = 9; i > 0; i--) {
+    game.autoIncrHave[i-1] += game.autoIncrHave[i]*ms/1000*2**game.autoIncrBought[i];
+  }
+  game.ord += game.autoIncrHave[0]*ms/1000*2**game.autoIncrBought[0];
   if (game.incrementy.lt(0)) game.incrementy = EN(0);
   if (game.collapseUnlock === 0) game.leastBoost = Infinity;
   if (isNaN(game.leastBoost)) game.leastBoost = Infinity;
@@ -496,11 +511,11 @@ function render() {
           : `=${beautifyEN(outSize)}`)}`,
       ordColor
     )}`
-  game.canInf =
-    game.ord >= game.base ** 3 ||
-    outSize >=
-      (game.leastBoost <= 15 ? (game.leastBoost <= 1.5 ? 10 : 100) : 10240) ||
-    outSize >= Infinity;
+  for (var i = 0; i < 10; i++) {
+    get("autoCost" + i).innerHTML = 'cost: ' + displayOrd(game.autoIncrCost[i], game.base);
+    get("autoHave" + i).innerHTML = beautifyEN(game.autoIncrHave[i]) + '(x' + beautifyEN(2**game.autoIncrBought[i]) + ')';
+  }
+  game.canInf = game.ord >= 1e100;
   if (game.infUnlock === 1) {
     get("infinityTabButton").style.display = "inline-block";
   } else {
@@ -545,9 +560,9 @@ function render() {
       get("infinityButton2").innerHTML = `+${infinityButtonText}`;
   } else {
     get("infinityButton").innerHTML =
-      `Reach ${(game.leastBoost <= 15 ? (game.leastBoost <= 1.5 ? 10 : 100) : 10240)} to Markup`;
+      `Reach ${(game.leastBoost <= 15 ? (game.leastBoost <= 1.5 ? 10 : 100) : 'ω<sup>ω<sup>2</sup></sup>')} to Markup`;
     get("infinityButton2").innerHTML =
-      `Reach ${(game.leastBoost <= 15 ? (game.leastBoost <= 1.5 ? 10 : 100) : 10240)} to Markup`;
+      `Reach ${(game.leastBoost <= 15 ? (game.leastBoost <= 1.5 ? 10 : 100) : 'ω<sup>ω<sup>2</sup></sup>')} to Markup`;
   }
   get("challengeSubTab").style.display = game.upgrades.includes(4)
     ? "inline-block"
@@ -1285,7 +1300,7 @@ function getManifolds() {
 function changeDynamic(ms) {
   if (game.dynamicUnlock == 1)
     game.dynamic +=
-      ms / 1000000 * (game.iups[6] == 1 ? 100*(game.sfBought.includes(32) ? 100 : 1): 1); 
+      ms / 1000000 * (game.iups[6] == 1 ? 100*(game.sfBought.includes(32) ? 100 : 1): 1);
   if (game.challenge == 6 || game.challenge == 7) //No update, that was just the previous minor upgrade time to make more studies
     game.dynamic -=
       ((10 ** 297) /
@@ -1503,7 +1518,7 @@ function displayOrd(
   if (ord < base && large == 0) {
     if (ordColor == "no") ordColor = "red";
     return colour == 1
-      ? "<span style='color:red'>" + (ord + over) + "</span>"
+      ? "<span style='color:red;'>" + (ord + over) + "</span>"
       : ord + over;
   } else if ((ord < 3 ** 27 || base > 3) && large == 0) {
     let tempvar = Math.floor(Math.log(ord + 0.1) / Math.log(base));
@@ -1528,7 +1543,7 @@ function displayOrd(
         : "+");
     return (
       (colour == 1
-        ? "<span style='color:" + HSL(tempvar * 8) + "'>" + tempvar4 + "</span>"
+        ? "<span style='color:" + HSL(tempvar * 8) + ";text-shadow: 6px 6px 6px " + HSL(tempvar * 8) + ", 1px 0 1px black, -1px 0 1px black, 0 1px 1px black, 0 -1px 1px black;'>" + tempvar4 + "</span>"
         : tempvar4) +
       (ord - tempvar2 * tempvar3 + over == 0 ||
       trim == game.maxOrdLength.less - 1
@@ -1592,7 +1607,7 @@ function displayOrd(
         ? colour == 1
           ? color("...", ["..."], HSL(tempvar * 8))
           : "..."
-        : tempvar2 == "1" || tempvar2 == "<span style='color:red'>1</span>"
+        : tempvar2 == "1" || tempvar2 == "<span style='color:red;text-shadow: 6px 6px 6px red, 1px 0 1px black, -1px 0 1px black, 0 1px 1px black, 0 -1px 1px black;'>1</span>"
         ? tempvar <= 0.5 && game.buchholz == 0
           ? colour == 1
             ? "<span style='color:red'>0</span>"
