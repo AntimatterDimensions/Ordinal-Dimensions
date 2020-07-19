@@ -128,9 +128,17 @@ render();
 function buyAutoIncr(num) {
   if (num == 10) {
     for (var i = 9; i > -1; i--) {
-      buyAutoIncr(i);
+      buyAutoIncrMax(i);
     }
   } else if (game.ord >= game.autoIncrCost[num]) {
+    game.ord -= game.autoIncrCost[num];
+    game.autoIncrHave[num]++;
+    game.autoIncrBought[num]++;
+    game.autoIncrCost[num] = Number((autoIncrCostBase[num]*(10.3**(num+1))**game.autoIncrBought[num]).toExponential(0));
+  }
+}
+function buyAutoIncrMax(num) {
+  while (game.ord >= game.autoIncrCost[num]) {
     game.ord -= game.autoIncrCost[num];
     game.autoIncrHave[num]++;
     game.autoIncrBought[num]++;
