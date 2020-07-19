@@ -2,7 +2,7 @@
 
 const keybinds = {
     i: () => infinity(1),
-    m: () => maxInfStuff(),
+    m: () => buyAutoIncr(10),
     s: () => factorShift(1),
     b: () => {
 		if (game.boostUnlock === 1 && game.challenge === 0) factorBoost(1);
