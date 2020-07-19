@@ -150,7 +150,6 @@ function buyAutoIncrMax(num) {
 function randerAutoIncr() {
   for (var i = 0; i < 10; i++) {
     get("autoCost" + i).innerHTML = 'cost: ' + displayOrd(game.autoIncrCost[i], game.base);
-    get("autoHave" + i).innerHTML = beautifyEN(game.autoIncrHave[i]) + '(x' + beautifyEN(2**game.autoIncrBought[i]) + ')';
   }
 }
 
@@ -535,6 +534,9 @@ function render() {
       ordColor
     )}`
   game.canInf = game.ord >= 1e100;
+  for (var i = 0; i < 10; i++) {
+    get("autoHave" + i).innerHTML = beautifyEN(game.autoIncrHave[i]) + '(x' + beautifyEN(2**game.autoIncrBought[i]) + ')';
+  }
   if (game.infUnlock === 1) {
     get("infinityTabButton").style.display = "inline-block";
   } else {
