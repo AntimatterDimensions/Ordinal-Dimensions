@@ -1231,9 +1231,12 @@ function changeInt() {
 
 function changeOrdLengthLess() {
   let newms = prompt(
-    "Please type in the new max length. Type in 0 for no maximum"
+    "Please type in the new max length. Type in 0 for no maximum (max 10)"
   );
   if (!isNaN(Number(newms))) {
+    if (newms >= 10) {
+      newms = 10;
+    }
     game.maxOrdLength.less = Math.round(Number(newms));
   }
 }
