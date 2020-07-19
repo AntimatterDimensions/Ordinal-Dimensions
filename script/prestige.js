@@ -17,6 +17,11 @@ function infinity(manmade = 0) {
     game.autoLoop.succ = 0;
     game.autoLoop.lim = 0;
     game.manualClicksLeft = 1000;
+    for (var i = 0; i < 10; i++) {
+      game.autoIncrHave[i] = 0;
+      game.autoIncrBought[i] = 0;
+      game.autoIncrCost[i] = autoIncrCostBase[i];
+    }
   }
   loop(0);
   if (manmade === 1) render();
