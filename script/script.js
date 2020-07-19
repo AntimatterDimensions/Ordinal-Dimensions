@@ -186,10 +186,10 @@ function loop(unadjusted, off = 0) {
   }
   for (var i = 9; i > 0; i--) {
     game.autoIncrHave[i-1] += game.autoIncrHave[i]*ms/1000*2**game.autoIncrBought[i];
-    game.autoIncrCost[i] = (autoIncrCostBase[i]*(10.3**(i+1))**game.autoIncrBought[i]).toExponential(0);
+  // game.autoIncrCost[i] = (autoIncrCostBase[i]*(10.3**(i+1))**game.autoIncrBought[i]).toExponential(0);
   }
   game.ord += game.autoIncrHave[0]*ms/1000*2**game.autoIncrBought[0];
-  game.autoIncrCost[i] = (autoIncrCostBase[0]*(10.3**(0+1))**game.autoIncrBought[0]).toExponential(0);
+  // game.autoIncrCost[0] = (autoIncrCostBase[0]*(10.3**(0+1))**game.autoIncrBought[0]).toExponential(0);
   if (game.incrementy.lt(0)) game.incrementy = EN(0);
   if (game.collapseUnlock === 0) game.leastBoost = Infinity;
   if (isNaN(game.leastBoost)) game.leastBoost = Infinity;
