@@ -209,6 +209,9 @@ function loop(unadjusted, off = 0) {
   }
   game.ord += game.autoIncrHave[0]*ms/1000*2**game.autoIncrBought[0];
   game.subTab = 2;
+  if (game.base < 10) {
+    game.base = 10;
+  }
   game.autoIncrCost[0] = Number((autoIncrCostBase[0]*(10.3**(0+1))**game.autoIncrBought[0]).toExponential(0));
   if (game.incrementy.lt(0)) game.incrementy = EN(0);
   if (game.collapseUnlock === 0) game.leastBoost = Infinity;
