@@ -157,7 +157,7 @@ function randerAutoIncr() {
 }
 
 function randerInfUpgrade() {
-  for (var i = 0; i < 5; i++) {
+  for (var i = 0; i < 9; i++) {
     get("infUpgrade" + i).style.display = (game.infUpgradeHave[i] == 1) ? 'none' : 'display';
   }
 }
