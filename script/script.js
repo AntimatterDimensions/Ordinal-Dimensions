@@ -162,7 +162,7 @@ function randerInfUpgrade() {
   }
 }
 function infUpgrade(num) {
-  if (infUpgradeCost[num] < game.OP) {
+  if (infUpgradeCost[num] <= game.OP) {
     game.infUpgradeHave[num] = 1;
     game.OP -= infUpgradeCost[num];
     randerInfUpgrade();
