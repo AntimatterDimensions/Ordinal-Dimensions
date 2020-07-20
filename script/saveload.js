@@ -86,7 +86,8 @@ function reset() {
   refundPointProg: 0,
   autoIncrCost : [1e2, 5e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e10, 1e12],
   autoIncrBought : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  autoIncrHave : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  autoIncrHave : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  infUpgradeHave : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   };
   document.getElementById("infinityTabButton").style.display = "none";
   render();

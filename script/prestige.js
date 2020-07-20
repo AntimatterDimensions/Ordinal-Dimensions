@@ -22,9 +22,22 @@ function infinity(manmade = 0) {
       game.autoIncrBought[i] = 0;
       game.autoIncrCost[i] = autoIncrCostBase[i];
     }
+    if (game.infUpgradeHave[5] == 1) {
+      game.autoIncrHave[0] = 10;
+    }
+    if (game.infUpgradeHave[6] == 1) {
+      game.autoIncrHave[1] = 5;
+    }
+    if (game.infUpgradeHave[7] == 1) {
+      game.autoIncrHave[2] = 3;
+    }
+    if (game.infUpgradeHave[8] == 1) {
+      game.autoIncrHave[3] = 2;
+    }
   }
   loop(0);
   if (manmade === 1) render();
+  randerAutoIncr();
 }
 
 // There was "manmade = 0" as the args, but manmade was never used, so I removed it.

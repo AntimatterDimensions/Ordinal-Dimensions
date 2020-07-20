@@ -101,6 +101,8 @@ const aupCost = [
   2 ** 512
 ];
 const autoIncrCostBase = [1e2, 5e2, 1e3, 1e4, 1e6, 1e8, 1e10, 1e14, 1e18, 1e25];
+const infUpgradeCost = [1, 10, 75, 200, 500, 20, 90, 250, 400];
+var multiThis;
 let AF = 0;
 const d = new Date();
 if (
@@ -125,6 +127,7 @@ reset();
 load();
 render();
 randerAutoIncr();
+randerInfUpgrade();
 
 function buyAutoIncr(num) {
   if (num == 10) {
@@ -150,6 +153,19 @@ function buyAutoIncrMax(num) {
 function randerAutoIncr() {
   for (var i = 0; i < 10; i++) {
     get("autoCost" + i).innerHTML = 'cost: ' + displayOrd(game.autoIncrCost[i], game.base);
+  }
+}
+
+function randerInfUpgrade() {
+  for (var i = 0; i < 5; i++) {
+    get("infUpgrade" + i).style.display = (game.infUpgradeHave[i] == 1) ? 'none' : 'display';
+  }
+}
+function infUpgrade(num) {
+  if (infUpgradeCost[num] < game.OP) {
+    game.infUpgradeHave[num] = 1;
+    game.OP -= infUpgradeCost[num];
+    randerInfUpgrade();
   }
 }
 
@@ -203,16 +219,34 @@ function loop(unadjusted, off = 0) {
   if (game.chal8==1&&game.decrementy<10) {
     ms=50
   }
-  for (var i = 9; i > 0; i--) {
-    game.autoIncrHave[i-1] += game.autoIncrHave[i]*ms/1000*2**game.autoIncrBought[i];
+  for (var i = 9; i > -1; i--) {
+    multiThis = 1;
+    if ((i == 0 || i == 9) && game.infUpgradeHave[0] == 1) {
+      multiThis = multiThis*2;
+    } else if ((i == 1 || i == 8) && game.infUpgradeHave[1] == 1) {
+      multiThis = multiThis*2;
+    } else if ((i == 2 || i == 7) && game.infUpgradeHave[2] == 1) {
+      multiThis = multiThis*2;
+    } else if ((i == 3 || i == 6) && game.infUpgradeHave[3] == 1) {
+      multiThis = multiThis*2;
+    } else if ((i == 4 || i == 5) && game.infUpgradeHave[4] == 1) {
+      multiThis = multiThis*2;
+    }
+    if (i != 0) {
+      game.autoIncrHave[i-1] += game.autoIncrHave[i]*ms/1000*2**game.autoIncrBought[i]*multiThis;
+    } else {
+      game.ord += game.autoIncrHave[0]*ms/1000*2**game.autoIncrBought[0]*multiThis;
+    }
     game.autoIncrCost[i] = Number((autoIncrCostBase[i]*(10.3**(i+1))**game.autoIncrBought[i]).toExponential(0));
+    get("autoHave" + i).innerHTML = beautifyEN(game.autoIncrHave[i]) + '(x' + beautifyEN(2**game.autoIncrBought[i]*multiThis) + ')';
   }
-  game.ord += game.autoIncrHave[0]*ms/1000*2**game.autoIncrBought[0];
   game.subTab = 2;
   if (game.base < 10) {
     game.base = 10;
   }
-  game.autoIncrCost[0] = Number((autoIncrCostBase[0]*(10.3**(0+1))**game.autoIncrBought[0]).toExponential(0));
+  if (game.ord > 1e200) {
+    game.ord = 1e200;
+  }
   if (game.incrementy.lt(0)) game.incrementy = EN(0);
   if (game.collapseUnlock === 0) game.leastBoost = Infinity;
   if (isNaN(game.leastBoost)) game.leastBoost = Infinity;
@@ -537,9 +571,6 @@ function render() {
       ordColor
     )}`
   game.canInf = game.ord >= 1e100;
-  for (var i = 0; i < 10; i++) {
-    get("autoHave" + i).innerHTML = beautifyEN(game.autoIncrHave[i]) + '(x' + beautifyEN(2**game.autoIncrBought[i]) + ')';
-  }
   if (game.infUnlock === 1) {
     get("infinityTabButton").style.display = "inline-block";
   } else {
@@ -1753,7 +1784,7 @@ function beautifyEN(n, f = 0) {
 }
 
 function calcOrdPoints(ord = game.ord, base = game.base, over = game.over) {
-  return Math.floor(1.1**Math.log10(ord/1e100)*Math.log10(ord/1e100)+1 + over);
+  return Math.floor((1.05+Math.log10(ord/1e100)/500)**Math.log10(ord/1e100)*Math.sqrt(Math.log10(ord/1e100))+1 + over);
   /* if (!(ord > 3 ** 27 && base <= 3)) {
     if (ord < base) {
       return Math.log10(ord/1e100)**10+1 + over;

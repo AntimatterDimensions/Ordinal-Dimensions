@@ -127,6 +127,10 @@
   border-width: 2px;
 }
 
+.infUpgrade {
+  margin-top: 2px;
+}
+
 .treeButton {
   font-family: sans-serif;
   border-width:1.5px;
