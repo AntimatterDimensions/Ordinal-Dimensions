@@ -1621,7 +1621,9 @@ function beautifyEN(n, f = 0) {
 }
 
 function calcOrdPoints(ord = game.ord, base = game.base, over = game.over) {
-  return Math.floor((1.05+Math.log10(ord/1e100)/500)**Math.log10(ord/1e100)*Math.sqrt(Math.log10(ord/1e100))+1 + over);
+  logOrd = EN.logBase(ord, 10);
+  return Math.floor(Number(beautify(EN.pow(1+logOrd/100, logOrd))));
+  /* return Math.floor((1.05+Math.log10(ord/1e100)/500)**Math.log10(ord/1e100)*Math.sqrt(Math.log10(ord/1e100))+1 + over);
   if (!(ord > 3 ** 27 && base <= 3)) {
     if (ord < base) {
       return Math.log10(ord/1e100)**10+1 + over;
@@ -1637,7 +1639,7 @@ function calcOrdPoints(ord = game.ord, base = game.base, over = game.over) {
     }
   } else {
     return Math.round(ord / 1e270 + 1) * 1e270;
-  }
+  } */
 }
 
 function Tab(t) {
