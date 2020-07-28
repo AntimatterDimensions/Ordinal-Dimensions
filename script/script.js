@@ -536,8 +536,7 @@ function loop(unadjusted, off = 0) {
 }
 
 function render() {
-  // let outSize = EN.lt(game.ord, (EN.pow(10, 10))) ? (fghexp((EN.mod(game.ord, (game.base**3)).toNumber()+0.1)/(game.base**2),Math.pow(2,Math.floor((EN.mod(game.ord, (game.base**2)).toNumber()+0.1)/game.base))*(game.base+game.over+EN.mod(game.ord, game.base).toNumber()))) : Infinity;
-  let outSize = 1;
+  let outSize = game.ord.lt(EN.pow(10, 10)) ? (fghexp((EN.mod(game.ord, (game.base**3)).toNumber()+0.1)/(game.base**2),Math.pow(2,Math.floor((EN.mod(game.ord, (game.base**2)).toNumber()+0.1)/game.base))*(game.base+game.over+EN.mod(game.ord, game.base).toNumber()))) : Infinity;
   ordColor = "no";
   const ordSub = displayOrd(game.ord,game.base,game.over,0,0,0,game.colors);
   document.getElementById("hardy").innerHTML=colorWrap("H",ordColor)+"<sub>" + ordSub + "</sub><text class=\"invisible\">l</text>"+colorWrap("(" + game.base + ")" + (game.ord >= (game.base**3) || outSize >= 10**264 || (game.ord>=5 && game.base==2) ? "" : "=" + beautify(outSize)),ordColor)
@@ -1562,7 +1561,7 @@ function displayOrd(ord,base=3,over=0,trim=0,large=0,multoff=0,colour=0) {
 
   if ((ord.lt(base) && !ord.eq(0) && trim != game.maxOrdLength.less) || originalOrd.eq(0)) {
     if (ordColor == "no") ordColor="red"
-    dispString += (colour==1?"<span style='color:red;text-shadow: 6px 6px 6px red, 1px 0 1px black, -1px 0 1px black, 0 1px 1px black, 0 -1px 1px black;'>" + Math.floor(EN.add(ord,over).toNumber()) + "</span>":Math.floor(EN.add(ord,over).toNumber()))
+    dispString += (colour==1?"<span style='color:red;text-shadow: 6px 6px 6px red, 1px 0 1px black, -1px 0 1px black, 0 1px 1px black, 0 -1px 1px black;'>" + Math.ceil(EN.add(ord,over).toNumber()) + "</span>":Math.ceil(EN.add(ord,over).toNumber()))
   }
 
   return dispString;
