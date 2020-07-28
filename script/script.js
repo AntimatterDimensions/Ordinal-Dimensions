@@ -100,11 +100,13 @@ const aupCost = [
   2 ** 256,
   2 ** 512
 ];
-const autoIncrCostBase = [1e2, 5e2, 1e3, 1e4, 1e6, 1e8, 1e10, 1e14, 1e18, 1e25];
+const autoIncrCostBase = [1e1, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e14, 1e18, 1e25];
 const infUpgradeCost = [1, 10, 75, 200, 500, 20, 90, 250, 400];
 var multiThis;
 let AF = 0;
 const d = new Date();
+var originalOrd;
+var tempvar4;
 if (
   d.getMonth() === 3 &&
   d.getDate() === 1 &&
@@ -127,6 +129,9 @@ reset();
 load();
 render();
 randerAutoIncr();
+setInterval( function () {
+  randerAutoIncr();
+}, 5000);
 randerInfUpgrade();
 
 function buyAutoIncr(num) {
@@ -134,25 +139,27 @@ function buyAutoIncr(num) {
     for (var i = 9; i > -1; i--) {
       buyAutoIncrMax(i);
     }
-  } else if (game.ord >= game.autoIncrCost[num]) {
-    game.ord -= game.autoIncrCost[num];
-    game.autoIncrHave[num]++;
-    game.autoIncrBought[num]++;
-    game.autoIncrCost[num] = Number((autoIncrCostBase[num]*(10.3**(num+1))**game.autoIncrBought[num]).toExponential(0));
+  } else if (EN.gt(game.ord, game.autoIncrCost[num])) {
+    game.ord = EN(EN.sub(game.ord, game.autoIncrCost[num]));
+    game.autoIncrHave[num] = EN(EN.add(game.autoIncrHave[num], 1));
+    game.autoIncrBought[num] = EN(EN.add(game.autoIncrBought[num], 1));
+    game.autoIncrCost[num] = EN(EN.mul(autoIncrCostBase[num], EN.pow(10**(num+1), game.autoIncrBought[num])));
+    randerAutoIncr();
   }
   randerAutoIncr();
 }
 function buyAutoIncrMax(num) {
-  while (game.ord >= game.autoIncrCost[num]) {
-    game.ord -= game.autoIncrCost[num];
-    game.autoIncrHave[num]++;
-    game.autoIncrBought[num]++;
-    game.autoIncrCost[num] = Number((autoIncrCostBase[num]*(10.3**(num+1))**game.autoIncrBought[num]).toExponential(0));
+  while (EN.gt(game.ord, game.autoIncrCost[num])) {
+    game.ord = EN(EN.sub(game.ord, game.autoIncrCost[num]));
+    game.autoIncrHave[num] = EN(EN.add(game.autoIncrHave[num], 1));
+    game.autoIncrBought[num] = EN(EN.add(game.autoIncrBought[num], 1));
+    game.autoIncrCost[num] = EN(EN.mul(autoIncrCostBase[num], EN.pow(10**(num+1), game.autoIncrBought[num])));
+    randerAutoIncr();
   }
 }
 function randerAutoIncr() {
   for (var i = 0; i < 10; i++) {
-    get("autoCost" + i).innerHTML = 'cost: ' + displayOrd(game.autoIncrCost[i], game.base);
+    get("autoCost" + i).innerHTML = 'cost: ' + displayOrd(game.autoIncrCost[i],game.base,game.over,0,0,0,game.colors);
   }
 }
 
@@ -169,41 +176,34 @@ function infUpgrade(num) {
   }
 }
 
-function increment(manmade = 0) {
-  if (manmade === 0 || game.manualClicksLeft >= 0.5) {
-    if (
-      manmade === 1 &&
-      (game.chal8 === 1 || game.challenge === 6 || game.challenge === 7)
-    )
-      game.manualClicksLeft--;
-    if (game.ord % game.base === game.base - 1) {
-      game.over++;
+function increment(manmade=0) {
+  if (manmade==0 || game.manualClicksLeft >= 0.5 || game.chal8 == 0) {
+    if (manmade==1 && game.chal8 == 1) game.manualClicksLeft -= 1
+    if (EN.eq(EN.mod(game.ord, game.base), game.base-1)) {
+      game.over += 1
     } else {
-      game.ord++;
+      game.ord = EN.add(game.ord, 1);
     }
-    clickCoolDown = 2;
+    clickCoolDown=2
   }
-  if (manmade === 1) render();
+  if (manmade==1) render()
 }
 
-function maximize(manmade = 0) {
-  if (game.ord % game.base === game.base - 1 && game.over >= 1) {
-    game.ord -= game.base - 1;
-    game.over += game.base - 1;
+function maximize(manmade=0) {
+  if (EN.eq(EN.mod(game.ord, game.base), game.base-1) && game.over >= 1) {
+    game.ord = EN.sub(game.ord,game.base-1)
+    game.over += game.base-1
     do {
-      game.over -= Math.ceil((game.over + game.base) / 2 - 0.1);
-      game.ord += game.base;
-    } while (
-      game.over + game.base >= game.base * 2 &&
-      game.ord % game.base ** 2 !== 0
-    );
-    if (game.ord % game.base ** 2 !== 0) {
-      game.ord += game.over;
+      game.over -= Math.ceil((game.over+game.base)/2-0.1)
+      game.ord = EN.add(game.ord,game.base)
+    } while (game.over+game.base >= game.base*2 && !(EN.eq(EN.mod(game.ord, (game.base**2)), 0)))
+    if (!(EN.eq(EN.mod(game.ord, (game.base**2)), 0))) {
+      game.ord = EN.add(game.over,game.ord)
     }
-    game.over = 0;
-    clickCoolDown = 2;
+    game.over = 0
   }
-  if (manmade === 1) render();
+    clickCoolDown=2
+  if (manmade==1) render()
 }
 
 let deltaTime;
@@ -220,32 +220,28 @@ function loop(unadjusted, off = 0) {
     ms=50
   }
   for (var i = 9; i > -1; i--) {
-    multiThis = 1;
+    multiThis = EN(1);
     if ((i == 0 || i == 9) && game.infUpgradeHave[0] == 1) {
-      multiThis = multiThis*2;
+      multiThis = EN.mul(multiThis, 2);
     } else if ((i == 1 || i == 8) && game.infUpgradeHave[1] == 1) {
-      multiThis = multiThis*2;
+      multiThis = EN.mul(multiThis, 2);
     } else if ((i == 2 || i == 7) && game.infUpgradeHave[2] == 1) {
-      multiThis = multiThis*2;
+      multiThis = EN.mul(multiThis, 2);
     } else if ((i == 3 || i == 6) && game.infUpgradeHave[3] == 1) {
-      multiThis = multiThis*2;
+      multiThis = EN.mul(multiThis, 2);
     } else if ((i == 4 || i == 5) && game.infUpgradeHave[4] == 1) {
-      multiThis = multiThis*2;
+      multiThis = EN.mul(multiThis, 2);
     }
     if (i != 0) {
-      game.autoIncrHave[i-1] += game.autoIncrHave[i]*ms/1000*2**game.autoIncrBought[i]*multiThis;
+      game.autoIncrHave[i-1] = EN(EN.add(game.autoIncrHave[i-1], EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))))));
     } else {
-      game.ord += game.autoIncrHave[0]*ms/1000*2**game.autoIncrBought[0]*multiThis;
+      game.ord = EN(EN.add(game.ord, EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))))));
     }
-    game.autoIncrCost[i] = Number((autoIncrCostBase[i]*(10.3**(i+1))**game.autoIncrBought[i]).toExponential(0));
-    get("autoHave" + i).innerHTML = beautifyEN(game.autoIncrHave[i]) + '(x' + beautifyEN(2**game.autoIncrBought[i]*multiThis) + ')';
+    game.autoIncrCost[i] = EN(EN.mul(autoIncrCostBase[i], EN.pow(10**(i+1), game.autoIncrBought[i])));
+    get("autoHave" + i).innerHTML = beautify(game.autoIncrHave[i]) + '(x' + beautify(EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))) + ')';
   }
-  game.subTab = 2;
   if (game.base < 10) {
     game.base = 10;
-  }
-  if (game.ord > 1e200) {
-    game.ord = 1e200;
   }
   if (game.incrementy.lt(0)) game.incrementy = EN(0);
   if (game.collapseUnlock === 0) game.leastBoost = Infinity;
@@ -345,7 +341,7 @@ function loop(unadjusted, off = 0) {
   if (game.iups[3] === 1) buptotalMute += 100000000;
   if (
     (game.succAuto < 1e265 || game.limAuto < 1e265) &&
-    !(game.ord >= 3 ** 27 && game.base <= 3)
+    !(EN.gt(game.ord, 3 ** 27) && game.base <= 3)
   ) {
     if (game.succAuto * totalMult > 0) {
       game.autoLoop.succ += ms;
@@ -394,10 +390,10 @@ function loop(unadjusted, off = 0) {
     }
   } else {
     game.over = 0;
-    game.ord = Math.max(Math.min(game.succAuto, game.limAuto), 4e270);
+    // game.ord = EN(Math.max(Math.min(game.succAuto, game.limAuto), 4e270));
   }
   if (!chal8Tip && game.chal8 === 1 && calcOrdPoints() >= 1e30*1e10**(game.base==5&&game.sfBought.includes(61)))
-    game.ord = game.base ** (game.base * 3+(game.base==5&&game.sfBought.includes(61)?game.base:0));
+    // game.ord = EN(game.base**(game.base * 3+(game.base==5&&game.sfBought.includes(61)?game.base:0)));
   changeDynamic(ms);
   if (game.dynamic < 0) game.dynamic = 0;
   if (ms > 0) {
@@ -463,8 +459,8 @@ function loop(unadjusted, off = 0) {
     game.OP += Math.floor(partOP);
     partOP %= 1;
   }
-  if (game.OP > BHO * getSingLevel()) game.OP = BHO * getSingLevel();
-  if (game.ord > BHO * getSingLevel()) game.ord = BHO * getSingLevel();
+  // if (game.OP > BHO * getSingLevel()) game.OP = BHO * getSingLevel();
+  // if (game.ord > BHO * getSingLevel()) game.ord = BHO * getSingLevel();
   if (game.upgrades.includes(8)) {
     game.incrementy = game.incrementy.add(getIncrementyRate(ms / 2));
     if (
@@ -540,36 +536,11 @@ function loop(unadjusted, off = 0) {
 }
 
 function render() {
-  const outSize = fghexp(
-    ((game.ord % game.base ** 3) + 0.1) / game.base ** 2,
-    Math.pow(2, Math.floor(((game.ord % game.base ** 2) + 0.1) / game.base)) *
-      (game.base + game.over + (game.ord % game.base))
-  );
+  // let outSize = EN.lt(game.ord, (EN.pow(10, 10))) ? (fghexp((EN.mod(game.ord, (game.base**3)).toNumber()+0.1)/(game.base**2),Math.pow(2,Math.floor((EN.mod(game.ord, (game.base**2)).toNumber()+0.1)/game.base))*(game.base+game.over+EN.mod(game.ord, game.base).toNumber()))) : Infinity;
+  let outSize = 1;
   ordColor = "no";
-  const ordSub =
-    game.ord <= 1e200 || getFBps()/getFBmult() >= 10
-      ? getFBps()/getFBmult() >= 10
-        ? displayOrd(0, game.base, 0, 0, 0, 0, game.colors)
-        : displayOrd(game.ord, game.base, game.over, 0, 0, 0, game.colors)
-      : displayOrd(
-          Math.round(game.ord / 1e270 + 1) * 1e270 - 1e270,
-          3,
-          0,
-          0,
-          0,
-          0,
-          game.colors
-        );
-  get("hardy").innerHTML =
-    `${colorWrap("H", ordColor)}<sub>${ordSub}</sub><text class="invisible">l</text>${colorWrap(
-      `(${game.base})${(game.ord >= game.base ** 3 ||
-        outSize >= 10 ** 264 || getFBps()/getFBmult() >= 10
-          ? getFBps()/getFBmult() >= 10
-            ? `=${game.base}`
-            : ""
-          : `=${beautifyEN(outSize)}`)}`,
-      ordColor
-    )}`
+  const ordSub = displayOrd(game.ord,game.base,game.over,0,0,0,game.colors);
+  document.getElementById("hardy").innerHTML=colorWrap("H",ordColor)+"<sub>" + ordSub + "</sub><text class=\"invisible\">l</text>"+colorWrap("(" + game.base + ")" + (game.ord >= (game.base**3) || outSize >= 10**264 || (game.ord>=5 && game.base==2) ? "" : "=" + beautify(outSize)),ordColor)
   game.canInf = game.ord >= 1e100;
   if (game.infUnlock === 1) {
     get("infinityTabButton").style.display = "inline-block";
@@ -791,9 +762,7 @@ function render() {
     ];
   get("changeInt").textContent = "Millisecond Interval: " + game.msint + "ms";
   get("changeOrdLengthLess").innerHTML =
-    "Maximum Ordinal Length below " +
-    displayOrd(10 ** 270 * 4) +
-    ": " +
+    "Maximum Ordinal Length: " +
     game.maxOrdLength.less;
   get("changeOrdLengthMore").innerHTML =
     "Maximum Ordinal Length above " +
@@ -1564,171 +1533,39 @@ function maxall() {
   }
 }
 
-function displayOrd(
-  ord,
-  base = 3,
-  over = 0,
-  trim = 0,
-  large = 0,
-  multoff = 0,
-  colour = 0
-) {
-  if (ord < base && large == 0) {
-    if (ordColor == "no") ordColor = "red";
-    return colour == 1
-      ? "<span style='color:red;'>" + (ord + over) + "</span>"
-      : ord + over;
-  } else if ((ord < 3 ** 27 || base > 3) && large == 0) {
-    let tempvar = Math.floor(Math.log(ord + 0.1) / Math.log(base));
-    if (ordColor == "no") ordColor = HSL(tempvar * 8);
-    let tempvar2 = Math.pow(base, tempvar);
-    let tempvar3 = Math.floor((ord + 0.1) / tempvar2);
-    let tempvar4 =
-      "ω" +
-      (tempvar == 1
-        ? ""
-        : (game.buchholz == 2 ? "^(" : "<sup>") +
-          displayOrd(Math.ceil(tempvar), base, 0) +
-          (game.buchholz == 2 ? ")" : "</sup>")) +
-      (tempvar3 == 1
-        ? ""
-        : (game.buchholz == 2 && tempvar > 1.5 ? "×" : "") + tempvar3) +
-      (ord - tempvar2 * tempvar3 + over == 0 ||
-      trim == game.maxOrdLength.less - 1
-        ? ord - tempvar2 * tempvar3 + over == 0
-          ? ""
-          : "+..."
-        : "+");
-    return (
-      (colour == 1
-        ? "<span style='color:" + HSL(tempvar * 8) + ";text-shadow: 6px 6px 6px " + HSL(tempvar * 8) + ", 1px 0 1px black, -1px 0 1px black, 0 1px 1px black, 0 -1px 1px black;'>" + tempvar4 + "</span>"
-        : tempvar4) +
-      (ord - tempvar2 * tempvar3 + over == 0 ||
-      trim == game.maxOrdLength.less - 1
-        ? ""
-        : displayOrd(
-            Math.ceil(ord - tempvar2 * tempvar3),
-            base,
-            over,
-            trim + 1,
-            large,
-            multoff,
-            colour
-          ))
-    );
-  } else if (ord < 4 * 10 ** 270) {
-    let tempvar =
-      multoff == 0
-        ? [
-            displayOrd(3),
-            displayOrd(9),
-            displayOrd(27),
-            displayOrd(19683),
-            ordMarks[game.buchholz][0].replace("x", "")
-          ][Math.max(0, Math.floor((ord + 10 ** 268) / 10 ** 270))]
-        : [
-            "1",
-            displayOrd(3),
-            displayOrd(27),
-            displayOrd(19683),
-            ordMarks[game.buchholz][0].replace("x", "")
-          ][Math.max(0, Math.floor((ord + 10 ** 268) / 10 ** 270))];
-    return colour == 1
-      ? color(tempvar, ["ω", "(", ")", "^", "!", "@", "$"], "red")
-      : tempvar;
-  } else if (ord < BHO) {
-    let tempvar = Math.floor(
-      Math.log((ord + 10 ** 268) / (4 * 10 ** 270)) / Math.log(3)
-    );
-    if (ordColor == "no") ordColor = HSL(tempvar * 8);
-    let tempvar2 = displayOrd(
-      ord - 3 ** tempvar * 4 * 10 ** 270 + 10 ** 265,
-      base,
-      over,
-      trim + 1,
-      1,
-      ordMarks[game.buchholz][tempvar][
-        ordMarks[game.buchholz][tempvar].length - 2
-      ] == "x",
-      colour
-    );
-    let output = (colour == 1
-      ? color(
-          ordMarks[game.buchholz][tempvar],
-          ["ψ", "(", "Ω", ")", "BHO", "^", "×", "@", "+", "!", "$"],
-          HSL(tempvar * 8)
-        )
-      : ordMarks[game.buchholz][tempvar]
-    ).replace(
-      "x",
-      trim == game.maxOrdLength.more - 1
-        ? colour == 1
-          ? color("...", ["..."], HSL(tempvar * 8))
-          : "..."
-        : tempvar2 == "1" || tempvar2 == "<span style='color:red;text-shadow: 6px 6px 6px red, 1px 0 1px black, -1px 0 1px black, 0 1px 1px black, 0 -1px 1px black;'>1</span>"
-        ? tempvar <= 0.5 && game.buchholz == 0
-          ? colour == 1
-            ? "<span style='color:red'>0</span>"
-            : "0"
-          : game.buchholz == 2
-          ? colour == 1
-            ? "<span style='color:red'>1</span>"
-            : "1"
-          : ""
-        : tempvar2
-    );
-    return output;
-  } else if (getSingLevel() == 1) {
-    if (ordColor == "no") ordColor = HSL(40 * 8);
-    return colour == 1 ? color("BHO", ["BHO"], HSL(80 * 4)) : "BHO";
-  } else {
-    let tempvar = Math.floor(ord / BHO - 1);
-    let tempvar2 = 3 ** (ord / BHO - 1) - 3 ** tempvar;
-    if ((ord / BHO) % 1 >= 0.99999999999999) {
-      tempvar++;
-      tempvar2 = 0;
-    }
-    let tempvar3 =
-      tempvar2 < 1
-        ? BHO * tempvar2
-        : (Math.log10(tempvar2) / Math.log10(3) + 1) * BHO;
-    if (ordColor == "no") ordColor = HSL((tempvar + 40) * 8);
-    let tempvar4 = displayOrd(
-      Math.ceil(tempvar3 + 10 ** 265),
-      base,
-      over,
-      trim + 1,
-      large,
-      ordMarks[game.buchholz][tempvar + 40][
-        ordMarks[game.buchholz][tempvar + 40].length - 2
-      ] == "x"
-        ? 1
-        : 0,
-      colour
-    );
-    let output = (colour == 1
-      ? color(
-          ordMarks[game.buchholz][tempvar + 40],
-          ["ψ", "(", "Ω", ")", "ε", "^", "×", "@", "+", "!", "$"],
-          HSL((tempvar + 40) * 8)
-        )
-      : ordMarks[game.buchholz][tempvar + 40]
-    ).replace(
-      "x",
-      trim == game.maxOrdLength.more - 1
-        ? colour == 1
-          ? color("...", ["..."], HSL(tempvar * 8))
-          : "..."
-        : tempvar4 == "1" || tempvar4 == "<span style='color:red'>1</span>"
-        ? game.buchholz == 2
-          ? colour == 1
-            ? "<span style='color:red'>1</span>"
-            : "1"
-          : ""
-        : tempvar4
-    );
-    return output;
+// "<span style='color:" + HSL(tempvar * 8) + ";text-shadow: 6px 6px 6px " + HSL(tempvar * 8) + ", 1px 0 1px black, -1px 0 1px black, 0 1px 1px black, 0 -1px 1px black;'>" + tempvar4 + "</span>"
+function displayOrd(ord,base=3,over=0,trim=0,large=0,multoff=0,colour=0) {
+  ord = ENify(ord);
+  originalOrd = ENify(ord);
+  let dispString = "";
+
+  let largeOrd = false;
+  while (ord.gte(base) && (trim < game.maxOrdLength.less || game.maxOrdLength.less == 0) && !largeOrd)
+  {
+    let tempvar = ord.add(0.1).logBase(base).floor() // if leading term of ordinal is (ω^c)a, this is c
+    if (ordColor == "no") ordColor=HSL(tempvar*8)
+    let tempvar2 = EN.pow(base,tempvar) // and this is ω^c
+    let tempvar3 = EN.floor((EN.add(ord, 0.1)).div(tempvar2)) // and this is a
+    let ott = ord.sub(EN.mul(tempvar2, tempvar3)) // the ordinal value of the rest of the ordinal
+    let otto = ott.add(over).eq(0) || ord.gt(EN.tetrate(base, 3)) // has the ordinal ended?
+    tempvar4 = "ω" +
+      (tempvar.eq(1) ? "" : (game.buchholz==2?"^(":"<sup>") + displayOrd(tempvar,base,0) + (game.buchholz==2?")":"</sup>")) +
+      (tempvar3.eq(1) ? "" : (game.buchholz==2&&tempvar.gt(1.5)?"×":"") + tempvar3.toString()) +
+      (otto || trim == (game.maxOrdLength.less-1) ? (otto ? "": "+...") : "+" );
+
+    dispString += (colour==1?"<span style='color:" + HSL(tempvar*8) + ";text-shadow: 6px 6px 6px " + HSL(tempvar * 8) + ", 1px 0 1px black, -1px 0 1px black, 0 1px 1px black, 0 -1px 1px black;'>" + tempvar4 + "</span>":tempvar4);
+    ord = ott;
+    trim++;
+
+    if (ord.gt(EN.tetrate(base, 3))) {largeOrd = true}
   }
+
+  if ((ord.lt(base) && !ord.eq(0) && trim != game.maxOrdLength.less) || originalOrd.eq(0)) {
+    if (ordColor == "no") ordColor="red"
+    dispString += (colour==1?"<span style='color:red'>" + EN.add(ord,over).toNumber() + "</span>":EN.add(ord,over).toNumber())
+  }
+
+  return dispString;
 }
 
 function fghexp(times, on) {
@@ -1785,7 +1622,7 @@ function beautifyEN(n, f = 0) {
 
 function calcOrdPoints(ord = game.ord, base = game.base, over = game.over) {
   return Math.floor((1.05+Math.log10(ord/1e100)/500)**Math.log10(ord/1e100)*Math.sqrt(Math.log10(ord/1e100))+1 + over);
-  /* if (!(ord > 3 ** 27 && base <= 3)) {
+  if (!(ord > 3 ** 27 && base <= 3)) {
     if (ord < base) {
       return Math.log10(ord/1e100)**10+1 + over;
     } else {
@@ -1800,7 +1637,7 @@ function calcOrdPoints(ord = game.ord, base = game.base, over = game.over) {
     }
   } else {
     return Math.round(ord / 1e270 + 1) * 1e270;
-  } */
+  }
 }
 
 function Tab(t) {
@@ -1894,7 +1731,7 @@ function buyFactor(n) {
 }
 
 function debug() {
-  game.ord = 0;
+  game.ord = EN(0);
   game.over = 0;
   game.canInf = false;
   game.OP = 0;
@@ -1915,7 +1752,7 @@ function debug() {
 }
 
 function revertToPreBooster() {
-  game.ord = 0;
+  game.ord = EN(0);
   game.over = 0;
   game.canInf = false;
   game.OP = 10 ** 270 * 5;
@@ -1976,15 +1813,13 @@ get("music").muted = false;
 
 function ENify(x) {
   if (typeof x == "number") {
-    return EN(x);
-  } else if (x == "null") {
-    return EN(0);
+    return EN(x)
   } else {
-    let newEN = new EN(0);
-    newEN.array = x.array;
-    newEN.sign = x.sign;
-    newEN.layer = x.layer;
-    return newEN;
+    let newEN = new EN(0)
+    newEN.array = x.array
+    newEN.sign = x.sign
+    newEN.layer = x.layer
+    return newEN
   }
 }
 

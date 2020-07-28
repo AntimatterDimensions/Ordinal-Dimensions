@@ -3,7 +3,7 @@
 function reset() {
   game = {
   base: 10,
-  ord: 0,
+  ord: EN(0),
   over: 0,
   canInf: false,
   OP: 0,
@@ -85,8 +85,8 @@ function reset() {
   refundPoints: 0,
   refundPointProg: 0,
   autoIncrCost : [1e2, 5e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e10, 1e12],
-  autoIncrBought : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  autoIncrHave : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  autoIncrBought : {0: EN(0), 1: EN(0), 2: EN(0), 3: EN(0), 4: EN(0), 5: EN(0), 6: EN(0), 7: EN(0), 8: EN(0), 9: EN(0)},
+  autoIncrHave : {0: EN(0), 1: EN(0), 2: EN(0), 3: EN(0), 4: EN(0), 5: EN(0), 6: EN(0), 7: EN(0), 8: EN(0), 9: EN(0)},
   infUpgradeHave : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   };
   document.getElementById("infinityTabButton").style.display = "none";
@@ -94,132 +94,24 @@ function reset() {
   updateFactors();
 }
 
-function load() {
-  const loadgame = JSON.parse(localStorage.getItem("ordinalMarkupSave"));
-  if (loadgame !== null && AF === 0) {
-    loadGame(loadgame);
-  }
-}
-
-function handleVeryOldSaves(loadgame) {
-	if (typeof loadgame.version === "undefined") {
-    game.version = 0.12;
-  } else {
-    game.version = loadgame.version;
-  }
-  if (game.version === 0.12) {
-    game.version = 0.2;
-    if (game.ord >= 1e100 || game.base === 2) {
-      revertToPreBooster();
-    }
-  }
-  if (game.version === 0.2) {
-    game.version = 0.201;
-    if (game.boostUnlock === 1) {
-      game.boosters = 1;
-      game.upgrades = [];
-      game.factorBoosts = 1;
-    }
-  }
-  if (game.version === 0.201) {
-    game.version = 0.202;
-    if (game.boostUnlock === 1 && game.boosters + (game.upgrades.includes(1) ? 1 : 0) >= 2) {
-      game.boosters -= 1;
-    } else if (game.boostUnlock === 1) game.factorBoosts += 1;
-
-  }
-}
-
-function handlePost0202Saves() {
-  if (game.version === 0.202) {
-    game.version = 0.21;
-    if (game.boostUnlock === 1) {
-      if (game.factorBoosts === 0) {
-        game.factorBoosts = 1;
-        if (game.upgrades.includes(1)) {
-          game.boosters = 0;
-        } else {
-          game.boosters = 1;
-        }
-      } else {
-        game.boosters = game.factorBoosts * (game.factorBoosts + 1) / 2;
-        if (game.upgrades.includes(1)) game.boosters--;
-        if (game.upgrades.includes(2)) game.boosters--;
-        if (game.upgrades.includes(3)) game.boosters--;
-        if (game.upgrades.includes(5)) game.boosters -= 5;
-        if (game.upgrades.includes(6)) game.boosters -= 4;
-        if (game.upgrades.includes(7)) game.boosters -= 8;
-      }
-    }
-  }
-  if (game.version === 0.21) {
-     game.version = 0.211;
-     if (game.boostUnlock === 1) {
-     game.boosters = game.factorBoosts * (game.factorBoosts + 1) / 2;
-     if (game.upgrades.includes(1)) game.boosters--;
-     if (game.upgrades.includes(2)) game.boosters--;
-     if (game.upgrades.includes(3)) game.boosters--;
-     if (game.upgrades.includes(5)) game.boosters -= 5;
-     if (game.upgrades.includes(6)) game.boosters -= 4;
-     if (game.upgrades.includes(7)) game.boosters -= 8;
-	}
-  }
-}
-
-function handlePost0211Saves() {
-	if (game.version === 0.211) {
-     game.version = 0.22;
-     if (game.boostUnlock === 1) {
-     game.boosters = game.factorBoosts * (game.factorBoosts + 1) / 2;
-     if (game.upgrades.includes(1)) game.boosters--;
-     if (game.upgrades.includes(2)) game.boosters--;
-     if (game.upgrades.includes(3)) game.boosters--;
-     if (game.upgrades.includes(5)) game.boosters -= 5;
-     if (game.upgrades.includes(6)) game.boosters -= 4;
-     if (game.upgrades.includes(7)) game.boosters -= 8;
-     if (game.upgrades.includes(11)) game.boosters -= 16;
-     }
-  }
-	if (game.version === 0.22) {
-    game.version = 0.24;
-    game.iups.push(0);
-    game.iups.push(0);
-    game.iups.push(0);
-  }
-  if (game.version === 0.24) {
-    if (game.leastBoost <= 15) game.leastBoost = 15;
-    if (!game.upgrades.includes(4)) {
-      game.challengeCompletion[0] = 0;
-      game.challengeCompletion[1] = 0;
-    }
-    if (!game.upgrades.includes(8)) {
-      game.challengeCompletion[2] = 0;
-      game.challengeCompletion[3] = 0;
-    }
-    if (!game.upgrades.includes(12)) {
-      game.challengeCompletion[4] = 0;
-      game.challengeCompletion[5] = 0;
-      game.challengeCompletion[6] = 0;
-      game.chal8Comp = 0;
-    }
-    game.version = 0.31;
-  }
-}
-
-function handleOldVersions(loadgame) {
-  handleVeryOldSaves(loadgame);
-  handlePost0202Saves();
-  handlePost0211Saves();
-}
-
-function loadGame(loadgame) {
+/* function loadGame(loadgame) {
   reset();
   for (const i in loadgame) {
-    game[i] = loadgame[i];
+    if (typeof loadgame[i]=="object"&&loadgame[i]!=null) {
+      for (const j in loadgame[i]) {
+        if ((typeof loadgame[i].array!="undefined"&&typeof loadgame[i].sign!="undefined")) {
+          game[i][j] = ENify(loadgame[i][j]);
+        } else if (loadgame[i][j]['sign']!==undefined) {
+          game[i][j] = EN(loadgame[i][j]);
+        } else {
+          game[i][j] = loadgame[i][j];
+        }
+      }
+    } else {
+      game[i] = loadgame[i];
+    }
   }
   const diff = Date.now() - game.lastTick;
-  // Console.log(diff);
-  handleOldVersions(loadgame);
   game.cardinals = ENify(game.cardinals);
   game.incrementy = ENify(game.incrementy);
   game.assCard[0].points = ENify(game.assCard[0].points);
@@ -240,9 +132,7 @@ function loadGame(loadgame) {
   document.getElementById("nonC8Auto").value = game.qolSM.nc8;
   document.getElementById("C8Auto").value = game.qolSM.c8;
   document.getElementById("ttnc").value = game.qolSM.ttnc;
-  // Console.log(game.leastBoost);
   if (game.leastBoost === null) game.leastBoost = Infinity;
-  // Console.log(game.leastBoost);
   render();
   if (game.offlineProg === 1) {
     if (game.collapseTime <= 1000 && diff / 1000 >= 1000 - game.collapseTime) {
@@ -253,12 +143,68 @@ function loadGame(loadgame) {
     }
   }
   game.lastTick = Date.now();
-  // Console.log(diff);
+  console.log(diff);
+} */
+
+function loadGame(loadgame) {
+  console.log(loadgame);
+  reset();
+  for (const i in loadgame) {
+    if (typeof loadgame[i]=="object"&&loadgame[i]!=null) {
+      if (typeof loadgame[i].array!="undefined"&&typeof loadgame[i].sign!="undefined") {
+        game[i] = ENify(loadgame[i])
+      } else {
+        game[i] = loadgame[i];
+      }
+    } else {
+      game[i] = loadgame[i];
+    }
+  }
+  console.log(game);
+  const diff = Date.now() - game.lastTick;
+  for (var i = 0; i < 10; i++) {
+    game.autoIncrBought[i] = ENify(game.autoIncrBought[i]);
+    game.autoIncrHave[i] = ENify(game.autoIncrBought[i]);
+  }
+  game.cardinals = ENify(game.cardinals);
+  game.incrementy = ENify(game.incrementy);
+  game.assCard[0].points = ENify(game.assCard[0].points);
+  game.assCard[0].power = ENify(game.assCard[0].power);
+  game.assCard[0].mult = ENify(game.assCard[0].mult);
+  game.assCard[1].points = ENify(game.assCard[1].points);
+  game.assCard[1].power = ENify(game.assCard[1].power);
+  game.assCard[1].mult = ENify(game.assCard[1].mult);
+  game.assCard[2].points = ENify(game.assCard[2].points);
+  game.assCard[2].power = ENify(game.assCard[2].power);
+  game.assCard[2].mult = ENify(game.assCard[2].mult);
+  game.alephOmega = ENify(game.alephOmega);
+  game.shiftAuto = ENify(game.shiftAuto);
+  game.boostAuto = ENify(game.boostAuto);
+  game.maxIncrementyRate = ENify(game.maxIncrementyRate);
+  game.mostCardOnce = ENify(game.mostCardOnce);
+  game.maxCard = ENify(game.maxCard);
+  if (game.leastBoost === null) game.leastBoost = Infinity;
+  render();
+  if (game.offlineProg === 1) {
+    if (game.collapseTime <= 1000 && diff / 1000 >= 1000 - game.collapseTime) {
+      loop((1000 - game.collapseTime) * 1000, 1);
+      loop(diff - ((1000 - game.collapseTime) * 1000), 1);
+    } else {
+      loop(diff, 1);
+    }
+  }
+  game.lastTick = Date.now();
 }
 
+function load() {
+  let loadgame = JSON.parse(localStorage.getItem("ordinalDimSave"));
+  if (loadgame !== null && AF === 0) {
+    loadGame(loadgame);
+  }
+}
 
 function save() {
-  if (AF === 0) localStorage.setItem("ordinalMarkupSave", JSON.stringify(game));
+  if (AF === 0) localStorage.setItem("ordinalDimSave", JSON.stringify(game));
 }
 
 function exporty() {
