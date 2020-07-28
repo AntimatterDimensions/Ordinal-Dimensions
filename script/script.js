@@ -1562,7 +1562,7 @@ function displayOrd(ord,base=3,over=0,trim=0,large=0,multoff=0,colour=0) {
 
   if ((ord.lt(base) && !ord.eq(0) && trim != game.maxOrdLength.less) || originalOrd.eq(0)) {
     if (ordColor == "no") ordColor="red"
-    dispString += (colour==1?"<span style='color:red'>" + EN.add(ord,over).toNumber() + "</span>":EN.add(ord,over).toNumber())
+    dispString += (colour==1?"<span style='color:red;text-shadow: 6px 6px 6px red, 1px 0 1px black, -1px 0 1px black, 0 1px 1px black, 0 -1px 1px black;'>" + Math.floor(EN.add(ord,over).toNumber()) + "</span>":Math.floor(EN.add(ord,over).toNumber()))
   }
 
   return dispString;
