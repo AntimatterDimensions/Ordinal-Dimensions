@@ -23,16 +23,16 @@ function infinity(manmade = 0) {
       game.autoIncrCost[i] = autoIncrCostBase[i];
     }
     if (game.infUpgradeHave[5] == 1) {
-      game.autoIncrHave[0] = 10;
+      game.autoIncrHave[0] = EN(10);
     }
     if (game.infUpgradeHave[6] == 1) {
-      game.autoIncrHave[1] = 5;
+      game.autoIncrHave[1] = EN(5);
     }
     if (game.infUpgradeHave[7] == 1) {
-      game.autoIncrHave[2] = 3;
+      game.autoIncrHave[2] = EN(3);
     }
     if (game.infUpgradeHave[8] == 1) {
-      game.autoIncrHave[3] = 2;
+      game.autoIncrHave[3] = EN(2);
     }
   }
   loop(0);
