@@ -164,7 +164,7 @@ function loadGame(loadgame) {
   const diff = Date.now() - game.lastTick;
   for (var i = 0; i < 10; i++) {
     game.autoIncrBought[i] = ENify(game.autoIncrBought[i]);
-    game.autoIncrHave[i] = ENify(game.autoIncrBought[i]);
+    game.autoIncrHave[i] = ENify(game.autoIncrHave[i]);
   }
   game.cardinals = ENify(game.cardinals);
   game.incrementy = ENify(game.incrementy);
