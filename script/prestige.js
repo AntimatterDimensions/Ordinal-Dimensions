@@ -2,12 +2,7 @@
 
 function infinity(manmade = 0) {
   if (game.canInf) {
-    if (calcOrdPoints(game.ord, game.base, game.over) >= 1e265) {
-      game.OP = Math.max(game.OP, calcOrdPoints(game.ord, game.base, game.over));
-    } else {
-      if (game.chal8 === 1 || game.challenge === 6 || game.challenge === 7) game.OP = 0;
-      game.OP += calcTotalOPGain();
-    }
+    game.OP += EN.add(game.OP, calcTotalOPGain());
     game.ord = 0;
     game.over = 0;
     document.getElementById("infinityTabButton").style.display = "inline-block";
@@ -17,6 +12,8 @@ function infinity(manmade = 0) {
     game.autoLoop.succ = 0;
     game.autoLoop.lim = 0;
     game.manualClicksLeft = 1000;
+    game.markCount++;
+    game.infTime = 0;
     for (var i = 0; i < 10; i++) {
       game.autoIncrHave[i] = 0;
       game.autoIncrBought[i] = 0;
@@ -26,13 +23,31 @@ function infinity(manmade = 0) {
       game.autoIncrHave[0] = EN(10);
     }
     if (game.infUpgradeHave[6] == 1) {
-      game.autoIncrHave[1] = EN(5);
+      game.autoIncrHave[1] = EN(9);
     }
     if (game.infUpgradeHave[7] == 1) {
-      game.autoIncrHave[2] = EN(3);
+      game.autoIncrHave[2] = EN(8);
     }
     if (game.infUpgradeHave[8] == 1) {
-      game.autoIncrHave[3] = EN(2);
+      game.autoIncrHave[3] = EN(7);
+    }
+    if (game.infUpgradeHave[9] == 1) {
+      game.autoIncrHave[4] = EN(6);
+    }
+    if (game.infUpgradeHave[10] == 1) {
+      game.autoIncrHave[5] = EN(5);
+    }
+    if (game.infUpgradeHave[11] == 1) {
+      game.autoIncrHave[6] = EN(4);
+    }
+    if (game.infUpgradeHave[12] == 1) {
+      game.autoIncrHave[7] = EN(3);
+    }
+    if (game.infUpgradeHave[13] == 1) {
+      game.autoIncrHave[8] = EN(2);
+    }
+    if (game.infUpgradeHave[14] == 1) {
+      game.autoIncrHave[9] = EN(1);
     }
   }
   loop(0);

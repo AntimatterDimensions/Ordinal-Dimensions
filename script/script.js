@@ -101,7 +101,10 @@ const aupCost = [
   2 ** 512
 ];
 const autoIncrCostBase = [1e1, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e14, 1e18, 1e25];
-const infUpgradeCost = [1, 10, 75, 200, 500, 20, 90, 250, 400];
+const infUpgradeCost = [
+    1, 10, 75, 200, 500, 20, 90, 250, 400, 800,
+    1200, 3000, 1e4, 4e4, 2e5, 1e4, 4e4, 1.6e5
+ ];
 var multiThis;
 let AF = 0;
 const d = new Date();
@@ -164,14 +167,14 @@ function randerAutoIncr() {
 }
 
 function randerInfUpgrade() {
-  for (var i = 0; i < 9; i++) {
+  for (var i = 0; i < 17; i++) {
     get("infUpgrade" + i).style.display = (game.infUpgradeHave[i] == 1) ? 'none' : 'display';
   }
 }
 function infUpgrade(num) {
-  if (infUpgradeCost[num] <= game.OP) {
+  if (EN.gte(game.OP, infUpgradeCost[num])) {
     game.infUpgradeHave[num] = 1;
-    game.OP -= infUpgradeCost[num];
+    game.OP = EN.sub(game.OP, infUpgradeCost[num]);
     randerInfUpgrade();
   }
 }
@@ -232,6 +235,15 @@ function loop(unadjusted, off = 0) {
     } else if ((i == 4 || i == 5) && game.infUpgradeHave[4] == 1) {
       multiThis = EN.mul(multiThis, 2);
     }
+    if (i == 0 && game.infUpgradeHave[15] == 1) {
+      multiThis = EN.mul(multiThis, Math.sqrt(game.infTime/60)+1);
+    }
+    if (i == 1 && game.infUpgradeHave[16] == 1) {
+      multiThis = EN.mul(multiThis, Math.sqrt(Math.sqrt(game.markCount))+1);
+    }
+    if (i == 2 && game.infUpgradeHave[17] == 1) {
+      multiThis = EN.mul(multiThis, EN.pow(EN.logBase(game.ord, 1000), 0.25)+1);
+    }
     if (i != 0) {
       game.autoIncrHave[i-1] = EN(EN.add(game.autoIncrHave[i-1], EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))))));
     } else {
@@ -240,9 +252,7 @@ function loop(unadjusted, off = 0) {
     game.autoIncrCost[i] = EN(EN.mul(autoIncrCostBase[i], EN.pow(10**(i+1), game.autoIncrBought[i])));
     get("autoHave" + i).innerHTML = beautify(game.autoIncrHave[i]) + '(x' + beautify(EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))) + ')';
   }
-  if (game.base < 10) {
-    game.base = 10;
-  }
+  game.infTime += ms/1000;
   if (game.incrementy.lt(0)) game.incrementy = EN(0);
   if (game.collapseUnlock === 0) game.leastBoost = Infinity;
   if (isNaN(game.leastBoost)) game.leastBoost = Infinity;
@@ -598,7 +608,7 @@ function render() {
     ? "inline-block"
     : "none";
   get("ordinalPointsDisplay").innerHTML =
-    `You have ${beautify(game.OP)} Ordinal Points`;
+    `You have ${beautifyEN(game.OP)} Ordinal Points`;
   get("succAutoAmount").innerHTML =
     `You have ${logbeautify(game.succAuto)} successor autoclickers, clicking the successor button ${(game.succAuto > 1e265
       ? logbeautify(game.succAuto)
@@ -1621,7 +1631,7 @@ function beautifyEN(n, f = 0) {
 
 function calcOrdPoints(ord = game.ord, base = game.base, over = game.over) {
   var logOrd = EN.sub(EN.logBase(ord, 10), 100);
-  return Math.floor(Number(beautify(EN.pow(1+logOrd/100, EN.sqrt(logOrd)))));
+  return EN.pow(1+logOrd/100, EN.sqrt(logOrd));
   /* return Math.floor((1.05+Math.log10(ord/1e100)/500)**Math.log10(ord/1e100)*Math.sqrt(Math.log10(ord/1e100))+1 + over);
   if (!(ord > 3 ** 27 && base <= 3)) {
     if (ord < base) {

@@ -87,7 +87,9 @@ function reset() {
   autoIncrCost : [1e2, 5e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e10, 1e12],
   autoIncrBought : {0: EN(0), 1: EN(0), 2: EN(0), 3: EN(0), 4: EN(0), 5: EN(0), 6: EN(0), 7: EN(0), 8: EN(0), 9: EN(0)},
   autoIncrHave : {0: EN(0), 1: EN(0), 2: EN(0), 3: EN(0), 4: EN(0), 5: EN(0), 6: EN(0), 7: EN(0), 8: EN(0), 9: EN(0)},
-  infUpgradeHave : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  infUpgradeHave : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  infTime : 0,
+  markCount : 0
   };
   document.getElementById("infinityTabButton").style.display = "none";
   render();
@@ -166,6 +168,7 @@ function loadGame(loadgame) {
     game.autoIncrBought[i] = ENify(game.autoIncrBought[i]);
     game.autoIncrHave[i] = ENify(game.autoIncrHave[i]);
   }
+  game.OP = ENify(game.OP);
   game.cardinals = ENify(game.cardinals);
   game.incrementy = ENify(game.incrementy);
   game.assCard[0].points = ENify(game.assCard[0].points);

@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Ordinal Dimensions u29</title>
+    <title>Ordinal Dimensions u30</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" href="https://cdn.glitch.com/310d7aca-4728-445f-9084-db26ceccd7b5%2FOrdinal%20Markup%20logo.png?v=1587927427273"/>
     <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="style/mobile.css?ver=29">
-    <link rel="stylesheet" href="style.css?ver=29">
-    <div id="theme"><link rel="stylesheet" href="style/dark.css?ver=29"></div>
+    <link rel="stylesheet" href="style/mobile.css?ver=30">
+    <link rel="stylesheet" href="style.css?ver=30">
+    <div id="theme"><link rel="stylesheet" href="style/dark.css?ver=30"></div>
     <!-- import the webpage's javascript file -->
-    <script src="script/ExpantaNum.js?ver=29" defer></script>
-    <script src="script/ordMarks.js?ver=29" defer></script>
-    <script src="script/saveload.js?ver=29" defer></script>
-    <script src="script/function.js?ver=29" defer></script>
-    <script src="script/color.js?ver=29" defer></script>
-    <script src="script/challenges.js?ver=29" defer></script>
-    <script src="script/hotkeys.js?ver=29" defer></script>
-    <script src="script/prestige.js?ver=29" defer></script>
-    <script src="script/singfunc.js?ver=29" defer></script>
-    <script src="script/canvas.js?ver=29" defer></script>
-    <script src="script/stats.js?ver=29" defer></script>
-    <script src="script/script.js?ver=29" defer></script>
+    <script src="script/ExpantaNum.js?ver=30" defer></script>
+    <script src="script/ordMarks.js?ver=30" defer></script>
+    <script src="script/saveload.js?ver=30" defer></script>
+    <script src="script/function.js?ver=30" defer></script>
+    <script src="script/color.js?ver=30" defer></script>
+    <script src="script/challenges.js?ver=30" defer></script>
+    <script src="script/hotkeys.js?ver=30" defer></script>
+    <script src="script/prestige.js?ver=30" defer></script>
+    <script src="script/singfunc.js?ver=30" defer></script>
+    <script src="script/canvas.js?ver=30" defer></script>
+    <script src="script/stats.js?ver=30" defer></script>
+    <script src="script/script.js?ver=30" defer></script>
   </head>
   <body id="body">
     <audio src="https://cdn.glitch.com/03a4b67b-6f18-4f6d-8d37-50a18fb615c8%2FGoing%20Down%20by%20Jake%20Chudnow%20%5BHD%5D.mp3?v=1581538237884" id="music"></audio>
@@ -174,9 +174,10 @@ Only to find the exact same climb once more.</p>-->
       <text id="ordinalPointsDisplay">You have 100 Ordinal Points</text><text class="invisible">____</text><button onclick="infinity(1)" id="infinityButton2" class="infinityButton">Reach 10240 to Ma</button>
       <p></p>
       <button onclick="subTab(1)" class="infinityButton subtab">Upgrades</button>
-      <button onclick="subTab(2)" class="infinityButton subtab" style="display: none;">Factors</button>
-      <button onclick="subTab(3)" class="infinityButton subtab" id="dynamicFactorButton">Extra Factors</button>
-      <button onclick="subTab(4)" class="darkButton subtab" id="darkUpButton">Dark Upgrades</button>
+      <button onclick="subTab(2)" class="infinityButton subtab" id="autoButton" style="display: none;">Autobuyers</button>
+      <button onclick="subTab(4)" class="infinityButton subtab" id="challengeButton" style="display: none;">Challenges</button>
+      <button onclick="subTab(4)" class="infinityButton subtab" id="darkUpButton" style="display: none;">asdf</button>
+      <button onclick="subTab(3)" class="infinityButton subtab" id="dynamicFactorButton" style="display: none;">Extra Factors</button>
       <p></p>
       <div id="subTab1" display="none">
         <div id="infUpgrades">
@@ -205,16 +206,52 @@ Only to find the exact same climb once more.</p>-->
             <button onclick="infUpgrade(5)" class="infCost infinityButton">20 OP</button>
           </div>
           <div id="infUpgrade6" class="infUpgrade">
-            <span class="infDesc">Start with 5 Incrementer 2</span>
+            <span class="infDesc">Start with 9 Incrementer 2</span>
             <button onclick="infUpgrade(6)" class="infCost infinityButton">90 OP</button>
           </div>
           <div id="infUpgrade7" class="infUpgrade">
-            <span class="infDesc">Start with 3 Incrementer 3</span>
+            <span class="infDesc">Start with 8 Incrementer 3</span>
             <button onclick="infUpgrade(7)" class="infCost infinityButton">250 OP</button>
           </div>
           <div id="infUpgrade8" class="infUpgrade">
-            <span class="infDesc">Start with 2 Incrementer 4</span>
+            <span class="infDesc">Start with 7 Incrementer 4</span>
             <button onclick="infUpgrade(8)" class="infCost infinityButton">400 OP</button>
+          </div>
+          <div id="infUpgrade9" class="infUpgrade">
+            <span class="infDesc">Start with 6 Incrementer 5</span>
+            <button onclick="infUpgrade(9)" class="infCost infinityButton">800 OP</button>
+          </div>
+          <div id="infUpgrade10" class="infUpgrade">
+            <span class="infDesc">Start with 5 Incrementer 6</span>
+            <button onclick="infUpgrade(10)" class="infCost infinityButton">1200 OP</button>
+          </div>
+          <div id="infUpgrade11" class="infUpgrade">
+            <span class="infDesc">Start with 4 Incrementer 7</span>
+            <button onclick="infUpgrade(11)" class="infCost infinityButton">3000 OP</button>
+          </div>
+          <div id="infUpgrade12" class="infUpgrade">
+            <span class="infDesc">Start with 3 Incrementer 8</span>
+            <button onclick="infUpgrade(12)" class="infCost infinityButton">10000 OP</button>
+          </div>
+          <div id="infUpgrade13" class="infUpgrade">
+            <span class="infDesc">Start with 2 Incrementer 9</span>
+            <button onclick="infUpgrade(13)" class="infCost infinityButton">40000 OP</button>
+          </div>
+          <div id="infUpgrade14" class="infUpgrade">
+            <span class="infDesc">Start with 1 Incrementer 10</span>
+            <button onclick="infUpgrade(14)" class="infCost infinityButton">200000 OP</button>
+          </div>
+          <div id="infUpgrade15" class="infUpgrade">
+            <span class="infDesc">Make Incrementer 1 powerful based on Time spent on this markup</span>
+            <button onclick="infUpgrade(15)" class="infCost infinityButton">10000 OP</button>
+          </div>
+          <div id="infUpgrade16" class="infUpgrade">
+            <span class="infDesc">Make Incrementer 2 powerful based on Markup count</span>
+            <button onclick="infUpgrade(16)" class="infCost infinityButton">40000 OP</button>
+          </div>
+          <div id="infUpgrade17" class="infUpgrade">
+            <span class="infDesc">Make Incrementer 3 powerful based on Ordinal</span>
+            <button onclick="infUpgrade(17)" class="infCost infinityButton">160000 OP</button>
           </div>
         </div>
         <div style="display: none;">

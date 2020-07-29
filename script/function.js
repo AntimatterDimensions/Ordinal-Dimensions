@@ -120,7 +120,8 @@ function getSumOfChallenges() {
 }
 
 function calcTotalOPGain() {
-  if (
+  return calcOrdPoints(game.ord, game.base, game.over);
+  /* if (
     calcOrdPoints(game.ord, game.base, game.over) >= 9e257 &&
     calcOrdPoints(game.ord, game.base, game.over) <= 1.1e258
   )
@@ -130,7 +131,7 @@ function calcTotalOPGain() {
     (calcOrdPoints(game.ord, game.base, game.over) >= 10 ** 265
       ? 1
       : calcOPonInfMult())
-  );
+  ); */
 }
 
 function calcOPonInfMult() {
