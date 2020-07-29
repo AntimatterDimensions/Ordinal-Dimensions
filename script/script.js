@@ -103,7 +103,8 @@ const aupCost = [
 const autoIncrCostBase = [1e1, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e14, 1e18, 1e25];
 const infUpgradeCost = [
     1, 10, 75, 200, 500, 20, 90, 250, 400, 800,
-    1200, 3000, 1e4, 4e4, 2e5, 1e4, 4e4, 1.6e5
+    1200, 3000, 1e4, 4e4, 2e5, 1e4, 4e4, 1.6e5, 6.4e5, 1.28e6,
+    9.99e99, 9.99e99, 9.99e99, 9.99e99, 9.99e99, 1e6, 9.99e99
  ];
 var multiThis;
 let AF = 0;
@@ -167,9 +168,9 @@ function randerAutoIncr() {
 }
 
 function randerInfUpgrade() {
-  for (var i = 0; i < 18; i++) {
+  for (var i = 0; i < 27; i++) {
     get("infUpgrade" + i).style.display = (game.infUpgradeHave[i] == 1) ? 'none' : 'display';
-  } 
+  }
 }
 function infUpgrade(num) {
   if (EN.gte(game.OP, infUpgradeCost[num])) {
@@ -272,7 +273,13 @@ function loop(unadjusted, off = 0) {
       multiThis = EN.mul(multiThis, Math.sqrt(Math.sqrt(game.markCount))+1);
     }
     if (i == 2 && game.infUpgradeHave[17] == 1) {
-      multiThis = EN.mul(multiThis, EN.pow(EN.logBase(game.ord, 1000), 0.25)+1);
+      multiThis = EN.mul(multiThis, EN.pow(EN.logBase((game.ord+1), 1000), 0.25)+1);
+    }
+    if (i == 3 && game.infUpgradeHave[18] == 1) {
+      multiThis = EN.mul(multiThis, EN.pow(game.autoIncrHave[9], 0.25)+1);
+    }
+    if (i == 4 && game.infUpgradeHave[19] == 1) {
+      multiThis = EN.mul(multiThis, EN.pow(EN.logBase(game.OP, 1000), 0.5)+1);
     }
     if (i != 0) {
       game.autoIncrHave[i-1] = EN(EN.add(game.autoIncrHave[i-1], EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))))));

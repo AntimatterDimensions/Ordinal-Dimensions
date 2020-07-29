@@ -3,9 +3,7 @@
 function infinity(manmade = 0) {
   if (game.canInf) {
     game.OP = EN.add(game.OP, calcTotalOPGain());
-    setTimeout(function () {
-      game.ord = EN(0);
-    }, 0);
+    game.ord = EN(0);
     game.over = 0;
     document.getElementById("infinityTabButton").style.display = "inline-block";
     game.infUnlock = 1;
