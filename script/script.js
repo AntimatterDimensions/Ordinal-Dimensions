@@ -219,7 +219,6 @@ const calculate = window.setInterval(() => {
 
 function loop(unadjusted, off = 0) {
   let ms=unadjusted
-  ms = ms*1000;
   if (game.chal8==1&&game.decrementy<10) {
     ms=50
   }
