@@ -142,7 +142,7 @@ function buyAutoIncr(num) {
     for (var i = 9; i > -1; i--) {
       buyAutoIncrMax(i);
     }
-  } else if (EN.gt(game.ord, game.autoIncrCost[num])) {
+  } else if (EN.gte(game.ord, game.autoIncrCost[num])) {
     game.ord = EN(EN.sub(game.ord, game.autoIncrCost[num]));
     game.autoIncrHave[num] = EN(EN.add(game.autoIncrHave[num], 1));
     game.autoIncrBought[num] = EN(EN.add(game.autoIncrBought[num], 1));
@@ -152,7 +152,7 @@ function buyAutoIncr(num) {
   randerAutoIncr();
 }
 function buyAutoIncrMax(num) {
-  while (EN.gt(game.ord, game.autoIncrCost[num])) {
+  while (EN.gte(game.ord, game.autoIncrCost[num])) {
     game.ord = EN(EN.sub(game.ord, game.autoIncrCost[num]));
     game.autoIncrHave[num] = EN(EN.add(game.autoIncrHave[num], 1));
     game.autoIncrBought[num] = EN(EN.add(game.autoIncrBought[num], 1));
