@@ -169,12 +169,42 @@ function randerAutoIncr() {
 function randerInfUpgrade() {
   for (var i = 0; i < 18; i++) {
     get("infUpgrade" + i).style.display = (game.infUpgradeHave[i] == 1) ? 'none' : 'display';
-  }
+  } 
 }
 function infUpgrade(num) {
   if (EN.gte(game.OP, infUpgradeCost[num])) {
     game.infUpgradeHave[num] = 1;
     game.OP = EN.sub(game.OP, infUpgradeCost[num]);
+    if (num == 5) {
+      game.autoIncrHave[0] = EN.add(game.autoIncrHave[0], 10);
+    }
+    if (num == 6) {
+      game.autoIncrHave[1] = EN.add(game.autoIncrHave[1], 9);
+    }
+    if (num == 7) {
+      game.autoIncrHave[2] = EN.add(game.autoIncrHave[2], 8);
+    }
+    if (num == 8) {
+      game.autoIncrHave[3] = EN.add(game.autoIncrHave[3], 7);
+    }
+    if (num == 9) {
+      game.autoIncrHave[4] = EN.add(game.autoIncrHave[4], 6);
+    }
+    if (num == 10) {
+      game.autoIncrHave[5] = EN.add(game.autoIncrHave[5], 5);
+    }
+    if (num == 11) {
+      game.autoIncrHave[6] = EN.add(game.autoIncrHave[6], 4);
+    }
+    if (num == 12) {
+      game.autoIncrHave[7] = EN.add(game.autoIncrHave[7], 3);
+    }
+    if (num == 13) {
+      game.autoIncrHave[8] = EN.add(game.autoIncrHave[8], 3);
+    }
+    if (num == 14) {
+      game.autoIncrHave[9] = EN.add(game.autoIncrHave[9], 2);
+    }
     randerInfUpgrade();
   }
 }

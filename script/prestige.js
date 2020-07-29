@@ -22,34 +22,34 @@ function infinity(manmade = 0) {
       game.autoIncrCost[i] = autoIncrCostBase[i];
     }
     if (game.infUpgradeHave[5] == 1) {
-      game.autoIncrHave[0] = EN(10);
+      game.autoIncrHave[0] = EN.add(game.autoIncrHave[0], 10);
     }
     if (game.infUpgradeHave[6] == 1) {
-      game.autoIncrHave[1] = EN(9);
+      game.autoIncrHave[1] = EN.add(game.autoIncrHave[1], 9);
     }
     if (game.infUpgradeHave[7] == 1) {
-      game.autoIncrHave[2] = EN(8);
+      game.autoIncrHave[2] = EN.add(game.autoIncrHave[2], 8);
     }
     if (game.infUpgradeHave[8] == 1) {
-      game.autoIncrHave[3] = EN(7);
+      game.autoIncrHave[3] = EN.add(game.autoIncrHave[3], 7);
     }
     if (game.infUpgradeHave[9] == 1) {
-      game.autoIncrHave[4] = EN(6);
+      game.autoIncrHave[4] = EN.add(game.autoIncrHave[4], 6);
     }
     if (game.infUpgradeHave[10] == 1) {
-      game.autoIncrHave[5] = EN(5);
+      game.autoIncrHave[5] = EN.add(game.autoIncrHave[5], 5);
     }
     if (game.infUpgradeHave[11] == 1) {
-      game.autoIncrHave[6] = EN(4);
+      game.autoIncrHave[6] = EN.add(game.autoIncrHave[6], 4);
     }
     if (game.infUpgradeHave[12] == 1) {
-      game.autoIncrHave[7] = EN(3);
+      game.autoIncrHave[7] = EN.add(game.autoIncrHave[7], 3);
     }
     if (game.infUpgradeHave[13] == 1) {
-      game.autoIncrHave[8] = EN(2);
+      game.autoIncrHave[8] = EN.add(game.autoIncrHave[8], 2);
     }
     if (game.infUpgradeHave[14] == 1) {
-      game.autoIncrHave[9] = EN(1);
+      game.autoIncrHave[9] = EN.add(game.autoIncrHave[9], 1);
     }
   }
   loop(0);
