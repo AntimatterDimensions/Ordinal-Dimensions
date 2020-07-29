@@ -219,6 +219,7 @@ const calculate = window.setInterval(() => {
 
 function loop(unadjusted, off = 0) {
   let ms=unadjusted
+  ms = ms*1000;
   if (game.chal8==1&&game.decrementy<10) {
     ms=50
   }
@@ -292,11 +293,11 @@ function loop(unadjusted, off = 0) {
     calcRefund();
   game.boosters=Math.round(game.boosters)
   if (game.boosters < -0.5) refund()
-  if (game.leastBoost <= 1e10 && game.OP < calcTotalOPGain()) {
+  /* if (game.leastBoost <= 1e10 && game.OP < calcTotalOPGain()) {
     game.OP +=
       calcTotalOPGain() >= 1e270 ? Infinity : (calcTotalOPGain() / 100000) * ms;
     if (game.OP > calcTotalOPGain()) game.OP = calcTotalOPGain();
-  }
+  } */
   if (getSingLevel()>=game.mostSing) {
     game.mostSing=getSingLevel()
   }
@@ -406,7 +407,7 @@ function loop(unadjusted, off = 0) {
     // game.ord = EN(game.base**(game.base * 3+(game.base==5&&game.sfBought.includes(61)?game.base:0)));
   changeDynamic(ms);
   if (game.dynamic < 0) game.dynamic = 0;
-  if (ms > 0) {
+  /* if (ms > 0) {
     if (
       (game.upgrades.includes(2) || game.leastBoost <= 1.5) &&
       game.autoOn.max === 1
@@ -463,12 +464,12 @@ function loop(unadjusted, off = 0) {
       game.bAutoLoop.inf %= 1000 / buptotalMute;
       increaseOrdTier2(bupCom);
     }
-  }
-  if (game.upgrades.includes(7) || game.leastBoost <= 15) {
+  } */
+  /* if (game.upgrades.includes(7) || game.leastBoost <= 15) {
     partOP += (ms / 1000) * calcOPPS();
     game.OP += Math.floor(partOP);
     partOP %= 1;
-  }
+  } */
   // if (game.OP > BHO * getSingLevel()) game.OP = BHO * getSingLevel();
   // if (game.ord > BHO * getSingLevel()) game.ord = BHO * getSingLevel();
   if (game.upgrades.includes(8)) {
@@ -1482,7 +1483,7 @@ function updateFactors() {
   }
 }
 
-function buysucc(rend = 0) {
+/* function buysucc(rend = 0) {
   if (game.challenge == 1 || game.challenge == 7) {
     if (game.OP >= 1000000 && game.succAuto == 0) {
       game.OP -= 1000000;
@@ -1497,10 +1498,10 @@ function buysucc(rend = 0) {
     }
   }
   if (rend == 1) render();
-}
+} */
 
 function buylim(rend = 0) {
-  if (game.challenge == 1 || game.challenge == 7) {
+  /* if (game.challenge == 1 || game.challenge == 7) {
     if (game.OP >= 1000000 && game.limAuto == 0) {
       game.OP -= 1000000;
       game.limAuto += 1;
@@ -1513,11 +1514,11 @@ function buylim(rend = 0) {
       game.limAuto = game.OP;
     }
   }
-  if (rend == 1) render();
+  if (rend == 1) render(); */
 }
 
 function maxall() {
-  let bulk = 0;
+  /* let bulk = 0;
   if (game.challenge == 1 || game.challenge == 7) {
     buysucc();
     buylim();
@@ -1539,7 +1540,7 @@ function maxall() {
       game.succAuto = game.OP;
       game.limAuto = game.OP;
     }
-  }
+  } */
 }
 
 // "<span style='color:" + HSL(tempvar * 8) + ";text-shadow: 6px 6px 6px " + HSL(tempvar * 8) + ", 1px 0 1px black, -1px 0 1px black, 0 1px 1px black, 0 -1px 1px black;'>" + tempvar4 + "</span>"
@@ -1766,7 +1767,7 @@ function revertToPreBooster() {
   game.ord = EN(0);
   game.over = 0;
   game.canInf = false;
-  game.OP = 10 ** 270 * 5;
+  // game.OP = 10 ** 270 * 5;
   game.succAuto = 0;
   game.limAuto = 0;
   game.autoLoop = { succ: 0, lim: 0 };
