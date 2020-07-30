@@ -273,10 +273,10 @@ function loop(unadjusted, off = 0) {
       multiThis = EN.mul(multiThis, Math.sqrt(Math.sqrt(game.markCount))+1);
     }
     if (i == 2 && game.infUpgradeHave[17] == 1) {
-      multiThis = EN.mul(multiThis, EN.pow(EN.logBase((EN.add(game.ord, 1)), 1000), 0.25)+1);
+      multiThis = EN.mul(multiThis, EN.pow(EN.logBase((EN.add(game.ord, 1)), 1000), 0.5)+1);
     }
     if (i == 3 && game.infUpgradeHave[18] == 1) {
-      multiThis = EN.mul(multiThis, EN.pow(game.autoIncrHave[9], 0.25)+1);
+      multiThis = EN.mul(multiThis, EN.pow(game.autoIncrHave[9], 0.5)+1);
     }
     if (i == 4 && game.infUpgradeHave[19] == 1) {
       multiThis = EN.mul(multiThis, EN.pow(EN.logBase((EN.add(game.OP, 1)), 1000), 0.5)+1);

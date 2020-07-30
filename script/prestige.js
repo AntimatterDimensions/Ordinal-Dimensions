@@ -15,8 +15,8 @@ function infinity(manmade = 0) {
     game.markCount++;
     game.infTime = 0;
     for (var i = 0; i < 10; i++) {
-      game.autoIncrHave[i] = 0;
-      game.autoIncrBought[i] = 0;
+      game.autoIncrHave[i] = EN(0);
+      game.autoIncrBought[i] = EN(0);
       game.autoIncrCost[i] = autoIncrCostBase[i];
     }
     if (game.infUpgradeHave[5] == 1) {
