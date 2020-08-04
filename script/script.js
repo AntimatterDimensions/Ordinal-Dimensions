@@ -151,7 +151,6 @@ function buyMaxIncr() {
     buyBulkIncr(i, 1e10);
   }
 }
-
 function buyBulkIncr(num, bulk) {
   var thisBulk = EN(0);
   var logOrdOver = EN(0);
@@ -169,6 +168,7 @@ function buyBulkIncr(num, bulk) {
         }
         game.ord = EN.sub(game.ord, EN.pow(EN.pow(10, num+1), EN.add(game.autoIncrBought[num], thisBulk)));
         game.autoIncrBought[num] = EN.add(game.autoIncrBought[num], thisBulk);
+        game.autoIncrHave[num] = EN.add(game.autoIncrHave[num], thisBulk);
         game.autoIncrCost[num] = EN.mul(autoIncrCostBase[num], EN.pow(EN.pow(10, num+1), game.autoIncrBought[num]));
         bulk = EN.sub(bulk, thisBulk);
       }
@@ -184,6 +184,7 @@ function buyBulkIncr(num, bulk) {
         }
         game.ord = EN.sub(game.ord, EN.pow(EN.pow(10, num+1), EN.add(EN.add(game.autoIncrBought[num], thisBulk), EN.div(EN.mul(EN.sub(game.autoIncrBought[num], 298), EN.sub(game.autoIncrBought[num], 297)), 2))));
         game.autoIncrBought[num] = EN.add(game.autoIncrBought[num], thisBulk);
+        game.autoIncrHave[num] = EN.add(game.autoIncrHave[num], thisBulk);
         game.autoIncrCost[num] = EN.mul(autoIncrCostBase[num], EN.pow(EN.pow(10, num+1), EN.add(EN.div(EN.mul(EN.sub(game.autoIncrBought[num], 298), EN.sub(game.autoIncrBought[num], 297)), 2), 298)));
       }
     }
