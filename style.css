@@ -99,6 +99,11 @@
   color: #000000;
 }
 
+.autobuyerBox {
+  width: 15vw; height: 40vh;
+  background-color: #eee;
+}
+
 #autobuyersLayer > div {
   margin-top: 1%;
   width: 100%;

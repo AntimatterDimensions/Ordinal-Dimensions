@@ -324,7 +324,6 @@ function loop(unadjusted, off = 0) {
     } else {
       game.ord = EN(EN.add(game.ord, EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))))));
     }
-    game.autoIncrCost[i] = EN(EN.mul(autoIncrCostBase[i], EN.pow(10**(i+1), game.autoIncrBought[i])));
     get("autoHave" + i).innerHTML = beautify(game.autoIncrHave[i]) + '(x' + beautify(EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))) + ')';
   }
   game.infTime += ms/1000;
