@@ -134,30 +134,54 @@ load();
 render();
 randerAutoIncr();
 setInterval( function () {
-  randerAutoIncr();
+  randerEtc();
 }, 5000);
 randerInfUpgrade();
 
-function buyAutoIncr(num) {
-  if (num == 10) {
-    for (var i = 9; i > -1; i--) {
-      buyAutoIncrMax(i);
-    }
-  } else if (EN.gte(game.ord, game.autoIncrCost[num])) {
-    game.ord = EN(EN.sub(game.ord, game.autoIncrCost[num]));
-    game.autoIncrHave[num] = EN(EN.add(game.autoIncrHave[num], 1));
-    game.autoIncrBought[num] = EN(EN.add(game.autoIncrBought[num], 1));
-    game.autoIncrCost[num] = EN(EN.mul(autoIncrCostBase[num], EN.pow(10**(num+1), game.autoIncrBought[num])));
-    randerAutoIncr();
-  }
+function randerEtc() {
   randerAutoIncr();
+  randerInfUpgrade();
 }
-function buyAutoIncrMax(num) {
-  while (EN.gte(game.ord, game.autoIncrCost[num])) {
-    game.ord = EN(EN.sub(game.ord, game.autoIncrCost[num]));
-    game.autoIncrHave[num] = EN(EN.add(game.autoIncrHave[num], 1));
-    game.autoIncrBought[num] = EN(EN.add(game.autoIncrBought[num], 1));
-    game.autoIncrCost[num] = EN(EN.mul(autoIncrCostBase[num], EN.pow(10**(num+1), game.autoIncrBought[num])));
+
+function buyMaxIncr() {
+  for (var i = 9; i > -1; i--) {
+    buyBulkIncr(i, 1e10);
+  }
+}
+
+function buyBulkIncr(num, bulk) {
+  var thisBulk = EN(0);
+  var logOrdOver = EN(0);
+  if (!EN.eq(game.ord, 0)) {
+    var logOrd = EN.logBase(game.ord, 10);
+    if (EN.lt(game.autoIncrBought[num], 299)) {
+      thisBulk = EN.add(EN.sub(EN.floor(EN.div(EN.sub(logOrd, EN.logBase(autoIncrCostBase[num], 10)), num+1)), game.autoIncrBought[num]), 1);
+      if (EN.gte(thisBulk, 1)) {
+        if (EN.gt(EN.add(thisBulk, game.autoIncrBought[num]), 299)) {
+          thisBulk = EN.sub(299, game.autoIncrBought[num]);
+        }
+        if (EN.gt(thisBulk, bulk)) {
+          thisBulk = EN(bulk);
+        }
+        game.ord = EN.sub(game.ord, EN.pow(EN.pow(10, num+1), EN.add(game.autoIncrBought[num], thisBulk)));
+        game.autoIncrBought[num] = EN.add(game.autoIncrBought[num], thisBulk);
+        game.autoIncrCost[num] = EN.mul(autoIncrCostBase[num], EN.pow(EN.pow(10, num+1), game.autoIncrBought[num]));
+        bulk = EN.sub(bulk, thisBulk);
+      }
+    }
+    if (EN.gte(game.autoIncrBought[num], 299) && EN.gte(bulk, 1)) {
+      thisBulk = EN(0);
+      logOrdOver = EN.sub(logOrd, EN.add(EN.logBase(autoIncrCostBase[num], 10), EN.mul(299, (num+1))));
+      thisBulk = EN.sub(EN.floor(EN.div(EN.sub(EN.pow(EN.add(EN.mul(logOrdOver, 8), 1), 0.5), -1), 2)), EN.sub(game.autoIncrBought[num], 298));
+      if (EN.gte(thisBulk, 1)) {
+        if (EN.gt(thisBulk, bulk)) {
+          thisBulk = EN(bulk);
+        }
+        game.ord = EN.sub(game.ord, EN.pow(EN.pow(10, num+1), EN.add(EN.add(game.autoIncrBought[num], thisBulk), EN.div(EN.mul(EN.sub(game.autoIncrBought[num], 298), EN.sub(game.autoIncrBought[num], 297)), 2))));
+        game.autoIncrBought[num] = EN.add(game.autoIncrBought[num], thisBulk);
+        game.autoIncrCost[num] = EN.mul(autoIncrCostBase[num], EN.pow(EN.pow(10, num+1), EN.add(EN.div(EN.mul(EN.sub(game.autoIncrBought[num], 298), EN.sub(game.autoIncrBought[num], 297)), 2), 298)));
+      }
+    }
     randerAutoIncr();
   }
 }
@@ -169,8 +193,13 @@ function randerAutoIncr() {
 
 function randerInfUpgrade() {
   for (var i = 0; i < 27; i++) {
-    get("infUpgrade" + i).style.display = (game.infUpgradeHave[i] == 1) ? 'none' : 'display';
+    if (game.infUpgradeHave[i] == 1) {
+      get("infUpgrade" + i).style.display = 'none';
+    } else {
+      get("infUpgrade" + i).style.display = 'block';
+    }
   }
+  randerInfTabs();
 }
 function infUpgrade(num) {
   if (EN.gte(game.OP, infUpgradeCost[num])) {
@@ -207,6 +236,15 @@ function infUpgrade(num) {
       game.autoIncrHave[9] = EN.add(game.autoIncrHave[9], 2);
     }
     randerInfUpgrade();
+  }
+}
+function randerInfTabs() {
+  if (game.infUpgradeHave[25] == 1) {
+    get('autoButton').style.display = 'inline';
+    get('challengeButton').style.display = 'inline';
+  } else {
+    get('autoButton').style.display = 'none';
+    get('challengeButton').style.display = 'none';
   }
 }
 
