@@ -172,7 +172,8 @@ function buyBulkIncr(num, bulk) {
     if (EN.gte(game.autoIncrBought[num], 299) && EN.gte(bulk, 1)) {
       thisBulk = EN(0);
       logOrdOver = EN.sub(logOrd, EN.add(EN.logBase(autoIncrCostBase[num], 10), EN.mul(299, (num+1))));
-      thisBulk = EN.sub(EN.floor(EN.div(EN.sub(EN.pow(EN.add(EN.mul(logOrdOver, 8), 1), 0.5), -1), 2)), EN.sub(game.autoIncrBought[num], 298));
+      thisBulk = EN.sub(EN.floor(EN.div(EN.sub(EN.pow(EN.add(EN.mul(logOrdOver, 8), 1), 0.5), -1), 2)), EN.sub(game.autoIncrBought[num], 297));
+      console.log(beautify(EN.pow(EN.pow(10, num+1), EN.add(EN.add(game.autoIncrBought[num], thisBulk), EN.div(EN.mul(EN.sub(game.autoIncrBought[num], 298), EN.sub(game.autoIncrBought[num], 297)), 2)))));
       if (EN.gte(thisBulk, 1)) {
         if (EN.gt(thisBulk, bulk)) {
           thisBulk = EN(bulk);
