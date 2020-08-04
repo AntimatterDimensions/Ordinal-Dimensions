@@ -101,6 +101,9 @@ const aupCost = [
   2 ** 512
 ];
 const autoIncrCostBase = [1e1, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e14, 1e18, 1e25];
+var blockedIncr = 2;
+const autobuyerTicks = [25, 35, 45, 55, 65];
+const autobuyerBaseTicks = [25, 35, 45, 55, 65];
 const infUpgradeCost = [
     1, 10, 75, 200, 500, 20, 90, 250, 400, 800,
     1200, 3000, 1e4, 4e4, 2e5, 1e4, 4e4, 1.6e5, 6.4e5, 1.28e6,
@@ -132,15 +135,15 @@ Tab(1);
 reset();
 load();
 render();
-randerAutoIncr();
 setInterval( function () {
   randerEtc();
 }, 5000);
-randerInfUpgrade();
+randerEtc();
 
 function randerEtc() {
   randerAutoIncr();
   randerInfUpgrade();
+  randerAutobuyer();
 }
 
 function buyMaxIncr() {
@@ -152,6 +155,7 @@ function buyMaxIncr() {
 function buyBulkIncr(num, bulk) {
   var thisBulk = EN(0);
   var logOrdOver = EN(0);
+  var bulk = EN(bulk);
   if (!EN.eq(game.ord, 0)) {
     var logOrd = EN.logBase(game.ord, 10);
     if (EN.lt(game.autoIncrBought[num], 299)) {
@@ -249,6 +253,74 @@ function randerInfTabs() {
   }
 }
 
+function autobuyerLoop(t) {
+  var autoBulk = 0;
+  var chkbox = document.getElementsByName('autoCheck');
+  for (var i = 0; i < 5; i++) {
+    if ((game.autobuyerHave[i] == 1 || (i == 0 && game.infUpgradeHave[25] == 1)) && chkbox[i].checked) {
+      var thisAutoTick = autobuyerBaseTicks[i]*0.4**game.autobuyerBought[i];
+      if (thisAutoTick < autobuyerTicks[i]) {
+        autobuyerTicks[i] = thisAutoTick;
+      }
+      autobuyerTicks[i] -= t/1000;
+      if (autobuyerTicks[i] < 0) {
+        autoBulk = Math.floor(Math.abs(autobuyerTicks[i])/thisAutoTick)+1;
+        switch (i) {
+          case 0:
+            buyBulkIncr(0, autoBulk);
+            buyBulkIncr(1, autoBulk);
+            break;
+          case 1:
+            buyBulkIncr(2, autoBulk);
+            buyBulkIncr(3, autoBulk);
+            break;
+          case 2:
+            buyBulkIncr(4, autoBulk);
+            buyBulkIncr(5, autoBulk);
+            break;
+          case 3:
+            buyBulkIncr(6, autoBulk);
+            buyBulkIncr(7, autoBulk);
+            break;
+          case 4:
+            buyBulkIncr(8, autoBulk);
+            buyBulkIncr(9, autoBulk);
+            break;
+        }
+        autobuyerTicks[i] = thisAutoTick;
+      }
+    }
+  }
+}
+function randerAutobuyer() {
+  for (var i = 0; i < 5; i++) {
+    if (game.autobuyerHave[i] == 1 || i == 0) {
+      get("auto" + i).style.display = 'block';
+    } else {
+      get("auto" + i).style.display = 'none';
+    }
+    get('auto' + i + 'buy').innerHTML = '60% smaller interval<br>' + beautify(EN.mul(1e7, EN.pow(10, game.autobuyerBought[i]))) + ' OP'
+    var thisAutoTick = autobuyerBaseTicks[i]*0.4**game.autobuyerBought[i];
+    get('auto' + i + 'inter').innerHTML = 'Current interval: ' + thisAutoTick.toFixed(3) + ' secondss'
+  }
+}
+function buyAutobuyer(num) {
+  if (EN.gte(game.OP, EN.mul(1e7, EN.pow(10, game.autobuyerBought[num])))) {
+    game.OP = EN.sub(game.OP, EN.mul(1e7, EN.pow(10, game.autobuyerBought[num])));
+    game.autobuyerBought[num]++;
+    randerAutobuyer();
+  }
+}
+
+function markupChallengeCheck() {
+  if (game.markupChallengeEntered) {
+
+  }
+}
+function enterMarkupChallenge(num) {
+
+}
+
 function increment(manmade=0) {
   if (manmade==0 || game.manualClicksLeft >= 0.5 || game.chal8 == 0) {
     if (manmade==1 && game.chal8 == 1) game.manualClicksLeft -= 1
@@ -292,6 +364,7 @@ function loop(unadjusted, off = 0) {
   if (game.chal8==1&&game.decrementy<10) {
     ms=50
   }
+  autobuyerLoop(ms);
   for (var i = 9; i > -1; i--) {
     multiThis = EN(1);
     if ((i == 0 || i == 9) && game.infUpgradeHave[0] == 1) {
@@ -306,19 +379,19 @@ function loop(unadjusted, off = 0) {
       multiThis = EN.mul(multiThis, 2);
     }
     if (i == 0 && game.infUpgradeHave[15] == 1) {
-      multiThis = EN.mul(multiThis, Math.sqrt(game.infTime/60)+1);
+      multiThis = EN.mul(multiThis, Math.sqrt(game.infTime/30)*5+1);
     }
     if (i == 1 && game.infUpgradeHave[16] == 1) {
-      multiThis = EN.mul(multiThis, Math.sqrt(Math.sqrt(game.markCount))+1);
+      multiThis = EN.mul(multiThis, Math.sqrt(Math.sqrt(game.markCount))*2+1);
     }
     if (i == 2 && game.infUpgradeHave[17] == 1) {
-      multiThis = EN.mul(multiThis, EN.pow(EN.logBase((EN.add(game.ord, 1)), 1000), 0.5)+1);
+      multiThis = EN.mul(multiThis, EN.pow(EN.logBase((EN.add(game.ord, 1)), 1000), 0.75)+1);
     }
     if (i == 3 && game.infUpgradeHave[18] == 1) {
-      multiThis = EN.mul(multiThis, EN.pow(game.autoIncrHave[9], 0.5)+1);
+      multiThis = EN.mul(multiThis, EN.pow(game.autoIncrHave[9], 0.75)+1);
     }
     if (i == 4 && game.infUpgradeHave[19] == 1) {
-      multiThis = EN.mul(multiThis, EN.pow(EN.logBase((EN.add(game.OP, 1)), 1000), 0.5)+1);
+      multiThis = EN.mul(multiThis, EN.pow(EN.logBase((EN.add(game.OP, 1)), 1000), 0.75)+1);
     }
     if (i != 0) {
       game.autoIncrHave[i-1] = EN(EN.add(game.autoIncrHave[i-1], EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))))));

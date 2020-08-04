@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Ordinal Dimensions u42</title>
+    <title>Ordinal Dimensions u43</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" href="https://cdn.glitch.com/310d7aca-4728-445f-9084-db26ceccd7b5%2FOrdinal%20Markup%20logo.png?v=1587927427273"/>
     <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="style/mobile.css?ver=42">
-    <link rel="stylesheet" href="style.css?ver=42">
-    <div id="theme"><link rel="stylesheet" href="style/dark.css?ver=42"></div>
+    <link rel="stylesheet" href="style/mobile.css?ver=43">
+    <link rel="stylesheet" href="style.css?ver=43">
+    <div id="theme"><link rel="stylesheet" href="style/dark.css?ver=43"></div>
     <!-- import the webpage's javascript file -->
-    <script src="script/ExpantaNum.js?ver=42" defer></script>
-    <script src="script/ordMarks.js?ver=42" defer></script>
-    <script src="script/saveload.js?ver=42" defer></script>
-    <script src="script/function.js?ver=42" defer></script>
-    <script src="script/color.js?ver=42" defer></script>
-    <script src="script/challenges.js?ver=42" defer></script>
-    <script src="script/hotkeys.js?ver=42" defer></script>
-    <script src="script/prestige.js?ver=42" defer></script>
-    <script src="script/singfunc.js?ver=42" defer></script>
-    <script src="script/canvas.js?ver=42" defer></script>
-    <script src="script/stats.js?ver=42" defer></script>
-    <script src="script/script.js?ver=42" defer></script>
+    <script src="script/ExpantaNum.js?ver=43" defer></script>
+    <script src="script/ordMarks.js?ver=43" defer></script>
+    <script src="script/saveload.js?ver=43" defer></script>
+    <script src="script/function.js?ver=43" defer></script>
+    <script src="script/color.js?ver=43" defer></script>
+    <script src="script/challenges.js?ver=43" defer></script>
+    <script src="script/hotkeys.js?ver=43" defer></script>
+    <script src="script/prestige.js?ver=43" defer></script>
+    <script src="script/singfunc.js?ver=43" defer></script>
+    <script src="script/canvas.js?ver=43" defer></script>
+    <script src="script/stats.js?ver=43" defer></script>
+    <script src="script/script.js?ver=43" defer></script>
   </head>
   <body id="body">
     <audio src="https://cdn.glitch.com/03a4b67b-6f18-4f6d-8d37-50a18fb615c8%2FGoing%20Down%20by%20Jake%20Chudnow%20%5BHD%5D.mp3?v=1581538237884" id="music"></audio>
@@ -271,19 +271,79 @@
         </div>
       </div>
       <div id="subTab2" class="long">
-        <div id="auto1" class="autobuyerBox" style="display: block">
+        <div id="auto0" class="autobuyerBox" style="display: none;">
           <div class="autoName">
             Auto Inrementer 1, 2
           </div>
-          <div class="autoUpgrade">
+          <button id="auto0buy" class="autoUpgrade infinityButton" onclick="buyAutobuyer(0)">
             60% smaller interval<br>
             1.00e7 OP
-          </div>
-          <div class="autoInterval">
+          </button>
+          <div id="auto0inter" class="autoInterval">
             Current interval: 25 seconds
           </div>
           <div class="autoActive">
-            <input type="checkbox" name="autoCheck" value="0" checked>
+            <input type="checkbox" name="autoCheck" value="0" checked> active
+          </div>
+        </div>
+        <div id="auto1" class="autobuyerBox" style="display: none;">
+          <div class="autoName">
+            Auto Inrementer 3, 4
+          </div>
+          <button id="auto1buy" class="autoUpgrade infinityButton" onclick="buyAutobuyer(1)">
+            60% smaller interval<br>
+            1.00e7 OP
+          </button>
+          <div id="auto1inter" class="autoInterval">
+            Current interval: 35 seconds
+          </div>
+          <div class="autoActive">
+            <input type="checkbox" name="autoCheck" value="1" checked> active
+          </div>
+        </div>
+        <div id="auto2" class="autobuyerBox" style="display: none;">
+          <div class="autoName">
+            Auto Inrementer 5, 6
+          </div>
+          <button id="auto2buy" class="autoUpgrade infinityButton" onclick="buyAutobuyer(2)">
+            60% smaller interval<br>
+            1.00e7 OP
+          </button>
+          <div id="auto2inter" class="autoInterval">
+            Current interval: 45 seconds
+          </div>
+          <div class="autoActive">
+            <input type="checkbox" name="autoCheck" value="2" checked> active
+          </div>
+        </div>
+        <div id="auto3" class="autobuyerBox" style="display: none;">
+          <div class="autoName">
+            Auto Inrementer 7, 8
+          </div>
+          <button id="auto3buy" class="autoUpgrade infinityButton" onclick="buyAutobuyer(3)">
+            60% smaller interval<br>
+            1.00e7 OP
+          </button>
+          <div id="auto3inter" class="autoInterval">
+            Current interval: 55 seconds
+          </div>
+          <div class="autoActive">
+            <input type="checkbox" name="autoCheck" value="3" checked> active
+          </div>
+        </div>
+        <div id="auto4" class="autobuyerBox" style="display: none;">
+          <div class="autoName">
+            Auto Inrementer 9, 10
+          </div>
+          <button id="auto4buy" class="autoUpgrade infinityButton" onclick="buyAutobuyer(4)">
+            60% smaller interval<br>
+            1.00e7 OP
+          </button>
+          <div id="auto4inter" class="autoInterval">
+            Current interval: 65 seconds
+          </div>
+          <div class="autoActive">
+            <input type="checkbox" name="autoCheck" value="4" checked> active
           </div>
         </div>
         <div style="display: none;">
@@ -334,6 +394,80 @@
         </div>
       </div>
       <div id="subTab4">
+        <table>
+          <tr>
+            <td><button id="markChallenge1" class="markChallenge infinityButton" onclick="enterMarkupChallenge(0)">
+              <div class="markChallName">
+                Challenge 1
+              </div>
+              <div class="markChallDesc">
+                There are only 8 Incrementers
+              </div>
+              <div class="markChallReward">
+                Reward: autobuyer 1, Incrementer 1~5 x2
+              </div>
+            </button></td>
+            <td><button id="markChallenge2" class="markChallenge infinityButton" onclick="enterMarkupChallenge(1)">
+              <div class="markChallName">
+                Challenge 2
+              </div>
+              <div class="markChallDesc">
+                C1 + Divide Incrementer 1 production by 100
+              </div>
+              <div class="markChallReward">
+                Reward: autobuyer 2, Incrementer 6~10 x2
+              </div>
+            </button></td>
+          </tr>
+          <tr>
+            <td><button id="markChallenge3" class="markChallenge infinityButton" onclick="enterMarkupChallenge(2)">
+              <div class="markChallName">
+                Challenge 3
+              </div>
+              <div class="markChallDesc">
+                C2 + Buying anything make your production 0x, recover after 2 mins
+              </div>
+              <div class="markChallReward">
+                Reward: autobuyer 3, OP gain buff
+              </div>
+            </button></td>
+            <td><button id="markChallenge4" class="markChallenge infinityButton" onclick="enterMarkupChallenge(3)">
+              <div class="markChallName">
+                Challenge 4
+              </div>
+              <div class="markChallDesc">
+                C3 + Buying a Incrementers erases all lower tier Incrementers
+              </div>
+              <div class="markChallReward">
+                Reward: autobuyer 4, OP gain x10
+              </div>
+            </button></td>
+          </tr>
+          <tr>
+            <td><button id="markChallenge3" class="markChallenge infinityButton" onclick="enterMarkupChallenge(4)">
+              <div class="markChallName">
+                Challenge 5
+              </div>
+              <div class="markChallDesc">
+                C4 + Buying anything make your production 0x, recover after 2 mins
+              </div>
+              <div class="markChallReward">
+                Reward: autobuyer 5, Incrementer 1~10 x1.5
+              </div>
+            </button></td>
+            <td><button id="markChallenge4" class="markChallenge infinityButton" onclick="enterMarkupChallenge(5)">
+              <div class="markChallName">
+                Challenge 6
+              </div>
+              <div class="markChallDesc">
+                C5 + There is Decrementy which divide production
+              </div>
+              <div class="markChallReward">
+                Reward: Base -1
+              </div>
+            </button></td>
+          </tr>
+        </table>
         <div style="display: none;">
           Your Decrementy is multiplying by <text id="decrementyRate"></text> per second
           <p>Unmultiplied Pending OP speeds up decrementy by x^0.2</p>

@@ -100,8 +100,41 @@
 }
 
 .autobuyerBox {
-  width: 15vw; height: 40vh;
+  margin-right: 1vw;
+  display: block; float: left;
+  width: 17vw; height: 20vh;
   background-color: #eee;
+  border: 4px solid #B67F33; border-radius: 2px;
+}
+.autobuyerBox > div {
+  margin-bottom: 5px;
+}
+.autoName {
+  width: 100%;
+  text-align: center;
+}
+.autoUpgrade {
+  margin: 0 0 0 5%;
+  width: 90%;
+}
+.autoInterval {
+  width: 100%;
+  text-align: center;
+}
+.autoActive {
+  width: 100%;
+  text-align: center;
+}
+
+.markChallenge {
+  height: 150px;
+  width: 300px;
+  font-size: 15px;
+  border-width: 3px;
+  border: 2px solid #B67F33; border-radius: 2px;
+}
+.markChallenge > div {
+  margin-bottom: 5px;
 }
 
 #autobuyersLayer > div {

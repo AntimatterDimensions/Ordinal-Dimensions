@@ -89,7 +89,11 @@ function reset() {
   autoIncrHave : {0: EN(0), 1: EN(0), 2: EN(0), 3: EN(0), 4: EN(0), 5: EN(0), 6: EN(0), 7: EN(0), 8: EN(0), 9: EN(0)},
   infUpgradeHave : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   infTime : 0,
-  markCount : 0
+  markCount : 0,
+  autobuyerHave : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  autobuyerBought : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  markupChallenge : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  markupChallengeEntered : 0
   };
   document.getElementById("infinityTabButton").style.display = "none";
   render();
