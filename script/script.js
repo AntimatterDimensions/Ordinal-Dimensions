@@ -157,6 +157,7 @@ function buyBulkIncr(num, bulk) {
   var bulk = EN(bulk);
   if (!EN.eq(game.ord, 0)) {
     var logOrd = EN.logBase(game.ord, 10);
+    // Incrementer past-300 level
     if (EN.lt(game.autoIncrBought[num], 299)) {
       thisBulk = EN.add(EN.sub(EN.floor(EN.div(EN.sub(logOrd, EN.logBase(autoIncrCostBase[num], 10)), num+1)), game.autoIncrBought[num]), 1);
       if (EN.gte(thisBulk, 1)) {
@@ -173,6 +174,7 @@ function buyBulkIncr(num, bulk) {
         bulk = EN.sub(bulk, thisBulk);
       }
     }
+    // Incrementer post-300 level
     if (EN.gte(game.autoIncrBought[num], 299) && EN.gte(bulk, 1)) {
       thisBulk = EN(0);
       logOrdOver = EN.sub(logOrd, EN.add(EN.logBase(autoIncrCostBase[num], 10), EN.mul(299, (num+1))));
