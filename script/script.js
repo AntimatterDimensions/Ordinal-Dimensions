@@ -308,24 +308,24 @@ function autobuyerLoop(t) {
         autoBulk = Math.floor(Math.abs(autobuyerTicks[i])/thisAutoTick)+1;
         switch (i) {
           case 0:
-            buyBulkIncr(0, autoBulk);
             buyBulkIncr(1, autoBulk);
+            buyBulkIncr(0, autoBulk);
             break;
           case 1:
-            buyBulkIncr(2, autoBulk);
             buyBulkIncr(3, autoBulk);
+            buyBulkIncr(2, autoBulk);
             break;
           case 2:
-            buyBulkIncr(4, autoBulk);
             buyBulkIncr(5, autoBulk);
+            buyBulkIncr(4, autoBulk);
             break;
           case 3:
-            buyBulkIncr(6, autoBulk);
             buyBulkIncr(7, autoBulk);
+            buyBulkIncr(6, autoBulk);
             break;
           case 4:
-            buyBulkIncr(8, autoBulk);
             buyBulkIncr(9, autoBulk);
+            buyBulkIncr(8, autoBulk);
             break;
         }
         autobuyerTicks[i] = thisAutoTick;
