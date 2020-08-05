@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Ordinal Dimensions u45</title>
+    <title>Ordinal Dimensions u46</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" href="https://cdn.glitch.com/310d7aca-4728-445f-9084-db26ceccd7b5%2FOrdinal%20Markup%20logo.png?v=1587927427273"/>
     <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="style/mobile.css?ver=45">
-    <link rel="stylesheet" href="style.css?ver=45">
-    <div id="theme"><link rel="stylesheet" href="style/dark.css?ver=45"></div>
+    <link rel="stylesheet" href="style/mobile.css?ver=46">
+    <link rel="stylesheet" href="style.css?ver=46">
+    <div id="theme"><link rel="stylesheet" href="style/dark.css?ver=46"></div>
     <!-- import the webpage's javascript file -->
-    <script src="script/ExpantaNum.js?ver=45" defer></script>
-    <script src="script/ordMarks.js?ver=45" defer></script>
-    <script src="script/saveload.js?ver=45" defer></script>
-    <script src="script/function.js?ver=45" defer></script>
-    <script src="script/color.js?ver=45" defer></script>
-    <script src="script/challenges.js?ver=45" defer></script>
-    <script src="script/hotkeys.js?ver=45" defer></script>
-    <script src="script/prestige.js?ver=45" defer></script>
-    <script src="script/singfunc.js?ver=45" defer></script>
-    <script src="script/canvas.js?ver=45" defer></script>
-    <script src="script/stats.js?ver=45" defer></script>
-    <script src="script/script.js?ver=45" defer></script>
+    <script src="script/ExpantaNum.js?ver=46" defer></script>
+    <script src="script/ordMarks.js?ver=46" defer></script>
+    <script src="script/saveload.js?ver=46" defer></script>
+    <script src="script/function.js?ver=46" defer></script>
+    <script src="script/color.js?ver=46" defer></script>
+    <script src="script/challenges.js?ver=46" defer></script>
+    <script src="script/hotkeys.js?ver=46" defer></script>
+    <script src="script/prestige.js?ver=46" defer></script>
+    <script src="script/singfunc.js?ver=46" defer></script>
+    <script src="script/canvas.js?ver=46" defer></script>
+    <script src="script/stats.js?ver=46" defer></script>
+    <script src="script/script.js?ver=46" defer></script>
   </head>
   <body id="body">
     <audio src="https://cdn.glitch.com/03a4b67b-6f18-4f6d-8d37-50a18fb615c8%2FGoing%20Down%20by%20Jake%20Chudnow%20%5BHD%5D.mp3?v=1581538237884" id="music"></audio>
@@ -39,58 +39,59 @@
       <div id="warpBasic">
         <button onclick="increment(1)" class="normalButton thicc canThicc">Increase Ordinal by 1<sup> </sup></button>
         <button onclick="maximize(1)" class="normalButton thicc canThicc" style="display:none;">Maximize ordinal, but number does not increase<sup> </sup></button>
+        <button id="compeleteChallenge" class="bought thicc infinityButton" style="display:none;" onclick="compeleteChallenge();">Compelete Challenge!</button>
         <button onclick="infinity(1)" id="infinityButton" class="normalButton thicc canThicc">Reach ω<sup>ω<sup>2</sup></sup> to Markup</button>
       </div>
       <button id="maxmizeAuto" onclick="buyMaxIncr()" class="normalButton">
         Max (M)
       </button>
       <div id="autobuyersLayer">
-        <div class="ordAuto">
+        <div id="incrementer1" class="ordAuto">
           <span>Auto Incrementer 1</span>
           <span id="autoHave0">0(0)</span>
           <button onclick="buyBulkIncr(0, EN(1))" id="autoCost0">cost: ω<sup>2</sup></button>
         </div>
-        <div class="ordAuto">
+        <div id="incrementer2" class="ordAuto">
           <span>Auto Incrementer 2</span>
           <span id="autoHave1">0(0)</span>
           <button onclick="buyBulkIncr(1, EN(1))" id="autoCost1">cost: ω<sup>3</sup></button>
         </div>
-        <div class="ordAuto">
+        <div id="incrementer3" class="ordAuto">
           <span>Auto Incrementer 3</span>
           <span id="autoHave2">0(0)</span>
           <button onclick="buyBulkIncr(2, EN(1))" id="autoCost2">cost: ω<sup>4</sup></button>
         </div>
-        <div class="ordAuto">
+        <div id="incrementer4" class="ordAuto">
           <span>Auto Incrementer 4</span>
           <span id="autoHave3">0(0)</span>
           <button onclick="buyBulkIncr(3, EN(1))" id="autoCost3">cost: ω<sup>6</sup></button>
         </div>
-        <div class="ordAuto">
+        <div id="incrementer5" class="ordAuto">
           <span>Auto Incrementer 5</span>
           <span id="autoHave4">0(0)</span>
           <button onclick="buyBulkIncr(4, EN(1))" id="autoCost4">cost: ω<sup>8</sup></button>
         </div>
-        <div class="ordAuto">
+        <div id="incrementer6" class="ordAuto">
           <span>Auto Incrementer 6</span>
           <span id="autoHave5">0(0)</span>
           <button onclick="buyBulkIncr(5, EN(1))" id="autoCost5">cost: ω<sup>8</sup></button>
         </div>
-        <div class="ordAuto">
+        <div id="incrementer7" class="ordAuto">
           <span>Auto Incrementer 7</span>
           <span id="autoHave6">0(0)</span>
           <button onclick="buyBulkIncr(6, EN(1))" id="autoCost6">cost: ω<sup>8</sup></button>
         </div>
-        <div class="ordAuto">
+        <div id="incrementer8" class="ordAuto">
           <span>Auto Incrementer 8</span>
           <span id="autoHave7">0(0)</span>
           <button onclick="buyBulkIncr(7, EN(1))" id="autoCost7">cost: ω<sup>8</sup></button>
         </div>
-        <div class="ordAuto">
+        <div id="incrementer9" class="ordAuto">
           <span>Auto Incrementer 9</span>
           <span id="autoHave8">0(0)</span>
           <button onclick="buyBulkIncr(8, EN(1))" id="autoCost8">cost: ω<sup>8</sup></button>
         </div>
-        <div class="ordAuto">
+        <div id="incrementer10" class="ordAuto">
           <span>Auto Incrementer 10</span>
           <span id="autoHave9">0(0)</span>
           <button onclick="buyBulkIncr(9, EN(1))" id="autoCost9">cost: ω<sup>8</sup></button>
@@ -283,7 +284,7 @@
             Current interval: 25 seconds
           </div>
           <div class="autoActive">
-            <input type="checkbox" name="autoCheck" value="0" checked> active
+            <input type="checkbox" name="autoCheck" value="0" checked onclick="autoActive(0)"> <span onclick="autoActive(0)">active</span>
           </div>
         </div>
         <div id="auto1" class="autobuyerBox" style="display: none;">
@@ -298,7 +299,7 @@
             Current interval: 35 seconds
           </div>
           <div class="autoActive">
-            <input type="checkbox" name="autoCheck" value="1" checked> active
+            <input type="checkbox" name="autoCheck" value="1" checked onclick="autoActive(1)"> <span onclick="autoActive(1)">active</span>
           </div>
         </div>
         <div id="auto2" class="autobuyerBox" style="display: none;">
@@ -313,7 +314,7 @@
             Current interval: 45 seconds
           </div>
           <div class="autoActive">
-            <input type="checkbox" name="autoCheck" value="2" checked> active
+            <input type="checkbox" name="autoCheck" value="2" checked onclick="autoActive(2)"> <span onclick="autoActive(2)">active</span>
           </div>
         </div>
         <div id="auto3" class="autobuyerBox" style="display: none;">
@@ -328,7 +329,7 @@
             Current interval: 55 seconds
           </div>
           <div class="autoActive">
-            <input type="checkbox" name="autoCheck" value="3" checked> active
+            <input type="checkbox" name="autoCheck" value="3" checked onclick="autoActive(3)"> <span onclick="autoActive(3)">active</span>
           </div>
         </div>
         <div id="auto4" class="autobuyerBox" style="display: none;">
@@ -343,7 +344,7 @@
             Current interval: 65 seconds
           </div>
           <div class="autoActive">
-            <input type="checkbox" name="autoCheck" value="4" checked> active
+            <input type="checkbox" name="autoCheck" value="4" checked onclick="autoActive(4)"> <span onclick="autoActive(4)">active</span>
           </div>
         </div>
         <div style="display: none;">
@@ -394,9 +395,10 @@
         </div>
       </div>
       <div id="subTab4">
+        <button class="infinityButton" onclick="enterMarkupChallenge(0)">Exit Challenge</button>
         <table>
           <tr>
-            <td><button id="markChallenge1" class="markChallenge infinityButton" onclick="enterMarkupChallenge(0)">
+            <td><button id="markChallenge1" class="markChallenge infinityButton" onclick="enterMarkupChallenge(1)">
               <div class="markChallName">
                 Challenge 1
               </div>
@@ -407,7 +409,7 @@
                 Reward: autobuyer 1, Incrementer 1~5 x2
               </div>
             </button></td>
-            <td><button id="markChallenge2" class="markChallenge infinityButton" onclick="enterMarkupChallenge(1)">
+            <td><button id="markChallenge2" class="markChallenge infinityButton" onclick="enterMarkupChallenge(2)">
               <div class="markChallName">
                 Challenge 2
               </div>
@@ -420,7 +422,7 @@
             </button></td>
           </tr>
           <tr>
-            <td><button id="markChallenge3" class="markChallenge infinityButton" onclick="enterMarkupChallenge(2)">
+            <td><button id="markChallenge3" class="markChallenge infinityButton" onclick="enterMarkupChallenge(3)">
               <div class="markChallName">
                 Challenge 3
               </div>
@@ -431,7 +433,7 @@
                 Reward: autobuyer 3, OP gain buff
               </div>
             </button></td>
-            <td><button id="markChallenge4" class="markChallenge infinityButton" onclick="enterMarkupChallenge(3)">
+            <td><button id="markChallenge4" class="markChallenge infinityButton" onclick="enterMarkupChallenge(4)">
               <div class="markChallName">
                 Challenge 4
               </div>
@@ -444,18 +446,18 @@
             </button></td>
           </tr>
           <tr>
-            <td><button id="markChallenge3" class="markChallenge infinityButton" onclick="enterMarkupChallenge(4)">
+            <td><button id="markChallenge5" class="markChallenge infinityButton" onclick="enterMarkupChallenge(5)">
               <div class="markChallName">
                 Challenge 5
               </div>
               <div class="markChallDesc">
-                C4 + Buying anything make your production 0x, recover after 2 mins
+                C4 + Buying anything make your production 1x, deacy after 2 mins
               </div>
               <div class="markChallReward">
                 Reward: autobuyer 5, Incrementer 1~10 x1.5
               </div>
             </button></td>
-            <td><button id="markChallenge4" class="markChallenge infinityButton" onclick="enterMarkupChallenge(5)">
+            <td><button id="markChallenge6" class="markChallenge infinityButton" onclick="enterMarkupChallenge(6)">
               <div class="markChallName">
                 Challenge 6
               </div>

@@ -93,67 +93,15 @@ function reset() {
   autobuyerHave : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   autobuyerBought : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   markupChallenge : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  markupChallengeEntered : 0
+  markupChallengeEntered : 0,
+  autobuyerOn : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   };
   document.getElementById("infinityTabButton").style.display = "none";
   render();
   updateFactors();
 }
 
-/* function loadGame(loadgame) {
-  reset();
-  for (const i in loadgame) {
-    if (typeof loadgame[i]=="object"&&loadgame[i]!=null) {
-      for (const j in loadgame[i]) {
-        if ((typeof loadgame[i].array!="undefined"&&typeof loadgame[i].sign!="undefined")) {
-          game[i][j] = ENify(loadgame[i][j]);
-        } else if (loadgame[i][j]['sign']!==undefined) {
-          game[i][j] = EN(loadgame[i][j]);
-        } else {
-          game[i][j] = loadgame[i][j];
-        }
-      }
-    } else {
-      game[i] = loadgame[i];
-    }
-  }
-  const diff = Date.now() - game.lastTick;
-  game.cardinals = ENify(game.cardinals);
-  game.incrementy = ENify(game.incrementy);
-  game.assCard[0].points = ENify(game.assCard[0].points);
-  game.assCard[0].power = ENify(game.assCard[0].power);
-  game.assCard[0].mult = ENify(game.assCard[0].mult);
-  game.assCard[1].points = ENify(game.assCard[1].points);
-  game.assCard[1].power = ENify(game.assCard[1].power);
-  game.assCard[1].mult = ENify(game.assCard[1].mult);
-  game.assCard[2].points = ENify(game.assCard[2].points);
-  game.assCard[2].power = ENify(game.assCard[2].power);
-  game.assCard[2].mult = ENify(game.assCard[2].mult);
-  game.alephOmega = ENify(game.alephOmega);
-  game.shiftAuto = ENify(game.shiftAuto);
-  game.boostAuto = ENify(game.boostAuto);
-  game.maxIncrementyRate = ENify(game.maxIncrementyRate);
-  game.mostCardOnce = ENify(game.mostCardOnce);
-  game.maxCard = ENify(game.maxCard);
-  document.getElementById("nonC8Auto").value = game.qolSM.nc8;
-  document.getElementById("C8Auto").value = game.qolSM.c8;
-  document.getElementById("ttnc").value = game.qolSM.ttnc;
-  if (game.leastBoost === null) game.leastBoost = Infinity;
-  render();
-  if (game.offlineProg === 1) {
-    if (game.collapseTime <= 1000 && diff / 1000 >= 1000 - game.collapseTime) {
-      loop((1000 - game.collapseTime) * 1000, 1);
-      loop(diff - ((1000 - game.collapseTime) * 1000), 1);
-    } else {
-      loop(diff, 1);
-    }
-  }
-  game.lastTick = Date.now();
-  console.log(diff);
-} */
-
 function loadGame(loadgame) {
-  console.log(loadgame);
   reset();
   for (const i in loadgame) {
     if (typeof loadgame[i]=="object"&&loadgame[i]!=null) {
@@ -166,7 +114,6 @@ function loadGame(loadgame) {
       game[i] = loadgame[i];
     }
   }
-  console.log(game);
   const diff = Date.now() - game.lastTick;
   for (var i = 0; i < 10; i++) {
     game.autoIncrBought[i] = ENify(game.autoIncrBought[i]);
