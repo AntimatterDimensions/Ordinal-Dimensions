@@ -368,7 +368,7 @@ function markupChallengeCheck() {
   }
 }
 function enterMarkupChallenge(num) {
-  if (num < 2) {
+  if (num < 3) {
     if (num != game.markupChallengeEntered) {
       game.markupChallengeEntered = num;
       if (EN.gt(calcTotalOPGain(), 1)) {
@@ -431,6 +431,9 @@ function compeleteChallenge() {
 function challengeReward() {
   if (game.markupChallenge[0] == 1) {
     game.autobuyerHave[0] = 1;
+  }
+  if (game.markupChallenge[1] == 1) {
+    game.autobuyerHave[1] = 1;
   }
 }
 
@@ -509,6 +512,12 @@ function loop(unadjusted, off = 0) {
     }
     if (game.markupChallenge[0] == 1 && (0 <= i && i <= 4)) {
       multiThis = EN.mul(multiThis, 2);
+    }
+    if (game.markupChallenge[1] == 1 && (5 <= i && i <= 9)) {
+      multiThis = EN.mul(multiThis, 2);
+    }
+    if (game.markupChallengeEntered >= 2 && i == 0) {
+      multiThis = EN.mul(multiThis, 1/1000);
     }
     if (i != 0) {
       game.autoIncrHave[i-1] = EN(EN.add(game.autoIncrHave[i-1], EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))))));
