@@ -632,18 +632,6 @@ function loop(unadjusted, off = 0) {
       RPloop = RPloop % 1000
     }
   }
-  if (game.challenge !== 0 && game.leastBoost <= 1.5 && game.qolSM.acc === 1) {
-    if (
-      game.OP >= challengeGoals[game.challenge - 1][Number(game.qolSM.nc8) - 1]
-    ) {
-      completeChallenge();
-    }
-  }
-  if (game.chal8 === 1 && game.leastBoost <= 1.5 && game.qolSM.acc === 1) {
-    if (game.OP >= getChal8Goal(Number(game.qolSM.c8) - 1)) {
-      completeChallenge();
-    }
-  }
   if (game.chal8 === 1 && calcRefund() > 0)
     confirm("You failed Challenge 8 because you had booster upgrades on you!");
   if (game.chal8 === 1 && calcRefund() > 0) refund();
@@ -693,7 +681,6 @@ function loop(unadjusted, off = 0) {
   if (game.dynamic < 0) game.dynamic = 0;
   if (game.chal8 === 1) game.decrementy += getDecrementyRate(ms);
   if (game.boostUnlock == 1 && game.limAuto === 0) game.limAuto = 1;
-  totalMult = factorMult * calcTotalMultWOFactor();
   buptotalMute =
     bfactorMult *
     calcBupTotalMultWOFactor() *
@@ -728,9 +715,6 @@ function loop(unadjusted, off = 0) {
       }
     }
 
-    if (game.maxAuto > 0) {
-      maxall();
-    }
     if (game.autoLoop.succ >= 1000 / tempSucc) {
       if (game.autoLoop.lim >= 1000 / tempLim) {
         game.over = 0;
@@ -766,71 +750,6 @@ function loop(unadjusted, off = 0) {
     // game.ord = EN(game.base**(game.base * 3+(game.base==5&&game.sfBought.includes(61)?game.base:0)));
   changeDynamic(ms);
   if (game.dynamic < 0) game.dynamic = 0;
-  /* if (ms > 0) {
-    if (
-      (game.upgrades.includes(2) || game.leastBoost <= 1.5) &&
-      game.autoOn.max === 1
-    ) {
-      game.bAutoLoop.max += ms;
-      if (game.bAutoLoop.max >= 1000 / buptotalMute) {
-        game.bAutoLoop.max -= 1000 / buptotalMute;
-        if (
-          (game.OP <
-            ((game.challenge === 5 || game.challenge === 7) &&
-            game.factorShifts >= 2
-              ? Infinity
-              : factorShiftCosts[game.factorShifts]) &&
-            (game.challenge === 0 ||
-              game.OP <
-                challengeGoals[game.challenge - 1][
-                  game.challengeCompletion[game.challenge - 1]
-                ])) ||
-          game.OP >= 1e265
-        ) {
-          maxInfStuff();
-        }
-      }
-    }
-    if (game.upgrades.includes(3) && game.autoOn.inf === 1) {
-      game.bAutoLoop.inf += ms;
-      if (game.bAutoLoop.inf >= 1000 / buptotalMute) {
-        game.bAutoLoop.inf -= 1000 / buptotalMute;
-        if (
-          game.OP + game.ord >= 1e265 &&
-          game.challenge !== 1 &&
-          game.challenge !== 7
-        )
-          infinity();
-        if (
-          game.OP + game.ord <= 1e265 &&
-          totalMult <= 0.01 &&
-          game.leastBoost <= 1.5
-        )
-          infinity();
-      }
-    }
-    if (
-      game.bAutoLoop.max >= 1000 / buptotalMute &&
-      (game.bAutoLoop.inf >= 1000 / buptotalMute || game.leastBoost <= 1e10)
-    ) {
-      const bupCom = Math.min(
-        game.bAutoLoop.max / (1000 / buptotalMute),
-        game.leastBoost <= 1e10
-          ? Infinity
-          : game.bAutoLoop.inf / (1000 / buptotalMute)
-      );
-      game.bAutoLoop.max %= 1000 / buptotalMute;
-      game.bAutoLoop.inf %= 1000 / buptotalMute;
-      increaseOrdTier2(bupCom);
-    }
-  } */
-  /* if (game.upgrades.includes(7) || game.leastBoost <= 15) {
-    partOP += (ms / 1000) * calcOPPS();
-    game.OP += Math.floor(partOP);
-    partOP %= 1;
-  } */
-  // if (game.OP > BHO * getSingLevel()) game.OP = BHO * getSingLevel();
-  // if (game.ord > BHO * getSingLevel()) game.ord = BHO * getSingLevel();
   if (game.upgrades.includes(8)) {
     game.incrementy = game.incrementy.add(getIncrementyRate(ms / 2));
     if (
@@ -844,7 +763,6 @@ function loop(unadjusted, off = 0) {
       ? (ms / 1000) * game.shiftAuto.toNumber()
       : 0;
   if (game.cAutoLoop.shift >= 1) {
-    factorShift();
     game.cAutoLoop.shift %= 1;
   }
   game.cAutoLoop.boost +=
@@ -899,7 +817,6 @@ function loop(unadjusted, off = 0) {
   if (get("theme").innerHTML !== themeSave) get("theme").innerHTML = themeSave;
   if (game.OP >= V(27) || game.ord >= V(27) || game.factorBoosts >= 25)
     game.reachedBHO = 1;
-  project(buptotalMute);
   if (ms > 0) render();
   if (game.factorBoosts < 0) game.factorBoosts = 0;
   if (game.base <= 4) game.dynamicUnlock = 1;
@@ -920,11 +837,7 @@ function render() {
   if (game.boostUnlock === 1) {
     get("boosterTabButton").style.display = "inline-block";
     if (game.challenge === 0 && game.chal8 === 0) {
-      get("factorBoostText").style.display = "inline-block";
-      get("completeChallenge").style.display = "none";
     } else {
-      get("factorBoostText").style.display = "none";
-      get("completeChallenge").style.display = "inline-block";
       get("finishChallenge").innerHTML =
         `Complete the challenge!<br>${beautify(
           game.chal8 === 1
@@ -936,8 +849,6 @@ function render() {
     }
   } else {
     get("boosterTabButton").style.display = "none";
-    get("factorBoostText").style.display = "none";
-    get("completeChallenge").style.display = "none";
   }
   if (game.dynamicUnlock === 1) {
     get("dynamicFactorButton").style.display = "inline-block";
@@ -970,96 +881,18 @@ function render() {
     : "none";
   get("ordinalPointsDisplay").innerHTML =
     `You have ${beautifyEN(game.OP)} Ordinal Points`;
-  get("succAutoAmount").innerHTML =
-    `You have ${logbeautify(game.succAuto)} successor autoclickers, clicking the successor button ${(game.succAuto > 1e265
-      ? logbeautify(game.succAuto)
-      : beautify(game.succAuto * totalMult * succAutoMult))} times per second`;
-  get("limAutoAmount").innerHTML =
-    `You have ${logbeautify(game.limAuto)} maximize autoclickers, clicking the maximize button ${(game.succAuto > 10 ** 265
-      ? logbeautify(game.succAuto)
-      : beautify(game.limAuto * totalMult * limAutoMult))} times per second`;
-  get("buysucc").innerHTML =
-    `Buy Successor Autobuyer for ${(game.challenge === 1 || game.challenge === 7
-      ? game.succAuto === 1
-        ? "Infinity"
-        : "1.000e6"
-      : beautify(
-          Math.min(1e260 + game.succAuto, 100 * (2 ** game.succAuto))
-        ))} OP`;
-  get("buylim").innerHTML =
-    "Buy Maximize Autobuyer for " +
-    (game.challenge === 1 || game.challenge == 7
-      ? game.limAuto === 1
-        ? "Infinity"
-        : "1.000e6"
-      : beautify(Math.min(10 ** 260 + game.limAuto, 100 * 2 ** game.limAuto))) +
-    "  OP";
-  get("factorShift").innerHTML =
-    "Factor Shift (" +
-    game.factorShifts +
-    "): Requires " +
-    ((game.challenge == 5 || game.challenge == 7) && game.factorShifts >= 2
-      ? "Infinity"
-      : game.factorShifts == 7
-      ? game.boostUnlock
-        ? "Infinity"
-        : "Graham's number (g<sub>ψ(Ω<sup>Ω</sup>ω)</sub> (10))"
-      : beautify(factorShiftCosts[game.factorShifts])) +
-    " OP";
-  get("noFactors").style.display =
-    game.factors.length == 0 ? "inline-block" : "none";
-  get("factorList").style.display =
-    game.factors.length == 0 ? "none" : "inline-block";
   factorMult = 1;
-  if (game.factors.length > 0) {
-    for (
-      let factorListCounter = 0;
-      factorListCounter < game.factors.length;
-      factorListCounter++
-    ) {
-      factorMult *=
-        (1 +
-          game.factors[factorListCounter] +
-          (game.upgrades.includes(11)
-            ? 3 * (game.challenge == 3 || game.challenge == 7 ? 2 : 1)
-            : 0)) *
-        (game.upgrades.includes(1) ? 2 : 1);
-    }
-  }
-  get("factorMult").textContent =
-    "Your factors are multiplying Tier 1 Automation by " + beautify(factorMult);
   get("boostersText").textContent = "You have " + beautify(game.boosters) + " boosters";
   get("refundBoosters").textContent =
     "Refund back " +
     beautify(calcRefund()) +
     " boosters, but reset all factor shifts (R)";
-  get("factorBoost").innerHTML =
-    "Factor Boost (" +
-    commafy(game.factorBoosts) +
-    "): Requires g<sub>" +
-    displayOrd(V(game.factorBoosts + 3, 1)) +
-    "</sub> (10) OP";
-  get("gainBoosters").textContent =
-    (getSingLevel() == 1
-      ? "Gain " +
-        (game.OP >= V(game.factorBoosts + 3)
-          ? getFactorBoostGain()
-          : game.factorBoosts + 1) +
-        " Boosters"
-      : "Gain " + getFBmult() + " Factor Boosts") + " (B)";
   get("dynamicMult").textContent =
     "Your Dynamic Factor is x" +
     (
       (game.dynamic * getManifoldEffect()) **
       (game.upgrades.includes(13) && game.challenge % 2 == 1 ? 2 : 1)
     ).toFixed(3);
-  get("maxAllAuto").innerHTML =
-    "Your Max All Autobuyer is clicking the Max All button " +
-    ((game.upgrades.includes(2) || game.leastBoost <= 1.5) &&
-    game.autoOn.max == 1
-      ? beautify(buptotalMute)
-      : 0) +
-    " times per second, but only if you can't Factor Shift";
   get("infinityAuto").innerHTML =
     "Your Markup Autobuyer is clicking the Markup button " +
     (game.upgrades.includes(3) && game.autoOn.inf == 1
@@ -1382,19 +1215,6 @@ function render() {
     "OP boosts Tier 1 and 2 by x" +
     Math.log10(Math.log10(1e10 + game.OP)).toFixed(3) +
     "<br><br>Cost: 8 ℵ<sub>ω</sub>";
-  get("checkIncrementy").style.display =
-    game.upgrades.includes(8) && game.flashIncrementy == 1 ? "inline" : "none";
-  get("flashIncrementy").style.display = game.upgrades.includes(8)
-    ? "inline"
-    : "none";
-  get("flashIncrementy").textContent =
-    "Flashing Incrementy Reminder: " +
-    (game.flashIncrementy == 1 ? "ON" : "OFF");
-  get("checkIncrementy").style.color = HSL(Date.now() / 10);
-  get("fbConfirm").textContent =
-    "Factor Boost Confirmation: " + (game.fbConfirm == 1 ? "ON" : "OFF");
-  get("bulkBoost").textContent =
-    "Bulk Boosting: " + (game.bulkBoost == 1 ? "ON" : "OFF");
   get("aup7").innerHTML =
     "ℵ<sub>ω</sub> boosts the ℵ<sub>1</sub> multiplier by<br>x" +
     game.alephOmega
@@ -1403,7 +1223,6 @@ function render() {
       .toNumber()
       .toFixed(2) +
     "<br>Cost: 65536 ℵ<sub>ω</sub>";
-  updateFactors();
   get("chal8Incrementy").style.display =
     game.leastBoost <= 1.5 ? "inline" : "none";
   get("chal8IncrementyBoost").style.display =
@@ -1448,11 +1267,6 @@ function render() {
     "Collapse Autoprestiger: " + (game.qolSM.ca == 1 ? "ON" : "OFF");
   get("changeHotKeys").textContent =
     "Hotkeys: " + (game.hotkeysOn == 1 ? "ON" : "OFF");
-  get("fbps").style.display = getFBps()/getFBmult() >= 1 ? "block" : "none";
-  get("fbps").textContent =
-    "You should be getting a total of " +
-    commafy(getFBps()) +
-    " Factor Boost(s) per second";
   get("singularitySubTab").style.display = game.upgrades.includes(20)
     ? "inline"
     : "none";
@@ -1808,101 +1622,6 @@ function logbeautify(number) {
   }
 }
 
-function updateFactors() {
-  if (game.factors.length >= 0) {
-    let factorListHTML = "";
-    for (
-      let factorListCounter = 0;
-      factorListCounter < game.factors.length;
-      factorListCounter++
-    ) {
-	  const cost = Math.pow(
-		  10 ** (factorListCounter + 1),
-          factorCostExp[factorListCounter] ** game.factors[factorListCounter]
-        )
-      factorListHTML +=
-        "<li>Factor " +
-        (factorListCounter + 1) +
-        " x" +
-        (1 +
-          (game.upgrades.includes(11)
-            ? 3 * (game.challenge == 3 || game.challenge == 7 ? 2 : 1)
-            : 0) +
-          game.factors[factorListCounter]) *
-          (game.upgrades.includes(1) ? 2 : 1) +
-        ' <button onclick="buyFactor(' +
-        factorListCounter +
-        `)" class="infinityButton">${cost === Infinity
-		? `Maxed!`
-		: `Increase Factor ${
-			factorListCounter + 1
-		} for ${beautify(cost)} OP`}</button></li>`;
-    }
-    if (get("factorListMain").innerHTML != factorListHTML)
-      get("factorListMain").innerHTML = factorListHTML;
-  }
-}
-
-/* function buysucc(rend = 0) {
-  if (game.challenge == 1 || game.challenge == 7) {
-    if (game.OP >= 1000000 && game.succAuto == 0) {
-      game.OP -= 1000000;
-      game.succAuto += 1;
-    }
-  } else {
-    if (game.OP >= 100 * 2 ** game.succAuto && game.OP < 10 ** 265) {
-      game.OP -= 100 * 2 ** game.succAuto;
-      game.succAuto += 1;
-    } else if (game.OP > 10 ** 265) {
-      game.succAuto = game.OP;
-    }
-  }
-  if (rend == 1) render();
-} */
-
-function buylim(rend = 0) {
-  /* if (game.challenge == 1 || game.challenge == 7) {
-    if (game.OP >= 1000000 && game.limAuto == 0) {
-      game.OP -= 1000000;
-      game.limAuto += 1;
-    }
-  } else {
-    if (game.OP >= 100 * 2 ** game.limAuto && game.OP < 10 ** 265) {
-      game.OP -= 100 * 2 ** game.limAuto;
-      game.limAuto += 1;
-    } else if (game.OP > 10 ** 265) {
-      game.limAuto = game.OP;
-    }
-  }
-  if (rend == 1) render(); */
-}
-
-function maxall() {
-  /* let bulk = 0;
-  if (game.challenge == 1 || game.challenge == 7) {
-    buysucc();
-    buylim();
-  } else {
-    if (game.OP < 10 ** 265) {
-      buysucc();
-      buylim();
-      bulk = Math.floor(
-        Math.log(1 + game.OP / (100 * 2 ** game.succAuto)) / Math.log(2)
-      );
-      game.OP -= (2 ** bulk - 1) * (100 * 2 ** game.succAuto);
-      game.succAuto += bulk;
-      bulk = Math.floor(
-        Math.log(1 + game.OP / (100 * 2 ** game.limAuto)) / Math.log(2)
-      );
-      game.OP -= (2 ** bulk - 1) * (100 * 2 ** game.limAuto);
-      game.limAuto += bulk;
-    } else {
-      game.succAuto = game.OP;
-      game.limAuto = game.OP;
-    }
-  } */
-}
-
 // "<span style='color:" + HSL(tempvar * 8) + ";text-shadow: 6px 6px 6px " + HSL(tempvar * 8) + ", 1px 0 1px black, -1px 0 1px black, 0 1px 1px black, 0 -1px 1px black;'>" + tempvar4 + "</span>"
 function displayOrd(ord,base=3,over=0,trim=0,large=0,multoff=0,colour=0) {
   ord = ENify(ord);
@@ -2182,52 +1901,6 @@ function ENify(x) {
   }
 }
 
-function project(x) {
-  if (game.OP >= V(game.factorBoosts + 3, 1) && game.bulkBoost == 0) {
-    get("nextBulkTime").innerHTML =
-      "You can do a Factor Boost now, but bulking is currently disabled now";
-    get("bulking").innerHTML = 1;
-    get("factorBoostProg").style.width = "100%";
-    get("factorBoostProg").innerHTML = "100.00%";
-  } else {
-    get("nextBulkTime").innerHTML =
-      game.OP < 1e270
-        ? "Reach " + beautify(5e270) + " to see when you can boost!"
-        : game.factorBoosts + getFactorBulk() >= 25 && getFactorBulk() >= 1
-        ? "You can't bulk past the BHO!"
-        : "Next boost in bulk will take " +
-          ((game.upgrades.includes(2) || game.leastBoost <= 1.5) && (game.autoOn.max==1) &&
-          ((game.upgrades.includes(3)&&game.autoOn.inf==1) || game.leastBoost <= 25)
-            ? time(
-                game.factorBoosts < 24
-                  ? Math.floor(
-                      (V(game.factorBoosts + getFactorBulk() + 3) - game.OP) /
-                        x /
-                        1e270
-                    )
-                  : postBHOproj(x)
-              )
-            : Math.floor(
-                (V(game.factorBoosts + getFactorBulk() + 3) - game.OP) /
-                  1 /
-                  1e270
-              ) + " click cycles");
-    get("bulking").innerHTML = getFactorBulk();
-    let percentage =
-      game.factorBoosts + getFactorBulk() >= 25 && getFactorBulk() >= 1
-        ? 100
-        : (game.OP / V(game.factorBoosts + getFactorBulk() + 3)) * 100;
-    if (game.factorBoosts >= 24 && game.OP < BHO) {
-      percentage = (100 * game.OP) / BHO / 3 ** (getSingLevel() - 1);
-    }
-    if (game.factorBoosts >= 24 && game.OP >= BHO) {
-      percentage = 100 * (1 / 3) ** ((BHO * getSingLevel() - game.OP) / BHO);
-    }
-    get("factorBoostProg").style.width = percentage + "%";
-    get("factorBoostProg").innerHTML = percentage.toFixed(2) + "%";
-  }
-}
-
 function time(x) {
   let timeList = [
     Math.floor(x / 86400),
@@ -2303,13 +1976,6 @@ function maxAutoprestige() {
   game.alephOmega = game.alephOmega.minus(bulk.times(1000));
   game.shiftAuto = game.shiftAuto.add(bulk);
   game.boostAuto = game.boostAuto.add(bulk);
-}
-
-function maxInfStuff() {
-  if (game.succAuto == 0) buysucc();
-  if (game.limAuto == 0) buylim();
-  maxFactors();
-  maxall();
 }
 
 function distributeCard() {

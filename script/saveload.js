@@ -101,7 +101,6 @@ function reset() {
   };
   document.getElementById("infinityTabButton").style.display = "none";
   render();
-  updateFactors();
 }
 
 function loadGame(loadgame) {
