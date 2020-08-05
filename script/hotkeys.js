@@ -8,13 +8,14 @@ const keybinds = {
       game.autobuyersToggle = !game.autobuyersToggle;
       randerAutobuyer();
     },
-    i: () => infinity(1),
+    i: () => {
+      if (game.markupChallengeEntered == 0) {
+        infinity(1)
+      }
+    },
     m: () => {
       buyMaxIncr();
     },
-    b: () => {
-		if (game.boostUnlock === 1 && game.challenge === 0) factorBoost(1);
-	},
     r: () => {
 		if (game.boostUnlock === 1) refund();
 	},

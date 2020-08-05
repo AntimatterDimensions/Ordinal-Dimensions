@@ -435,8 +435,10 @@ function renderMarkupChallenge() {
   }
   if (game.markupChallengeEntered >= 1) {
     get('infinityButton').style.display = 'none';
+    get('infinityButton2').style.display = 'none';
   } else {
     get('infinityButton').style.display = 'inline';
+    get('infinityButton2').style.display = 'inline';
   }
   if (game.markupChallengeEntered >= 1) {
     get('compeleteChallenge').style.display = 'inline';
