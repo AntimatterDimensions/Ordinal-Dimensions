@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Ordinal Dimensions u50</title>
+    <title>Ordinal Dimensions u51</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" href="https://cdn.glitch.com/310d7aca-4728-445f-9084-db26ceccd7b5%2FOrdinal%20Markup%20logo.png?v=1587927427273"/>
     <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="style/mobile.css?ver=50">
-    <link rel="stylesheet" href="style.css?ver=50">
-    <div id="theme"><link rel="stylesheet" href="style/dark.css?ver=50"></div>
+    <link rel="stylesheet" href="style/mobile.css?ver=51">
+    <link rel="stylesheet" href="style.css?ver=51">
+    <div id="theme"><link rel="stylesheet" href="style/dark.css?ver=51"></div>
     <!-- import the webpage's javascript file -->
-    <script src="script/ExpantaNum.js?ver=50" defer></script>
-    <script src="script/ordMarks.js?ver=50" defer></script>
-    <script src="script/saveload.js?ver=50" defer></script>
-    <script src="script/function.js?ver=50" defer></script>
-    <script src="script/color.js?ver=50" defer></script>
-    <script src="script/challenges.js?ver=50" defer></script>
-    <script src="script/hotkeys.js?ver=50" defer></script>
-    <script src="script/prestige.js?ver=50" defer></script>
-    <script src="script/singfunc.js?ver=50" defer></script>
-    <script src="script/canvas.js?ver=50" defer></script>
-    <script src="script/stats.js?ver=50" defer></script>
-    <script src="script/script.js?ver=50" defer></script>
+    <script src="script/ExpantaNum.js?ver=51" defer></script>
+    <script src="script/ordMarks.js?ver=51" defer></script>
+    <script src="script/saveload.js?ver=51" defer></script>
+    <script src="script/function.js?ver=51" defer></script>
+    <script src="script/color.js?ver=51" defer></script>
+    <script src="script/challenges.js?ver=51" defer></script>
+    <script src="script/hotkeys.js?ver=51" defer></script>
+    <script src="script/prestige.js?ver=51" defer></script>
+    <script src="script/singfunc.js?ver=51" defer></script>
+    <script src="script/canvas.js?ver=51" defer></script>
+    <script src="script/stats.js?ver=51" defer></script>
+    <script src="script/script.js?ver=51" defer></script>
   </head>
   <body id="body">
     <audio src="https://cdn.glitch.com/03a4b67b-6f18-4f6d-8d37-50a18fb615c8%2FGoing%20Down%20by%20Jake%20Chudnow%20%5BHD%5D.mp3?v=1581538237884" id="music"></audio>
@@ -36,10 +36,13 @@
     <button onclick="Tab(7)" id="collapseTabButton" class="collapseTabButton">Collapse</button><text class="invisible invisTab">0</text>
     <p></p>
     <div id="Tab1">
+      <div id="challInfo" style="display:none;">
+
+      </div>
       <div id="warpBasic">
         <button onclick="increment(1)" class="normalButton thicc canThicc">Increase Ordinal by 1<sup> </sup></button>
         <button onclick="maximize(1)" class="normalButton thicc canThicc" style="display:none;">Maximize ordinal, but number does not increase<sup> </sup></button>
-        <button id="compeleteChallenge" class="bought thicc infinityButton" style="display:none;" onclick="compeleteChallenge();">Compelete Challenge!</button>
+        <button id="compeleteChallenge" class="thicc infinityButton" style="display:none;" onclick="compeleteChallenge();">Reach ω<sup>ω<sup>2</sup></sup> to Compelete</button>
         <button onclick="infinity(1)" id="infinityButton" class="normalButton thicc canThicc">Reach ω<sup>ω<sup>2</sup></sup> to Markup</button>
       </div>
       <button id="maxmizeAuto" onclick="buyMaxIncr()" class="normalButton">
@@ -139,6 +142,10 @@
         <li>Reach ω<sup>ω<sup>2</sup></li>
         <li>Collect 11 OP and Markup</li>
         <li>Unlock Autobuyers & Challenge</li>
+        <li>Compelete Challenge 1~5</li>
+        <li>--Not out yet!--Unlock Extra Factors</li>
+        <li>Compelete Challenge 6</li>
+        <li>Buy all Markup Upgrades</li>
       </ol>
     </div>
     <div id="Tab5">
@@ -233,12 +240,12 @@
             <button onclick="infUpgrade(19)" class="infCost infinityButton">1.28e6 OP</button>
           </div>
           <div id="infUpgrade20" class="infUpgrade">
-            <span class="infDesc">Make Incrementer 6 powerful based on placeholder</span>
-            <button onclick="infUpgrade(20)" class="infCost infinityButton">9.99e99 OP</button>
+            <span class="infDesc">Make Incrementer 6 powerful based on Compeleted Challenges</span>
+            <button onclick="infUpgrade(20)" class="infCost infinityButton">1.00e10 OP</button>
           </div>
           <div id="infUpgrade21" class="infUpgrade">
-            <span class="infDesc">Make Incrementer 7 powerful based on placeholder</span>
-            <button onclick="infUpgrade(21)" class="infCost infinityButton">9.99e99 OP</button>
+            <span class="infDesc">Make Incrementer 7 powerful based on Sum of all autobuyers level</span>
+            <button onclick="infUpgrade(21)" class="infCost infinityButton">3.45e12 OP</button>
           </div>
           <div id="infUpgrade22" class="infUpgrade">
             <span class="infDesc">Make Incrementer 8 powerful based on placeholder</span>
@@ -272,6 +279,7 @@
         </div>
       </div>
       <div id="subTab2" class="long">
+        <p>Press A to turn on/off all</p>
         <div id="auto0" class="autobuyerBox" style="display: none;">
           <div class="autoName">
             Auto Inrementer 1, 2
@@ -406,7 +414,7 @@
                 There are only 8 Incrementers
               </div>
               <div class="markChallReward">
-                Reward: autobuyer 1, Incrementer 1~5 x2
+                Reward: autobuyer 1, Incrementer 1~5 x4
               </div>
             </button></td>
             <td><button id="markChallenge2" class="markChallenge infinityButton" onclick="enterMarkupChallenge(2)">
@@ -417,7 +425,7 @@
                 C1 + Divide Incrementer 1 production by 1000
               </div>
               <div class="markChallReward">
-                Reward: autobuyer 2, Incrementer 6~10 x2
+                Reward: autobuyer 2, Incrementer 6~10 x4
               </div>
             </button></td>
           </tr>
@@ -454,7 +462,7 @@
                 C4 + Buying anything make your production 1x, deacy after 2 mins
               </div>
               <div class="markChallReward">
-                Reward: autobuyer 5, Incrementer 1~10 x1.5
+                Reward: autobuyer 5, Incrementer 1~10 x3
               </div>
             </button></td>
             <td><button id="markChallenge6" class="markChallenge infinityButton" onclick="enterMarkupChallenge(6)">

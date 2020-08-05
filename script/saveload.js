@@ -94,7 +94,10 @@ function reset() {
   autobuyerBought : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   markupChallenge : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   markupChallengeEntered : 0,
-  autobuyerOn : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  autobuyerOn : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  c3Effect : 0,
+  c5Effect : 0,
+  autobuyersToggle : 0
   };
   document.getElementById("infinityTabButton").style.display = "none";
   render();

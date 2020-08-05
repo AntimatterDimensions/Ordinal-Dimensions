@@ -138,6 +138,10 @@
   margin-bottom: 5px;
 }
 
+#challInfo {
+  color: #B67F33; text-align: center; font-weight: bold;
+}
+
 #autobuyersLayer > div {
   margin-top: 1%;
   width: 100%;

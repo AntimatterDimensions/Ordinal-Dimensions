@@ -1,6 +1,13 @@
 "use strict";
 
 const keybinds = {
+    a: () => {
+      for (var i = 0; i < game.autobuyerOn.length; i++) {
+        game.autobuyerOn[i] = game.autobuyersToggle;
+      }
+      game.autobuyersToggle = !game.autobuyersToggle;
+      randerAutobuyer();
+    },
     i: () => infinity(1),
     m: () => {
       buyMaxIncr();

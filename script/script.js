@@ -107,7 +107,7 @@ const autobuyerBaseTicks = [25, 35, 45, 55, 65];
 const infUpgradeCost = [
     1, 10, 75, 200, 500, 20, 90, 250, 400, 800,
     1200, 3000, 1e4, 4e4, 2e5, 1e4, 4e4, 1.6e5, 6.4e5, 1.28e6,
-    9.99e99, 9.99e99, 9.99e99, 9.99e99, 9.99e99, 1e6, 9.99e99
+    1e10, 3.45e12, 9.99e99, 9.99e99, 9.99e99, 1e6, 9.99e99
  ];
 var multiThis;
 let AF = 0;
@@ -174,6 +174,7 @@ function buyBulkIncr(num, bulk) {
         game.autoIncrHave[num] = EN.add(game.autoIncrHave[num], thisBulk);
         game.autoIncrCost[num] = EN.mul(autoIncrCostBase[num], EN.pow(EN.pow(10, num+1), game.autoIncrBought[num]));
         bulk = EN.sub(bulk, thisBulk);
+        challengesBuyEffect(num);
       }
     }
     // Incrementer post-300 level
@@ -189,9 +190,23 @@ function buyBulkIncr(num, bulk) {
         game.autoIncrBought[num] = EN.add(game.autoIncrBought[num], thisBulk);
         game.autoIncrHave[num] = EN.add(game.autoIncrHave[num], thisBulk);
         game.autoIncrCost[num] = EN.mul(autoIncrCostBase[num], EN.pow(EN.pow(10, num+1), EN.add(EN.div(EN.mul(EN.sub(game.autoIncrBought[num], 299), EN.sub(game.autoIncrBought[num], 298)), 2), 298)));
+        challengesBuyEffect(num);
       }
     }
     randerAutoIncr();
+  }
+}
+function challengesBuyEffect(num) {
+  if (game.markupChallengeEntered >= 3) {
+    game.c3Effect = 0;
+  }
+  if (game.markupChallengeEntered >= 4) {
+    for (var i = 0; i < num; i++) {
+      game.autoIncrHave[i] = EN(0);
+    }
+  }
+  if (game.markupChallengeEntered >= 5) {
+    game.c5Effect = 1;
   }
 }
 function randerAutoIncr() {
@@ -368,7 +383,7 @@ function markupChallengeCheck() {
   }
 }
 function enterMarkupChallenge(num) {
-  if (num < 3) {
+  if (num < 6) {
     if (num != game.markupChallengeEntered) {
       game.markupChallengeEntered = num;
       if (EN.gt(calcTotalOPGain(), 1)) {
@@ -388,6 +403,12 @@ function enterMarkupChallenge(num) {
         game.autoIncrBought[i] = EN(0);
         game.autoIncrCost[i] = autoIncrCostBase[i];
       }
+      if (game.markupChallengeEntered >= 3) {
+        game.c3Effect = 1;
+      }
+      if (game.markupChallengeEntered >= 5) {
+        game.c5Effect = 0;
+      }
     }
   } else {
     alert('Comming soon!');
@@ -395,6 +416,7 @@ function enterMarkupChallenge(num) {
   if (num == 0) {
     passiveIncrementer();
   }
+  challengeEffects();
   markupChallengeCheck();
   randerAutoIncr();
   renderMarkupChallenge();
@@ -416,17 +438,19 @@ function renderMarkupChallenge() {
   } else {
     get('infinityButton').style.display = 'inline';
   }
-  if (EN.gte(game.ord, 1e100) && game.markupChallengeEntered >= 1) {
+  if (game.markupChallengeEntered >= 1) {
     get('compeleteChallenge').style.display = 'inline';
   } else {
     get('compeleteChallenge').style.display = 'none';
   }
 }
 function compeleteChallenge() {
-  game.markupChallenge[game.markupChallengeEntered-1] = 1;
-  enterMarkupChallenge(0);
-  challengeReward();
-  randerEtc();
+  if (EN.gte(game.ord, 1e100)) {
+    game.markupChallenge[game.markupChallengeEntered-1] = 1;
+    enterMarkupChallenge(0);
+    challengeReward();
+    randerEtc();
+  }
 }
 function challengeReward() {
   if (game.markupChallenge[0] == 1) {
@@ -434,6 +458,27 @@ function challengeReward() {
   }
   if (game.markupChallenge[1] == 1) {
     game.autobuyerHave[1] = 1;
+  }
+  if (game.markupChallenge[2] == 1) {
+    game.autobuyerHave[2] = 1;
+  }
+  if (game.markupChallenge[3] == 1) {
+    game.autobuyerHave[3] = 1;
+  }
+  if (game.markupChallenge[4] == 1) {
+    game.autobuyerHave[4] = 1;
+  }
+}
+function challengeEffects() {
+  if (game.markupChallengeEntered >= 3) {
+    get('challInfo').style.display = 'block';
+    if (game.markupChallengeEntered >= 5) {
+      get('challInfo').innerHTML = 'C3 effect -> ' + game.c3Effect.toFixed(2) + 'x to all Incrementers<br>C5 effect -> ' + game.c5Effect.toFixed(2) + 'x to all Incrementers';
+    } else {
+      get('challInfo').innerHTML = 'C3 effect -> ' + game.c3Effect.toFixed(2) + 'x to all Incrementers';
+    }
+  } else {
+    get('challInfo').style.display = 'none';
   }
 }
 
@@ -482,6 +527,18 @@ function loop(unadjusted, off = 0) {
   }
   markupChallengeCheck();
   autobuyerLoop(ms);
+  if (game.markupChallengeEntered >= 3) {
+    game.c3Effect += ms/60000;
+    if (game.c3Effect > 1) {
+      game.c3Effect = 1;
+    }
+  }
+  if (game.markupChallengeEntered >= 5) {
+    game.c5Effect -= ms/120000;
+    if (game.c5Effect < 0) {
+      game.c5Effect = 0;
+    }
+  }
   for (var i = 9; i > -1; i--) {
     multiThis = EN(1);
     if ((i == 0 || i == 9) && game.infUpgradeHave[0] == 1) {
@@ -510,14 +567,37 @@ function loop(unadjusted, off = 0) {
     if (i == 4 && game.infUpgradeHave[19] == 1) {
       multiThis = EN.mul(multiThis, EN.add(EN.pow(EN.logBase((EN.add(game.OP, 1)), 1000), 0.75), 1));
     }
+    if (i == 5 && game.infUpgradeHave[20] == 1) {
+      var tempVar = 0;
+      for (var j = 0; j < game.markupChallenge.length; j++) {
+        tempVar += game.markupChallenge[j];
+      }
+      multiThis = EN.mul(multiThis, EN.add(EN.pow(tempVar, 2), 1));
+    }
+    if (i == 6 && game.infUpgradeHave[21] == 1) {
+      var tempVar = 0;
+      for (var j = 0; j < game.autobuyerBought.length; j++) {
+        tempVar += game.autobuyerBought[j];
+      }
+      multiThis = EN.mul(multiThis, EN.add(tempVar, 1));
+    }
     if (game.markupChallenge[0] == 1 && (0 <= i && i <= 4)) {
-      multiThis = EN.mul(multiThis, 2);
+      multiThis = EN.mul(multiThis, 4);
     }
     if (game.markupChallenge[1] == 1 && (5 <= i && i <= 9)) {
-      multiThis = EN.mul(multiThis, 2);
+      multiThis = EN.mul(multiThis, 4);
+    }
+    if (game.markupChallenge[4] == 1 && (0 <= i && i <= 9)) {
+      multiThis = EN.mul(multiThis, 3);
     }
     if (game.markupChallengeEntered >= 2 && i == 0) {
       multiThis = EN.mul(multiThis, 1/1000);
+    }
+    if (game.markupChallengeEntered >= 3) {
+      multiThis = EN.mul(multiThis, game.c3Effect);
+    }
+    if (game.markupChallengeEntered >= 5) {
+      multiThis = EN.mul(multiThis, game.c5Effect);
     }
     if (i != 0) {
       game.autoIncrHave[i-1] = EN(EN.add(game.autoIncrHave[i-1], EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))))));
@@ -828,6 +908,7 @@ function render() {
   const ordSub = displayOrd(game.ord,game.base,game.over,0,0,0,game.colors);
   document.getElementById("hardy").innerHTML=colorWrap("H",ordColor)+"<sub>" + ordSub + "</sub><text class=\"invisible\">l</text>"+colorWrap("(" + game.base + ")" + (game.ord >= (game.base**3) || outSize >= 10**264 || (game.ord>=5 && game.base==2) ? "" : "=" + beautify(outSize)),ordColor)
   game.canInf = game.ord >= 1e100;
+  challengeEffects();
   if (game.infUnlock === 1) {
     get("infinityTabButton").style.display = "inline-block";
   } else {
@@ -1909,7 +1990,7 @@ function beautifyEN(n, f = 0) {
 function calcOrdPoints(ord = game.ord, base = game.base, over = game.over) {
   var logOrd = EN.sub(EN.logBase(ord, 10), 100);
   if (EN.gt(logOrd, 0)) {
-    return EN.pow(EN.add(EN.min(EN.div(logOrd, 100), 4), 1), EN.sqrt(logOrd));
+    return EN.mul(EN.pow(EN.add(EN.min(EN.div(logOrd, 100/(game.markupChallenge[2]+1)), 4), 1+game.markupChallenge[2]*0.5), EN.sqrt(logOrd)), game.markupChallenge[3]*9+1);
   } else {
     return EN(0);
   }
