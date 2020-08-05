@@ -1909,27 +1909,10 @@ function beautifyEN(n, f = 0) {
 function calcOrdPoints(ord = game.ord, base = game.base, over = game.over) {
   var logOrd = EN.sub(EN.logBase(ord, 10), 100);
   if (EN.gt(logOrd, 0)) {
-    return EN.pow(1+EN.min(logOrd/100, 4), EN.sqrt(logOrd));
+    return EN.pow(EN.add(EN.min(EN.div(logOrd, 100), 4), 1), EN.sqrt(logOrd));
   } else {
     return EN(0);
   }
-  /* return Math.floor((1.05+Math.log10(ord/1e100)/500)**Math.log10(ord/1e100)*Math.sqrt(Math.log10(ord/1e100))+1 + over);
-  if (!(ord > 3 ** 27 && base <= 3)) {
-    if (ord < base) {
-      return Math.log10(ord/1e100)**10+1 + over;
-    } else {
-      let tempvar = Math.floor(Math.log(ord + 0.1) / Math.log(base));
-      let tempvar2 = Math.pow(base, tempvar);
-      let tempvar3 = Math.floor((ord + 0.1) / tempvar2);
-      return Math.min(
-        1e258,
-        10 ** calcOrdPoints(tempvar, base, 0) * tempvar3 +
-          calcOrdPoints(ord - tempvar2 * tempvar3, base, over)
-      );
-    }
-  } else {
-    return Math.round(ord / 1e270 + 1) * 1e270;
-  } */
 }
 
 function Tab(t) {
