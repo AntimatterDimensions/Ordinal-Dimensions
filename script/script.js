@@ -502,7 +502,7 @@ function buyDynamicUp(num) {
       game.dynamicLevel = EN.add(game.dynamicLevel, 1);
     }
   } else if (num == 1) {
-    var costThis = EN.mul(1e11, EN.pow(10, EN.pow(game.dynamicLevel2, 2.2)));
+    var costThis = EN.mul(1e12, EN.pow(10, EN.pow(game.dynamicLevel2, 2.2)));
     if (EN.gte(game.OP, costThis)) {
       game.OP = EN.sub(game.OP, costThis);
       game.dynamicLevel2 = EN.add(game.dynamicLevel2, 1);
@@ -863,7 +863,7 @@ function render() {
   game.canInf = game.ord >= 1e100;
   get('manifoldIncrease').innerHTML = 'It is increasing by ' + EN.div(EN.pow(game.dynamicLevel, 2), 100) + ' per second and caps at ' + EN.pow(4, EN.add(game.dynamicLevel2, 1));
   get('dynamicCost0').innerHTML = beautify(EN.mul(1e11, EN.pow(10, EN.pow(game.dynamicLevel, 1.8))));
-  get('dynamicCost1').innerHTML = beautify(EN.mul(1e11, EN.pow(10, EN.pow(game.dynamicLevel2, 2.2))));
+  get('dynamicCost1').innerHTML = beautify(EN.mul(1e12, EN.pow(10, EN.pow(game.dynamicLevel2, 2.2))));
   challengeEffects();
   if (game.infUnlock === 1) {
     get("infinityTabButton").style.display = "inline-block";
