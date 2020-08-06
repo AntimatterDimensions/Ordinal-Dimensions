@@ -555,6 +555,7 @@ function calcBase() {
   var b = 10;
   if (game.markupChallenge[5] == 1) b--;
   if (game.markupChallenge[7] == 1) b--;
+  if (game.markupChallenge[9] == 1) b--;
   if (game.markupChallengeEntered >= 8) b += 2;
   return b;
 }
@@ -689,8 +690,11 @@ function loop(unadjusted, off = 0) {
     if (game.markupChallenge[1] == 1 && (5 <= i && i <= 9)) {
       multiThis = EN.mul(multiThis, 4);
     }
-    if (game.markupChallenge[4] == 1 && (0 <= i && i <= 9)) {
+    if (game.markupChallenge[4] == 1) {
       multiThis = EN.mul(multiThis, 3);
+    }
+    if (game.markupChallenge[8] == 1) {
+      multiThis = EN.mul(multiThis, EN.logBase(game.OP, 10));
     }
     if (game.markupChallengeEntered >= 2 && i == 0) {
       multiThis = EN.mul(multiThis, 1/1000);
@@ -1785,7 +1789,7 @@ function beautifyEN(n, f = 0) {
 function calcOrdPoints(ord = game.ord, base = game.base, over = game.over) {
   var logOrd = EN.sub(EN.logBase(ord, game.base), 100);
   if (EN.gt(logOrd, 0)) {
-    return EN.mul(EN.pow(EN.add(EN.min(EN.div(logOrd, 100/(game.markupChallenge[2]+1)), 4), 1+game.markupChallenge[2]*0.5), EN.sqrt(logOrd)), game.markupChallenge[3]*9+1);
+    return EN.mul(EN.pow(EN.add(EN.min(EN.div(logOrd, 100/(game.markupChallenge[2]+1)), 14-game.base), 1+game.markupChallenge[2]*0.5+(10-game.base)*0.5), EN.sqrt(logOrd)), game.markupChallenge[3]*9+1);
   } else {
     return EN(0);
   }
