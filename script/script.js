@@ -512,7 +512,7 @@ function buyDynamicUp(num) {
 }
 
 function calcBase() {
-  var b = 9;
+  var b = 10;
   if (game.markupChallenge[5] == 1) b--;
   return b;
 }
