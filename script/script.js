@@ -396,7 +396,7 @@ function enterMarkupChallenge(num) {
     }
     game.ord = EN(0);
     game.over = 0;
-    game.dynamic = 1;
+    game.dynamic = EN(1);
     game.decrementy = 0;
     game.autoLoop.succ = 0;
     game.autoLoop.lim = 0;
@@ -494,6 +494,22 @@ function challengeEffects() {
   }
 }
 
+function buyDynamicUp(num) {
+  if (num == 0) {
+    var costThis = EN.mul(1e12, EN.pow(10, EN.pow(game.dynamicLevel, 1.8)));
+    if (EN.gte(game.OP, costThis)) {
+      game.OP = EN.sub(game.OP, costThis);
+      game.dynamicLevel = EN.add(game.dynamicLevel, 1);
+    }
+  } else if (num == 1) {
+    var costThis = EN.mul(1e12, EN.pow(10, EN.pow(game.dynamicLevel2, 2.2)));
+    if (EN.gte(game.OP, costThis)) {
+      game.OP = EN.sub(game.OP, costThis);
+      game.dynamicLevel2 = EN.add(game.dynamicLevel2, 1);
+    }
+  }
+}
+
 function increment(manmade=0) {
   if (manmade==0 || game.manualClicksLeft >= 0.5 || game.chal8 == 0) {
     if (manmade==1 && game.chal8 == 1) game.manualClicksLeft -= 1
@@ -554,6 +570,10 @@ function loop(unadjusted, off = 0) {
   if (game.markupChallengeEntered >= 6) {
     game.decrementy = EN.add(game.decrementy, EN.div(EN.logBase(EN.add(game.ord, 1), 10), 1000));
     get('decrementyText').innerHTML = 'There is ' + Number(beautifyEN(EN.mul(game.decrementy, 100)))/100 + ' decrementy';
+  }
+  game.dynamic = EN.add(game.dynamic, EN.mul(EN.div(EN.pow(game.dynamicLevel, 2), 100), ms/1000));
+  if (EN.gt(game.dynamic, EN.pow(2, (EN.add(game.dynamicLevel2, 1))))) {
+    game.dynamic = EN.pow(2, (EN.add(game.dynamicLevel2, 1)));
   }
   for (var i = 9; i > -1; i--) {
     multiThis = EN(1);
@@ -618,6 +638,7 @@ function loop(unadjusted, off = 0) {
     if (game.markupChallengeEntered >= 6) {
       multiThis = EN.div(multiThis, (game.decrementy+1));
     }
+    multiThis = EN.mul(multiThis, game.dynamic);
     if (i != 0) {
       game.autoIncrHave[i-1] = EN(EN.add(game.autoIncrHave[i-1], EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))))));
     } else {
@@ -693,8 +714,6 @@ function loop(unadjusted, off = 0) {
   if (game.upgrades.includes(8)) {
     game.incrementy = game.incrementy.add(getIncrementyRate(ms / 2));
   }
-  changeDynamic(ms);
-  if (game.dynamic < 0) game.dynamic = 0;
   if (game.chal8 === 1) game.decrementy += getDecrementyRate(ms);
   if (game.boostUnlock == 1 && game.limAuto === 0) game.limAuto = 1;
   buptotalMute =
@@ -765,7 +784,6 @@ function loop(unadjusted, off = 0) {
   if (!chal8Tip && game.chal8 === 1 && calcOrdPoints() >= 1e30*1e10**(game.base==5&&game.sfBought.includes(61)))
     // game.ord = EN(game.base**(game.base * 3+(game.base==5&&game.sfBought.includes(61)?game.base:0)));
   changeDynamic(ms);
-  if (game.dynamic < 0) game.dynamic = 0;
   if (game.upgrades.includes(8)) {
     game.incrementy = game.incrementy.add(getIncrementyRate(ms / 2));
     if (
@@ -835,7 +853,6 @@ function loop(unadjusted, off = 0) {
     game.reachedBHO = 1;
   if (ms > 0) render();
   if (game.factorBoosts < 0) game.factorBoosts = 0;
-  if (game.base <= 4) game.dynamicUnlock = 1;
 }
 
 function render() {
@@ -844,6 +861,9 @@ function render() {
   const ordSub = displayOrd(game.ord,game.base,game.over,0,0,0,game.colors);
   document.getElementById("hardy").innerHTML=colorWrap("H",ordColor)+"<sub>" + ordSub + "</sub><text class=\"invisible\">l</text>"+colorWrap("(" + game.base + ")" + (game.ord >= (game.base**3) || outSize >= 10**264 || (game.ord>=5 && game.base==2) ? "" : "=" + beautify(outSize)),ordColor)
   game.canInf = game.ord >= 1e100;
+  get('manifoldIncrease').innerHTML = 'It is increasing by ' + EN.div(EN.pow(game.dynamicLevel, 2), 100) + ' per second and caps at ' + EN.pow(2, EN.add(game.dynamicLevel2, 1));
+  get('dynamicCost0').innerHTML = beautify(EN.mul(1e12, EN.pow(10, EN.pow(game.dynamicLevel, 1.8))));
+  get('dynamicCost1').innerHTML = beautify(EN.mul(1e12, EN.pow(10, EN.pow(game.dynamicLevel2, 2.2))));
   challengeEffects();
   if (game.infUnlock === 1) {
     get("infinityTabButton").style.display = "inline-block";
@@ -898,12 +918,7 @@ function render() {
     "Refund back " +
     beautify(calcRefund()) +
     " boosters, but reset all factor shifts (R)";
-  get("dynamicMult").textContent =
-    "Your Dynamic Factor is x" +
-    (
-      (game.dynamic * getManifoldEffect()) **
-      (game.upgrades.includes(13) && game.challenge % 2 == 1 ? 2 : 1)
-    ).toFixed(3);
+  get("dynamicMult").textContent = "Your Dynamic Factor is x" + beautify(EN.mul(game.dynamic, 1000))/1000;
   get("infinityAuto").innerHTML =
     "Your Markup Autobuyer is clicking the Markup button " +
     (game.upgrades.includes(3) && game.autoOn.inf == 1
@@ -987,20 +1002,6 @@ function render() {
     "Reset incrementy for a manifold.<br>Need: " +
     ((game.iups[5] == 1 ? 2 : 3) ** (game.manifolds + 1)).toFixed(2) +
     "x<br>incrementy multiplier";
-  get("manifoldIncrease").textContent =
-    "It is increasing by " +
-    (game.upgrades.includes(13) && game.challenge % 2 == 1
-      ? " a non-constant amount "
-      : (0.002 * (game.iups[6] == 1 ? 100  * (game.sfBought.includes(32) ? 100 : 1) : 1) * getManifoldEffect()).toFixed(
-          3
-        )) +
-    " per second and caps at " +
-    getDynamicFactorCap().toFixed(3);
-  get("dynamicDecreaseText").style.display =
-    game.challenge == 6 || game.challenge == 7 ? "inline" : "none";
-  get("dynamicDecrease").textContent = game.upgrades.includes(14)
-    ? "10.000"
-    : "1.000e300";
   let bfactor;
   bfactorMult = 1;
   for (let i = 0; i < 7; i++) {
@@ -1508,23 +1509,6 @@ function getManifolds() {
   }
 }
 
-function changeDynamic(ms) {
-  if (game.dynamicUnlock == 1)
-    game.dynamic +=
-      ms / 1000000 * (game.iups[6] == 1 ? 100*(game.sfBought.includes(32) ? 100 : 1): 1);
-  if (game.challenge == 6 || game.challenge == 7) //No update, that was just the previous minor upgrade time to make more studies
-    game.dynamic -=
-      ((10 ** 297) /
-      2 /
-      (game.upgrades.includes(14) ? 10 ** 299 : 1) /
-      getManifoldEffect()) * ms;
-  let capp =
-    10 *
-    getDarkManifoldEffect() *
-    (game.aups.includes(6) ? game.assCard[1].mult.toNumber() : 1);
-  if (game.dynamic >= capp) game.dynamic = capp;
-}
-
 function getDarkManifolds() {
   if (game.decrementy <= game.darkManifolds * Math.log10(game.sfBought.includes(31)?2:3)) return;
   if (game.darkManifoldMax == 1) {
@@ -1821,7 +1805,7 @@ function debug() {
   game.manualClicksLeft = 1000;
   game.factors = [9, 8, 7, 4, 4, 3, 2];
   game.infUnlock = 1;
-  game.dynamic = 1;
+  game.dynamic = EN(1);
   game.challenge = 0;
   game.chal8 = 0;
   game.decrementy = 0;
@@ -1842,7 +1826,7 @@ function revertToPreBooster() {
   game.base = 3;
   game.factors = [9, 8, 7, 4, 4, 3, 2];
   game.infUnlock = 1;
-  game.dynamic = 1;
+  game.dynamic = EN(1);
   game.challenge = 0;
   game.chal8 = 0;
   game.decrementy = 0;

@@ -22,7 +22,7 @@ function reset() {
   boosters: 0,
   upgrades: [],
   factorBoosts: 0,
-  dynamic: 1,
+  dynamic: EN(1),
   dynamicUnlock: 0,
   maxAuto: 0,
   infAuto: 0,
@@ -97,7 +97,9 @@ function reset() {
   autobuyerOn : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   c3Effect : 0,
   c5Effect : 0,
-  autobuyersToggle : 0
+  autobuyersToggle : 0,
+  dynamicLevel : EN(0),
+  dynamicLevel2 : EN(0),
   };
   document.getElementById("infinityTabButton").style.display = "none";
   render();
