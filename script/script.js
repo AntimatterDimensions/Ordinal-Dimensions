@@ -365,7 +365,7 @@ function randerAutobuyer() {
     }
     get('auto' + i + 'buy').innerHTML = '60% smaller interval<br>' + beautify(EN.mul(1e7, EN.pow(10, game.autobuyerBought[i]))) + ' OP'
     var thisAutoTick = autobuyerBaseTicks[i]*0.4**game.autobuyerBought[i];
-    get('auto' + i + 'inter').innerHTML = 'Current interval: ' + thisAutoTick.toFixed(3) + ' secondss'
+    get('auto' + i + 'inter').innerHTML = 'Current interval: ' + thisAutoTick.toFixed(3) + ' seconds'
     chkbox[i].checked = game.autobuyerOn[i];
   }
 }
