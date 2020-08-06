@@ -572,8 +572,8 @@ function loop(unadjusted, off = 0) {
     get('decrementyText').innerHTML = 'There is ' + Number(beautifyEN(EN.mul(game.decrementy, 100)))/100 + ' decrementy';
   }
   game.dynamic = EN.add(game.dynamic, EN.mul(EN.div(EN.pow(game.dynamicLevel, 2), 100), ms/1000));
-  if (EN.gt(game.dynamic, EN.pow(2, (EN.add(game.dynamicLevel2, 1))))) {
-    game.dynamic = EN.pow(2, (EN.add(game.dynamicLevel2, 1)));
+  if (EN.gt(game.dynamic, EN.pow(4, (EN.add(game.dynamicLevel2, 1))))) {
+    game.dynamic = EN.pow(4, (EN.add(game.dynamicLevel2, 1)));
   }
   for (var i = 9; i > -1; i--) {
     multiThis = EN(1);
@@ -861,7 +861,7 @@ function render() {
   const ordSub = displayOrd(game.ord,game.base,game.over,0,0,0,game.colors);
   document.getElementById("hardy").innerHTML=colorWrap("H",ordColor)+"<sub>" + ordSub + "</sub><text class=\"invisible\">l</text>"+colorWrap("(" + game.base + ")" + (game.ord >= (game.base**3) || outSize >= 10**264 || (game.ord>=5 && game.base==2) ? "" : "=" + beautify(outSize)),ordColor)
   game.canInf = game.ord >= 1e100;
-  get('manifoldIncrease').innerHTML = 'It is increasing by ' + EN.div(EN.pow(game.dynamicLevel, 2), 100) + ' per second and caps at ' + EN.pow(2, EN.add(game.dynamicLevel2, 1));
+  get('manifoldIncrease').innerHTML = 'It is increasing by ' + EN.div(EN.pow(game.dynamicLevel, 2), 100) + ' per second and caps at ' + EN.pow(4, EN.add(game.dynamicLevel2, 1));
   get('dynamicCost0').innerHTML = beautify(EN.mul(1e11, EN.pow(10, EN.pow(game.dynamicLevel, 1.8))));
   get('dynamicCost1').innerHTML = beautify(EN.mul(1e11, EN.pow(10, EN.pow(game.dynamicLevel2, 2.2))));
   challengeEffects();
