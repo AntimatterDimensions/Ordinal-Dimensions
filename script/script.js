@@ -107,7 +107,7 @@ const autobuyerBaseTicks = [25, 35, 45, 55, 65];
 const infUpgradeCost = [
     1, 10, 75, 200, 500, 20, 90, 250, 400, 800,
     1200, 3000, 1e4, 4e4, 2e5, 1e4, 4e4, 1.6e5, 6.4e5, 1.28e6,
-    1e10, 3.45e12, 9.99e99, 9.99e99, 9.99e99, 1e6, 9.99e99
+    1e10, 3.45e12, 9.99e99, 9.99e99, 9.99e99, 1e6, 1e13
  ];
 var multiThis;
 let AF = 0;
@@ -276,6 +276,11 @@ function randerInfTabs() {
     get('autoButton').style.display = 'none';
     get('challengeButton').style.display = 'none';
   }
+  if (game.infUpgradeHave[26] == 1) {
+    get('dynamicFactorButton').style.display = 'inline';
+  } else {
+    get('dynamicFactorButton').style.display = 'none';
+  }
 }
 function passiveIncrementer() {
   if (game.infUpgradeHave[5] == 1) {
@@ -384,35 +389,34 @@ function markupChallengeCheck() {
   }
 }
 function enterMarkupChallenge(num) {
-  if (num < 6) {
-    if (num != game.markupChallengeEntered) {
-      game.markupChallengeEntered = num;
-      if (EN.gt(calcTotalOPGain(), 1)) {
-        game.OP = EN.add(game.OP, calcTotalOPGain());
-      }
-      game.ord = EN(0);
-      game.over = 0;
-      game.dynamic = 1;
-      game.decrementy = 0;
-      game.autoLoop.succ = 0;
-      game.autoLoop.lim = 0;
-      game.manualClicksLeft = 1000;
-      game.markCount++;
-      game.infTime = 0;
-      for (var i = 0; i < 10; i++) {
-        game.autoIncrHave[i] = EN(0);
-        game.autoIncrBought[i] = EN(0);
-        game.autoIncrCost[i] = autoIncrCostBase[i];
-      }
-      if (game.markupChallengeEntered >= 3) {
-        game.c3Effect = 1;
-      }
-      if (game.markupChallengeEntered >= 5) {
-        game.c5Effect = 0;
-      }
+  if (num != game.markupChallengeEntered) {
+    game.markupChallengeEntered = num;
+    if (EN.gt(calcTotalOPGain(), 1)) {
+      game.OP = EN.add(game.OP, calcTotalOPGain());
     }
-  } else {
-    alert('Comming soon!');
+    game.ord = EN(0);
+    game.over = 0;
+    game.dynamic = 1;
+    game.decrementy = 0;
+    game.autoLoop.succ = 0;
+    game.autoLoop.lim = 0;
+    game.manualClicksLeft = 1000;
+    game.markCount++;
+    game.infTime = 0;
+    for (var i = 0; i < 10; i++) {
+      game.autoIncrHave[i] = EN(0);
+      game.autoIncrBought[i] = EN(0);
+      game.autoIncrCost[i] = autoIncrCostBase[i];
+    }
+    if (game.markupChallengeEntered >= 3) {
+      game.c3Effect = 1;
+    }
+    if (game.markupChallengeEntered >= 5) {
+      game.c5Effect = 0;
+    }
+    if (game.markupChallengeEntered >= 6) {
+      game.decrementy = EN(0);
+    }
   }
   if (num == 0) {
     passiveIncrementer();
@@ -445,6 +449,11 @@ function renderMarkupChallenge() {
     get('compeleteChallenge').style.display = 'inline';
   } else {
     get('compeleteChallenge').style.display = 'none';
+  }
+  if (game.markupChallengeEntered >= 6) {
+    get('decrementyText').style.display = 'block';
+  } else {
+    get('decrementyText').style.display = 'none';
   }
 }
 function compeleteChallenge() {
@@ -542,6 +551,10 @@ function loop(unadjusted, off = 0) {
       game.c5Effect = 0;
     }
   }
+  if (game.markupChallengeEntered >= 6) {
+    game.decrementy = EN.add(game.decrementy, EN.div(EN.logBase(EN.add(game.ord, 1), 10), 1000));
+    get('decrementyText').innerHTML = 'There is ' + Number(beautifyEN(EN.mul(game.decrementy, 100)))/100 + ' decrementy';
+  }
   for (var i = 9; i > -1; i--) {
     multiThis = EN(1);
     if ((i == 0 || i == 9) && game.infUpgradeHave[0] == 1) {
@@ -601,6 +614,9 @@ function loop(unadjusted, off = 0) {
     }
     if (game.markupChallengeEntered >= 5) {
       multiThis = EN.mul(multiThis, game.c5Effect);
+    }
+    if (game.markupChallengeEntered >= 6) {
+      multiThis = EN.div(multiThis, (game.decrementy+1));
     }
     if (i != 0) {
       game.autoIncrHave[i-1] = EN(EN.add(game.autoIncrHave[i-1], EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))))));
@@ -850,11 +866,6 @@ function render() {
   } else {
     get("boosterTabButton").style.display = "none";
   }
-  if (game.dynamicUnlock === 1) {
-    get("dynamicFactorButton").style.display = "inline-block";
-  } else {
-    get("dynamicFactorButton").style.display = "none";
-  }
   if (getFBps() < 10 && game.canInf) {
     infinityButtonText = beautify(calcTotalOPGain());
     if (
@@ -1052,17 +1063,6 @@ function render() {
   get("changeMusic").innerHTML = "Music: " + musicName[game.music];
   get("incrementyText3").innerHTML =
     "You start gaining incrementy when you reach " + displayOrd(4e270);
-  get("decrementyText").textContent =
-    "There is " +
-    (game.chal8 === 1
-      ? beautifypower(game.decrementy) + " decrementy and "
-      : "") +
-    game.manualClicksLeft +
-    " clicks left";
-  get("decrementyText").style.display =
-    game.chal8 === 1 || game.challenge === 6 || game.challenge === 7
-      ? "inline"
-      : "none";
   get("collapseScreen").style.display =
     collapseAnimation === 0 ? "none" : "block";
   get("collapseScreen").style.opacity = collapseAnimation + "%";
