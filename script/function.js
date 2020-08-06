@@ -219,32 +219,9 @@ function getBoostFromBoosters(check = 0) {
       )
     : 1;
 }
-function calcFactorShiftTime(n) {
-  return Math.max(
-    1 / game.shiftAuto.toNumber(),Math.min(
-    (100 / calcOPPS(n - 1)) * (game.leastBoost <= 1.5 ? 1 : 1) +
-      OPtoOrd(getFSCost(n-1),calcBase(n-1)) /
-        (calcTotalMultWOFactor() *
-          ((game.upgrades.includes(1) ? 2 : 1) *
-            (1 + (game.upgrades.includes(11) ? 3 : 0))) **
-            (n - 1)),getFSCost(n-1)/calcOPPS(n - 1))
-  );
-}
 
 function getFSCost(fs = game.factorShifts) {
   return Math.round(factorShiftCosts[fs])
-}
-
-function calcOPPS(fs = game.factorShifts) {
-  return (
-    (game.upgrades.includes(5)
-      ? 5 ** (game.challenge === 1 || game.challenge === 7 ? 4 : 1)
-      : 1) *
-    game.assCard[2].mult.toNumber() *
-    ((game.upgrades.includes(7) ? 20 : 0) + (game.leastBoost <= 15 ? 15 : 0)) *
-    (game.upgrades.includes(19) && calcBase(fs) <= 5.5 ? 666666 : 1) *
-    (game.sfBought.includes(42) ? 4 : 1)
-  );
 }
 
 function calcIncrementyMult(i = game.incrementy) {
@@ -309,18 +286,6 @@ function getChalIncrementyCurve(n) {
       1.53125 + 0.03125 * n
     ) - 1
   );
-}
-
-function calcBase(n = game.factorShifts) {
-  let b =
-    10 -
-    n +
-    (game.challenge === 3 || game.challenge === 7 ? 5 : 0) +
-    (game.challenge === 4 || game.challenge === 7 ? n : 0);
-  if (b >= 8 && game.upgrades.includes(9)) b -= 4;
-  if (game.upgrades.includes(10) && game.OP <= 1e270) b = 5;
-  if (game.upgrades.includes(23) && b == 6) b = 5;
-  return b;
 }
 
 function getFBps() {
