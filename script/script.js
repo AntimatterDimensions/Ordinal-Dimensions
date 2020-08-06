@@ -107,7 +107,7 @@ const autobuyerBaseTicks = [25, 35, 45, 55, 65];
 const infUpgradeCost = [
     1, 10, 75, 200, 500, 20, 90, 250, 400, 800,
     1200, 3000, 1e4, 4e4, 2e5, 1e4, 4e4, 1.6e5, 6.4e5, 1.28e6,
-    1e10, 3.45e12, 9.99e99, 9.99e99, 9.99e99, 1e6, 1e13
+    1e10, 3.45e12, 2.12e13, 1.27e14, 1e15, 1e6, 1e13
  ];
 var multiThis;
 let AF = 0;
@@ -616,6 +616,16 @@ function loop(unadjusted, off = 0) {
         tempVar += game.autobuyerBought[j];
       }
       multiThis = EN.mul(multiThis, EN.add(tempVar, 1));
+    }
+    if (i == 7 && game.infUpgradeHave[22] == 1) {
+      multiThis = EN.mul(multiThis, EN.pow(EN.add(game.dynamic, 1), 3));
+    }
+    if (i == 8 && game.infUpgradeHave[23] == 1) {
+      var tempVar = EN.add(game.dynamicLevel, game.dynamicLevel2);
+      multiThis = EN.mul(multiThis, EN.pow(EN.add(tempVar, 1), 6));
+    }
+    if (i == 9 && game.infUpgradeHave[23] == 1) {
+      multiThis = EN.mul(multiThis, EN.pow(EN.pow(4, (EN.add(game.dynamicLevel2, 1))), 3));
     }
     if (game.markupChallenge[0] == 1 && (0 <= i && i <= 4)) {
       multiThis = EN.mul(multiThis, 4);
