@@ -102,6 +102,7 @@ const aupCost = [
 ];
 let autoIncrCostBase = [1e1, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e14, 1e18, 1e25];
 var blockedIncr = 0;
+var costScale = 1;
 const autobuyerTicks = [25, 35, 45, 55, 65];
 const autobuyerBaseTicks = [25, 35, 45, 55, 65];
 const infUpgradeCost = [
@@ -141,6 +142,7 @@ setInterval( function () {
 randerEtc();
 
 function randerEtc() {
+  setAllIncrCost();
   randerAutoIncr();
   randerInfUpgrade();
   randerAutobuyer();
@@ -161,41 +163,53 @@ function buyBulkIncr(num, bulk) {
   if (!EN.eq(game.ord, 0)) {
     var logOrd = EN.logBase(game.ord, game.base);
     // Incrementer past-300 level
-    if (EN.lt(game.autoIncrBought[num], 299)) {
-      thisBulk = EN.add(EN.sub(EN.floor(EN.div(EN.sub(logOrd, EN.logBase(autoIncrCostBase[num], game.base)), num+1)), game.autoIncrBought[num]), 1);
+    if (EN.lt(EN.mul(game.autoIncrBought[num], costScale), 299)) {
+      thisBulk = EN.add(EN.sub(EN.floor(EN.div(EN.sub(logOrd, EN.logBase(autoIncrCostBase[num], game.base)), num+1)), EN.mul(game.autoIncrBought[num], costScale)), 1);
       if (EN.gte(thisBulk, 1)) {
-        if (EN.gt(EN.add(thisBulk, game.autoIncrBought[num]), 299)) {
-          thisBulk = EN.sub(299, game.autoIncrBought[num]);
+        if (EN.gt(EN.add(thisBulk, EN.mul(game.autoIncrBought[num], costScale)), 299)) {
+          thisBulk = EN.sub(299, EN.mul(game.autoIncrBought[num], costScale));
         }
         if (EN.gt(thisBulk, bulk)) {
           thisBulk = EN(bulk);
         }
-        game.ord = EN.sub(game.ord, EN.pow(EN.pow(game.base, num+1), EN.add(game.autoIncrBought[num], thisBulk)));
+        game.ord = EN.sub(game.ord, EN.pow(EN.pow(game.base, num+1), EN.add(EN.mul(game.autoIncrBought[num], costScale), thisBulk)));
         game.autoIncrBought[num] = EN.add(game.autoIncrBought[num], thisBulk);
         game.autoIncrHave[num] = EN.add(game.autoIncrHave[num], thisBulk);
-        game.autoIncrCost[num] = EN.mul(autoIncrCostBase[num], EN.pow(EN.pow(game.base, num+1), game.autoIncrBought[num]));
+        setIncrCost(num);
         bulk = EN.sub(bulk, thisBulk);
         challengesBuyEffect(num);
+        randerAutoIncr();
       }
     }
     // Incrementer post-300 level
-    if (EN.gte(game.autoIncrBought[num], 299) && EN.gte(bulk, 1)) {
+    if (EN.gte(EN.mul(game.autoIncrBought[num], costScale), 299) && EN.gte(bulk, 1)) {
       thisBulk = EN(0);
       logOrdOver = EN.sub(logOrd, EN.add(EN.logBase(autoIncrCostBase[num], game.base), EN.mul(298, (num+1))));
-      thisBulk = EN.add(EN.sub(EN.floor(EN.div(EN.sub(EN.pow(EN.add(EN.mul(EN.div(logOrdOver, num+1), 8), 1), 0.5), -1), 2)), EN.sub(game.autoIncrBought[num], 298)), 1);
+      thisBulk = EN.add(EN.sub(EN.floor(EN.div(EN.sub(EN.pow(EN.add(EN.mul(EN.div(logOrdOver, num+1), 8), 1), 0.5), -1), 2)), EN.sub(EN.mul(game.autoIncrBought[num], costScale), 298)), 1);
       if (EN.gte(thisBulk, 1)) {
         if (EN.gt(thisBulk, bulk)) {
           thisBulk = EN(bulk);
         }
-        game.ord = EN.sub(game.ord, EN.pow(EN.pow(game.base, num+1), EN.add(299, EN.div(EN.mul(EN.sub(game.autoIncrBought[num], 299), EN.sub(game.autoIncrBought[num], 298)), 2))));
+        game.ord = EN.sub(game.ord, EN.pow(EN.pow(game.base, num+1), EN.add(299, EN.div(EN.mul(EN.sub(EN.mul(game.autoIncrBought[num], costScale), 299), EN.sub(EN.mul(game.autoIncrBought[num], costScale), 298)), 2))));
         game.autoIncrBought[num] = EN.add(game.autoIncrBought[num], thisBulk);
         game.autoIncrHave[num] = EN.add(game.autoIncrHave[num], thisBulk);
-        game.autoIncrCost[num] = EN.mul(autoIncrCostBase[num], EN.pow(EN.pow(game.base, num+1), EN.add(EN.div(EN.mul(EN.sub(game.autoIncrBought[num], 299), EN.sub(game.autoIncrBought[num], 298)), 2), 298)));
+        setIncrCost(num);
         challengesBuyEffect(num);
+        randerAutoIncr();
       }
-      randerAutoIncr();
     }
-    randerAutoIncr();
+  }
+}
+function setAllIncrCost() {
+  for (var i = 0; i < 10; i++) {
+    setIncrCost(i);
+  }
+}
+function setIncrCost(num) {
+  if (EN.lt(EN.mul(game.autoIncrBought[num], costScale), 299)) {
+    game.autoIncrCost[num] = EN.mul(autoIncrCostBase[num], EN.pow(EN.pow(game.base, num+1), EN.mul(game.autoIncrBought[num], costScale)));
+  } else {
+    game.autoIncrCost[num] = EN.mul(autoIncrCostBase[num], EN.pow(EN.pow(game.base, num+1), EN.add(EN.div(EN.mul(EN.sub(EN.mul(game.autoIncrBought[num], costScale), 299), EN.sub(EN.mul(game.autoIncrBought[num], costScale), 298)), 2), 298)));
   }
 }
 function challengesBuyEffect(num) {
@@ -213,7 +227,7 @@ function challengesBuyEffect(num) {
 }
 function randerAutoIncr() {
   for (var i = 0; i < 10; i++) {
-    get("autoCost" + i).innerHTML = 'cost: ' + displayOrd(game.autoIncrCost[i],game.base,game.over,game.maxOrdLength.less-1,0,0,game.colors).replace('+...', '');
+    get("autoCost" + i).innerHTML = 'cost: ' + displayOrd(game.autoIncrCost[i],game.base,game.over,game.maxOrdLength.less-1,1,0,game.colors).replace('+...', '');
     if (i >= 10-blockedIncr) {
       get("incrementer" + (i+1)).style.display = 'none';
     } else {
@@ -225,9 +239,9 @@ function randerAutoIncr() {
 function randerInfUpgrade() {
   for (var i = 0; i < 27; i++) {
     if (game.infUpgradeHave[i] == 1) {
-      get("infUpgrade" + i).style.display = 'none';
+      document.querySelector('#infUpgrade' + i + ' > button').style.display = 'none';
     } else {
-      get("infUpgrade" + i).style.display = 'block';
+      document.querySelector('#infUpgrade' + i + ' > button').style.display = 'block';
     }
   }
   randerInfTabs();
@@ -395,6 +409,11 @@ function markupChallengeCheck() {
   } else {
     blockedIncr = 0;
   }
+  if (game.markupChallengeEntered >= 9) {
+    costScale = 2;
+  } else {
+    costScale = 1;
+  }
 }
 function enterMarkupChallenge(num) {
   if (num != game.markupChallengeEntered) {
@@ -425,22 +444,26 @@ function enterMarkupChallenge(num) {
     if (game.markupChallengeEntered >= 6) {
       game.decrementy = EN(0);
     }
+    if (game.markupChallengeEntered >= 7) {
+      game.c7Effect = 1;
+    }
   }
   if (num == 0) {
     passiveIncrementer();
   }
+  setAllIncrCost();
   challengeEffects();
   markupChallengeCheck();
   randerAutoIncr();
   renderMarkupChallenge();
 }
 function renderMarkupChallenge() {
-  for (var i = 0; i < 6; i++) {
+  for (var i = 0; i < 11; i++) {
     if (game.markupChallenge[i] == 1) {
       get('markChallenge' + (i+1)).classList.add('bought');
     }
   }
-  for (var i = 1; i < 7; i++) {
+  for (var i = 1; i < 11; i++) {
     get('markChallenge' + i).classList.remove('running');
   }
   if (game.markupChallengeEntered != 0) {
@@ -465,7 +488,7 @@ function renderMarkupChallenge() {
   }
 }
 function compeleteChallenge() {
-  if (EN.gte(game.ord, 1e100)) {
+  if (EN.gte(game.ord, EN.pow(game.base, EN.pow(game.base, 2)))) {
     game.markupChallenge[game.markupChallengeEntered-1] = 1;
     enterMarkupChallenge(0);
     challengeReward();
@@ -493,7 +516,11 @@ function challengeEffects() {
   if (game.markupChallengeEntered >= 3) {
     get('challInfo').style.display = 'block';
     if (game.markupChallengeEntered >= 5) {
-      get('challInfo').innerHTML = 'C3 effect -> ' + game.c3Effect.toFixed(2) + 'x to all Incrementers<br>C5 effect -> ' + game.c5Effect.toFixed(2) + 'x to all Incrementers';
+      if (game.markupChallengeEntered >= 7) {
+        get('challInfo').innerHTML = 'C3 effect -> ' + game.c3Effect.toFixed(2) + 'x to all Incrementers<br>C5 effect -> ' + game.c5Effect.toFixed(2) + 'x to all Incrementers<br>C7 effect -> ' + game.c7Effect.toFixed(2) + 'x to all Incrementers';
+      } else {
+        get('challInfo').innerHTML = 'C3 effect -> ' + game.c3Effect.toFixed(2) + 'x to all Incrementers<br>C5 effect -> ' + game.c5Effect.toFixed(2) + 'x to all Incrementers';
+      }
     } else {
       get('challInfo').innerHTML = 'C3 effect -> ' + game.c3Effect.toFixed(2) + 'x to all Incrementers';
     }
@@ -517,10 +544,18 @@ function buyDynamicUp(num) {
     }
   }
 }
+function calcDynamicMult() {
+  var tempMult = EN(1);
+  if (game.markupChallenge[6] == 1) tempMult = EN.mul(tempMult, 5);
+  if (game.markupChallenge[7] == 1) tempMult = EN.mul(tempMult, 3);
+  return tempMult;
+}
 
 function calcBase() {
   var b = 10;
   if (game.markupChallenge[5] == 1) b--;
+  if (game.markupChallenge[7] == 1) b--;
+  if (game.markupChallengeEntered >= 8) b += 2;
   return b;
 }
 
@@ -564,9 +599,6 @@ const calculate = window.setInterval(() => {
 
 function loop(unadjusted, off = 0) {
   let ms=unadjusted
-  if (game.chal8==1&&game.decrementy<10) {
-    ms=50
-  }
   markupChallengeCheck();
   autobuyerLoop(ms);
   if (game.markupChallengeEntered >= 3) {
@@ -582,12 +614,22 @@ function loop(unadjusted, off = 0) {
     }
   }
   if (game.markupChallengeEntered >= 6) {
-    game.decrementy = EN.add(game.decrementy, EN.div(EN.logBase(EN.add(game.ord, 1), 10), 1000));
+    if (game.markupChallengeEntered >= 9) {
+      game.decrementy = EN.add(game.decrementy, EN.div(EN.logBase(EN.add(game.ord, 1), 10), 1000));
+    } else {
+      game.decrementy = EN.add(game.decrementy, EN.div(EN.logBase(EN.add(game.ord, 1), 10), 333));
+    }
     get('decrementyText').innerHTML = 'There is ' + Number(beautifyEN(EN.mul(game.decrementy, 100)))/100 + ' decrementy';
   }
-  game.dynamic = EN.add(game.dynamic, EN.mul(EN.div(EN.pow(game.dynamicLevel, 2), 100), ms/1000));
-  if (EN.gt(game.dynamic, EN.pow(4, (EN.add(game.dynamicLevel2, 1))))) {
-    game.dynamic = EN.pow(4, (EN.add(game.dynamicLevel2, 1)));
+  if (game.markupChallengeEntered >= 7) {
+    game.c7Effect -= ms/360000;
+    if (game.c7Effect < 0) {
+      game.c7Effect = 0;
+    }
+  }
+  game.dynamic = EN.add(game.dynamic, EN.mul(EN.div(EN.pow(game.dynamicLevel, 2), 100), EN.mul(calcDynamicMult(), ms/1000)));
+  if (EN.gt(game.dynamic, EN.mul(EN.pow(4, (EN.add(game.dynamicLevel2, 1))), calcDynamicMult()))) {
+    game.dynamic = EN.mul(EN.pow(4, (EN.add(game.dynamicLevel2, 1))), calcDynamicMult());
   }
   for (var i = 9; i > -1; i--) {
     multiThis = EN(1);
@@ -638,8 +680,8 @@ function loop(unadjusted, off = 0) {
       var tempVar = EN.add(game.dynamicLevel, game.dynamicLevel2);
       multiThis = EN.mul(multiThis, EN.pow(EN.add(tempVar, 1), 6));
     }
-    if (i == 9 && game.infUpgradeHave[23] == 1) {
-      multiThis = EN.mul(multiThis, EN.pow(EN.pow(4, (EN.add(game.dynamicLevel2, 1))), 3));
+    if (i == 9 && game.infUpgradeHave[24] == 1) {
+      multiThis = EN.mul(multiThis, EN.mul(EN.pow(EN.pow(4, (EN.add(game.dynamicLevel2, 1))), 3), calcDynamicMult()));
     }
     if (game.markupChallenge[0] == 1 && (0 <= i && i <= 4)) {
       multiThis = EN.mul(multiThis, 4);
@@ -661,6 +703,9 @@ function loop(unadjusted, off = 0) {
     }
     if (game.markupChallengeEntered >= 6) {
       multiThis = EN.div(multiThis, (game.decrementy+1));
+    }
+    if (game.markupChallengeEntered >= 7) {
+      multiThis = EN.mul(multiThis, game.c7Effect);
     }
     multiThis = EN.mul(multiThis, game.dynamic);
     if (i != 0) {
@@ -882,10 +927,33 @@ function render() {
   const ordSub = displayOrd(game.ord,game.base,game.over,0,0,0,game.colors);
   document.getElementById("hardy").innerHTML=colorWrap("H",ordColor)+"<sub>" + ordSub + "</sub><text class=\"invisible\">l</text>"+colorWrap("(" + game.base + ")" + (game.ord >= (game.base**3) || outSize >= 10**264 || (game.ord>=5 && game.base==2) ? "" : "=" + beautify(outSize)),ordColor)
   game.canInf = game.ord >= 1e100;
-  get('manifoldIncrease').innerHTML = 'It is increasing by ' + EN.div(EN.pow(game.dynamicLevel, 2), 100) + ' per second and caps at ' + EN.pow(4, EN.add(game.dynamicLevel2, 1));
+  get('manifoldIncrease').innerHTML = 'It is increasing by ' + Number(beautify(EN.mul(EN.div(EN.pow(game.dynamicLevel, 2), 100), EN.mul(calcDynamicMult(), 100)))/100) + ' per second and caps at ' + Number(beautify(EN.mul(EN.pow(4, EN.add(game.dynamicLevel2, 1)), EN.mul(calcDynamicMult(), 100))))/100;
   get('dynamicCost0').innerHTML = beautify(EN.mul(1e11, EN.pow(10, EN.pow(game.dynamicLevel, 1.8))));
   get('dynamicCost1').innerHTML = beautify(EN.mul(1e12, EN.pow(10, EN.pow(game.dynamicLevel2, 2.2))));
   challengeEffects();
+  let infUpEff = [];
+  infUpEff.push(Math.sqrt(game.infTime/30)*10+1);
+  infUpEff.push(Math.sqrt(Math.sqrt(game.markCount))*8+1);
+  infUpEff.push(EN.max(EN.add(EN.pow(EN.logBase((EN.add(game.ord, 1)), 100), 0.75), 1), 1));
+  infUpEff.push(EN.add(EN.pow(game.autoIncrHave[9], 0.75), 1));
+  infUpEff.push(EN.add(EN.pow(EN.logBase((EN.add(game.OP, 1)), 1000), 0.75), 1));
+  var tempVar = 0;
+  for (var j = 0; j < game.markupChallenge.length; j++) {
+    tempVar += game.markupChallenge[j];
+  }
+  infUpEff.push(EN.add(EN.pow(tempVar, 2), 1));
+  var tempVar = 0;
+  for (var j = 0; j < game.autobuyerBought.length; j++) {
+    tempVar += game.autobuyerBought[j];
+  }
+  infUpEff.push(EN.add(tempVar, 1));
+  infUpEff.push(EN.pow(EN.add(game.dynamic, 1), 3));
+  var tempVar = EN.add(game.dynamicLevel, game.dynamicLevel2);
+  infUpEff.push(EN.pow(EN.add(tempVar, 1), 6));
+  infUpEff.push(EN.mul(EN.pow(EN.pow(4, (EN.add(game.dynamicLevel2, 1))), 3), calcDynamicMult()));
+  for (var i = 0; i < 10; i++) {
+    get('infupgrNum' + i).innerHTML = beautifyEN(EN.mul(infUpEff[i], 100)/100);
+  }
   if (game.infUnlock === 1) {
     get("infinityTabButton").style.display = "inline-block";
   } else {
@@ -939,7 +1007,7 @@ function render() {
     "Refund back " +
     beautify(calcRefund()) +
     " boosters, but reset all factor shifts (R)";
-  get("dynamicMult").textContent = "Your Dynamic Factor is x" + beautify(EN.mul(game.dynamic, 1000))/1000;
+  get("dynamicMult").textContent = "Your Dynamic Factor is x" + beautify(game.dynamic);
   get("infinityAuto").innerHTML =
     "Your Markup Autobuyer is clicking the Markup button " +
     (game.upgrades.includes(3) && game.autoOn.inf == 1

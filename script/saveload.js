@@ -100,6 +100,7 @@ function reset() {
   autobuyersToggle : 0,
   dynamicLevel : EN(0),
   dynamicLevel2 : EN(0),
+  c7Effect : 0
   };
   document.getElementById("infinityTabButton").style.display = "none";
   render();
