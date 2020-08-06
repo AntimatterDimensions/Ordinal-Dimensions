@@ -103,6 +103,7 @@ const aupCost = [
 let autoIncrCostBase = [1e1, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e14, 1e18, 1e25];
 var blockedIncr = 0;
 var costScale = 1;
+var multPerBuy = 2;
 const autobuyerTicks = [25, 35, 45, 55, 65];
 const autobuyerBaseTicks = [25, 35, 45, 55, 65];
 const infUpgradeCost = [
@@ -548,6 +549,7 @@ function calcDynamicMult() {
   var tempMult = EN(1);
   if (game.markupChallenge[6] == 1) tempMult = EN.mul(tempMult, 5);
   if (game.markupChallenge[7] == 1) tempMult = EN.mul(tempMult, 3);
+  if (game.markupChallenge[8] == 1) tempMult = EN.mul(tempMult, 8);
   return tempMult;
 }
 
@@ -558,6 +560,10 @@ function calcBase() {
   if (game.markupChallenge[9] == 1) b--;
   if (game.markupChallengeEntered >= 8) b += 2;
   return b;
+}
+function calcMultPerBuy() {
+  multPerBuy = 2;
+  if (game.markupChallenge[9] == 1) multPerBuy *= 1.5;
 }
 
 function increment(manmade=0) {
@@ -632,6 +638,7 @@ function loop(unadjusted, off = 0) {
   if (EN.gt(game.dynamic, EN.mul(EN.pow(4, (EN.add(game.dynamicLevel2, 1))), calcDynamicMult()))) {
     game.dynamic = EN.mul(EN.pow(4, (EN.add(game.dynamicLevel2, 1))), calcDynamicMult());
   }
+  calcMultPerBuy();
   for (var i = 9; i > -1; i--) {
     multiThis = EN(1);
     if ((i == 0 || i == 9) && game.infUpgradeHave[0] == 1) {
@@ -713,11 +720,11 @@ function loop(unadjusted, off = 0) {
     }
     multiThis = EN.mul(multiThis, game.dynamic);
     if (i != 0) {
-      game.autoIncrHave[i-1] = EN(EN.add(game.autoIncrHave[i-1], EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))))));
+      game.autoIncrHave[i-1] = EN(EN.add(game.autoIncrHave[i-1], EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(multPerBuy, game.autoIncrBought[i]))))));
     } else {
-      game.ord = EN(EN.add(game.ord, EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))))));
+      game.ord = EN(EN.add(game.ord, EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(multPerBuy, game.autoIncrBought[i]))))));
     }
-    get("autoHave" + i).innerHTML = beautify(game.autoIncrHave[i]) + '(x' + beautify(EN.mul(multiThis, EN.pow(2, game.autoIncrBought[i]))) + ')';
+    get("autoHave" + i).innerHTML = beautify(game.autoIncrHave[i]) + '(x' + beautify(EN.mul(multiThis, EN.pow(multPerBuy, game.autoIncrBought[i]))) + ')';
   }
   if (EN.gt(0, game.ord)) {
     game.ord = EN(10);
