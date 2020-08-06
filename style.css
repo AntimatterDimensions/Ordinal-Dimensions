@@ -63,9 +63,9 @@
   margin: 0 auto;
   text-align: center;
 }
-.warpBasic > button {
-  margin-right: 3vw;
-  float: left;
+#warpBasic > table {
+  width: 60%;
+  text-align: center;
 }
 
 .normalButton {
@@ -150,6 +150,9 @@
 #maxmizeAuto {
   margin: 0.5vh 0 0 40vw;
   width: 10vw; height: 3vh;
+}
+.smallerTxt {
+  font-size: 17px;
 }
 
 .ordAuto > span {

@@ -381,6 +381,13 @@ function autoActive(num) {
   game.autobuyerOn[num] = !game.autobuyerOn[num];
   randerAutobuyer();
 }
+function autobuyersToggle() {
+  for (var i = 0; i < game.autobuyerOn.length; i++) {
+    game.autobuyerOn[i] = game.autobuyersToggle;
+  }
+  game.autobuyersToggle = !game.autobuyersToggle;
+  randerAutobuyer();
+}
 
 function markupChallengeCheck() {
   if (game.markupChallengeEntered >= 1) {

@@ -1,39 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Ordinal Dimensions u66</title>
+    <title>Ordinal Dimensions u67</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" href="https://cdn.glitch.com/310d7aca-4728-445f-9084-db26ceccd7b5%2FOrdinal%20Markup%20logo.png?v=1587927427273"/>
     <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="style/mobile.css?ver=66">
-    <link rel="stylesheet" href="style.css?ver=66">
-    <div id="theme"><link rel="stylesheet" href="style/dark.css?ver=66"></div>
+    <link rel="stylesheet" href="style/mobile.css?ver=67">
+    <link rel="stylesheet" href="style.css?ver=67">
+    <div id="theme"><link rel="stylesheet" href="style/dark.css?ver=67"></div>
     <!-- import the webpage's javascript file -->
-    <script src="script/ExpantaNum.js?ver=66" defer></script>
-    <script src="script/ordMarks.js?ver=66" defer></script>
-    <script src="script/saveload.js?ver=66" defer></script>
-    <script src="script/function.js?ver=66" defer></script>
-    <script src="script/color.js?ver=66" defer></script>
-    <script src="script/challenges.js?ver=66" defer></script>
-    <script src="script/hotkeys.js?ver=66" defer></script>
-    <script src="script/prestige.js?ver=66" defer></script>
-    <script src="script/singfunc.js?ver=66" defer></script>
-    <script src="script/canvas.js?ver=66" defer></script>
-    <script src="script/stats.js?ver=66" defer></script>
-    <script src="script/script.js?ver=66" defer></script>
+    <script src="script/ExpantaNum.js?ver=67" defer></script>
+    <script src="script/ordMarks.js?ver=67" defer></script>
+    <script src="script/saveload.js?ver=67" defer></script>
+    <script src="script/function.js?ver=67" defer></script>
+    <script src="script/color.js?ver=67" defer></script>
+    <script src="script/challenges.js?ver=67" defer></script>
+    <script src="script/hotkeys.js?ver=67" defer></script>
+    <script src="script/prestige.js?ver=67" defer></script>
+    <script src="script/singfunc.js?ver=67" defer></script>
+    <script src="script/canvas.js?ver=67" defer></script>
+    <script src="script/stats.js?ver=67" defer></script>
+    <script src="script/script.js?ver=67" defer></script>
   </head>
   <body id="body">
     <audio src="https://cdn.glitch.com/03a4b67b-6f18-4f6d-8d37-50a18fb615c8%2FGoing%20Down%20by%20Jake%20Chudnow%20%5BHD%5D.mp3?v=1581538237884" id="music"></audio>
     <b id="decrementyText">There is 1 decrementy</b>
     <h1 id="hardy" style="font-size: 30pt;font-weight: bold;height:50px">H<sub>0</sub> (10)=10</h1>
-    <button onclick="Tab(1)" class="tabButton">Ordinals</button><text class="invisible invisTab">0</text>
-    <button onclick="Tab(2)" class="tabButton">Options</button><text class="invisible invisTab">0</text>
-    <button onclick="Tab(4)" class="tabButton">Objectives</button><text class="invisible invisTab">0</text>
-    <button onclick="Tab(5);subTab(1)" id="infinityTabButton" class="infinityTabButton">Markup</button><text class="invisible invisTab">0</text>
-    <button onclick="Tab(6)" id="boosterTabButton" class="boosterTabButton">Boosters</button><text class="invisible invisTab">0</text>
-    <button onclick="Tab(7)" id="collapseTabButton" class="collapseTabButton">Collapse</button><text class="invisible invisTab">0</text>
+    <table>
+      <tr>
+        <td><button onclick="Tab(1)" class="tabButton smallerTxt">Incrementers</button><text class="invisible invisTab">0</text></td>
+        <td><button onclick="Tab(2)" class="tabButton">Options</button><text class="invisible invisTab">0</text></td>
+        <td><button onclick="Tab(4)" class="tabButton">Objectives</button><text class="invisible invisTab">0</text></td>
+        <td><button onclick="Tab(5);subTab(1)" id="infinityTabButton" class="infinityTabButton">Markup</button><text class="invisible invisTab">0</text></td>
+        <td><button onclick="Tab(6)" id="boosterTabButton" class="boosterTabButton">Boosters</button><text class="invisible invisTab">0</text></td>
+        <td><button onclick="Tab(7)" id="collapseTabButton" class="collapseTabButton">Collapse</button><text class="invisible invisTab">0</text></td>
+      </tr>
+    </table>
     <p></p>
     <div id="Tab1">
       <div id="challInfo" style="display:none;">
@@ -270,7 +274,9 @@
         </div>
       </div>
       <div id="subTab2" class="long">
-        <p>Press A to turn on/off all</p>
+        <div class="">
+          <button class="infinityButton thicc" onclick="autobuyersToggle();" style="margin-bottom: 5px;">Toggle Autobuyer (A)</button>
+        </div>
         <div id="auto0" class="autobuyerBox" style="display: none;">
           <div class="autoName">
             Auto Inrementer 1, 2
