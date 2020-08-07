@@ -456,6 +456,9 @@ function enterMarkupChallenge(num) {
     if (game.markupChallengeEntered >= 7) {
       game.c7Effect = 1;
     }
+    if (game.markupChallenge[5] == 1) {
+      game.autoIncrHave[1] = EN(1);
+    }
   }
   if (num == 0) {
     passiveIncrementer();
