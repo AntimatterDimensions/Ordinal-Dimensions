@@ -412,7 +412,7 @@ function markupChallengeCheck() {
   } else {
     blockedIncr = 0;
   }
-  if (game.markupChallengeEntered >= 9) {
+  if (game.markupChallengeEntered >= 10) {
     costScale = 2;
   } else {
     costScale = 1;
