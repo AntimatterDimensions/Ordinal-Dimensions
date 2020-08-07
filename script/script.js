@@ -945,7 +945,7 @@ function render() {
   ordColor = "no";
   const ordSub = displayOrd(game.ord,game.base,game.over,0,0,0,game.colors);
   document.getElementById("hardy").innerHTML=colorWrap("H",ordColor)+"<sub>" + ordSub + "</sub><text class=\"invisible\">l</text>"+colorWrap("(" + game.base + ")" + (game.ord >= (game.base**3) || outSize >= 10**264 || (game.ord>=5 && game.base==2) ? "" : "=" + beautify(outSize)),ordColor)
-  game.canInf = game.ord >= 1e100;
+  game.canInf = EN.gte(game.ord, EN.pow(game.base, EN.pow(game.base, 2)));
   get('manifoldIncrease').innerHTML = 'It is increasing by ' + Number(beautify(EN.mul(EN.div(EN.pow(3, game.dynamicLevel), 100), EN.mul(calcDynamicMult(), 100)))/100) + ' per second and caps at ' + EN.mul(EN.pow(4, EN.add(game.dynamicLevel2, 1)), calcDynamicMult());
   get('dynamicCost0').innerHTML = beautify(EN.mul(1e11, EN.pow(10, EN.pow(game.dynamicLevel, 1.8))));
   get('dynamicCost1').innerHTML = beautify(EN.mul(1e12, EN.pow(10, EN.pow(game.dynamicLevel2, 2.2))));
