@@ -361,8 +361,10 @@ function autobuyerLoop(t) {
             buyBulkIncr(6, autoBulk);
             break;
           case 4:
-            buyBulkIncr(9, autoBulk);
-            buyBulkIncr(8, autoBulk);
+            if (game.markupChallengeEntered == 0) {
+              buyBulkIncr(9, autoBulk);
+              buyBulkIncr(8, autoBulk);
+            }
             break;
         }
         autobuyerTicks[i] = thisAutoTick;
@@ -634,7 +636,7 @@ function loop(unadjusted, off = 0) {
       game.c7Effect = 0;
     }
   }
-  game.dynamic = EN.add(game.dynamic, EN.mul(EN.div(EN.pow(game.dynamicLevel, 2), 100), EN.mul(calcDynamicMult(), ms/1000)));
+  game.dynamic = EN.add(game.dynamic, EN.mul(EN.div(EN.pow(3, game.dynamicLevel), 100), EN.mul(calcDynamicMult(), ms/1000)));
   if (EN.gt(game.dynamic, EN.mul(EN.pow(4, (EN.add(game.dynamicLevel2, 1))), calcDynamicMult()))) {
     game.dynamic = EN.mul(EN.pow(4, (EN.add(game.dynamicLevel2, 1))), calcDynamicMult());
   }
@@ -938,7 +940,7 @@ function render() {
   const ordSub = displayOrd(game.ord,game.base,game.over,0,0,0,game.colors);
   document.getElementById("hardy").innerHTML=colorWrap("H",ordColor)+"<sub>" + ordSub + "</sub><text class=\"invisible\">l</text>"+colorWrap("(" + game.base + ")" + (game.ord >= (game.base**3) || outSize >= 10**264 || (game.ord>=5 && game.base==2) ? "" : "=" + beautify(outSize)),ordColor)
   game.canInf = game.ord >= 1e100;
-  get('manifoldIncrease').innerHTML = 'It is increasing by ' + Number(beautify(EN.mul(EN.div(EN.pow(game.dynamicLevel, 2), 100), EN.mul(calcDynamicMult(), 100)))/100) + ' per second and caps at ' + Number(beautify(EN.mul(EN.pow(4, EN.add(game.dynamicLevel2, 1)), EN.mul(calcDynamicMult(), 100))))/100;
+  get('manifoldIncrease').innerHTML = 'It is increasing by ' + Number(beautify(EN.mul(EN.div(EN.pow(3, game.dynamicLevel), 100), EN.mul(calcDynamicMult(), 100)))/100) + ' per second and caps at ' + EN.mul(EN.pow(4, EN.add(game.dynamicLevel2, 1)), calcDynamicMult());
   get('dynamicCost0').innerHTML = beautify(EN.mul(1e11, EN.pow(10, EN.pow(game.dynamicLevel, 1.8))));
   get('dynamicCost1').innerHTML = beautify(EN.mul(1e12, EN.pow(10, EN.pow(game.dynamicLevel2, 2.2))));
   challengeEffects();
@@ -1796,7 +1798,8 @@ function beautifyEN(n, f = 0) {
 function calcOrdPoints(ord = game.ord, base = game.base, over = game.over) {
   var logOrd = EN.sub(EN.logBase(ord, game.base), 100);
   if (EN.gt(logOrd, 0)) {
-    return EN.mul(EN.pow(EN.add(EN.min(EN.div(logOrd, 100/(game.markupChallenge[2]+1)), 14-game.base), 1+game.markupChallenge[2]*0.5+(10-game.base)*0.5), EN.sqrt(logOrd)), game.markupChallenge[3]*9+1);
+    var tempBase = EN.div(logOrd, 100/(game.markupChallenge[2]+1));
+    return EN.mul(EN.pow(EN.add(EN.max(EN.min(tempBase, EN.pow(2, game.markupChallenge[6]*(12-game.base))), EN.pow(tempBase, 0.8)), 1+game.markupChallenge[2]*0.5+game.markupChallenge[6]*(10-game.base)*0.5), EN.pow(logOrd, 0.5+game.markupChallenge[6]*(10-game.base)/50)), game.markupChallenge[3]*9+1);
   } else {
     return EN(0);
   }
