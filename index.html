@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Ordinal Dimensions u82</title>
+    <title>Ordinal Dimensions u83</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" href="https://cdn.glitch.com/310d7aca-4728-445f-9084-db26ceccd7b5%2FOrdinal%20Markup%20logo.png?v=1587927427273"/>
     <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="style/mobile.css?ver=82">
-    <link rel="stylesheet" href="style.css?ver=82">
-    <div id="theme"><link rel="stylesheet" href="style/dark.css?ver=82"></div>
+    <link rel="stylesheet" href="style/mobile.css?ver=83">
+    <link rel="stylesheet" href="style.css?ver=83">
+    <div id="theme"><link rel="stylesheet" href="style/dark.css?ver=83"></div>
     <!-- import the webpage's javascript file -->
-    <script src="script/ExpantaNum.js?ver=82" defer></script>
-    <script src="script/ordMarks.js?ver=82" defer></script>
-    <script src="script/saveload.js?ver=82" defer></script>
-    <script src="script/function.js?ver=82" defer></script>
-    <script src="script/color.js?ver=82" defer></script>
-    <script src="script/challenges.js?ver=82" defer></script>
-    <script src="script/hotkeys.js?ver=82" defer></script>
-    <script src="script/prestige.js?ver=82" defer></script>
-    <script src="script/singfunc.js?ver=82" defer></script>
-    <script src="script/canvas.js?ver=82" defer></script>
-    <script src="script/stats.js?ver=82" defer></script>
-    <script src="script/script.js?ver=82" defer></script>
+    <script src="script/ExpantaNum.js?ver=83" defer></script>
+    <script src="script/ordMarks.js?ver=83" defer></script>
+    <script src="script/saveload.js?ver=83" defer></script>
+    <script src="script/function.js?ver=83" defer></script>
+    <script src="script/color.js?ver=83" defer></script>
+    <script src="script/challenges.js?ver=83" defer></script>
+    <script src="script/hotkeys.js?ver=83" defer></script>
+    <script src="script/prestige.js?ver=83" defer></script>
+    <script src="script/singfunc.js?ver=83" defer></script>
+    <script src="script/canvas.js?ver=83" defer></script>
+    <script src="script/stats.js?ver=83" defer></script>
+    <script src="script/script.js?ver=83" defer></script>
   </head>
   <body id="body">
-    <audio src="https://cdn.glitch.com/03a4b67b-6f18-4f6d-8d37-50a18fb615c8%2FGoing%20Down%20by%20Jake%20Chudnow%20%5BHD%5D.mp3?v=1581538237884" id="music"></audio>
+    <audio src="https://cdn.glitch.com/03a4b67b-6f18-4f6d-8d37-50a18fb615c8%2FGoing%20Down%20by%20Jake%20Chudnow%20%5BHD%5D.mp3?v=1581538337884" id="music"></audio>
     <b id="decrementyText">There is 1 decrementy</b>
     <h1 id="hardy" style="font-size: 30pt;font-weight: bold;height:50px">H<sub>0</sub> (10)=10</h1>
     <table>
@@ -52,7 +52,11 @@
       <button id="maxmizeAuto" onclick="buyMaxIncr()" class="normalButton">
         Max (M)
       </button>
-      <div id="autobuyersLayer">
+      <div id="incrNavContainer">
+        <button class="incrNav" onclick="incrTab(0)">Auto</button>
+        <button class="incrNav" onclick="incrTab(1)" style="display:none;">Tick</button>
+      </div>
+      <div id="incrLayer0">
         <div id="incrementer1" class="ordAuto">
           <span>Auto Incrementer 1</span>
           <span id="autoHave0">0(0)</span>
@@ -102,6 +106,58 @@
           <span>Auto Incrementer 10</span>
           <span id="autoHave9">0(0)</span>
           <button onclick="buyBulkIncr(9, EN(1))" id="autoCost9">cost: ω<sup>8</sup></button>
+        </div>
+      </div>
+      <div id="incrLayer1" style="display:none;">
+        <div id="tIncrementer1" class="ordAuto">
+          <span>Tick Incrementer 1</span>
+          <span id="tInceHave1">1(0)</span>
+          <button onclick="buyBulkTIncr(0, EN(1))" id="tIncrCost0">cost: 1.00e100 OP</button>
+        </div>
+        <div id="tIncrementer2" class="ordAuto">
+          <span>Tick Incrementer 2</span>
+          <span id="tInceHave2">0(0)</span>
+          <button onclick="buyBulkTIncr(1, EN(1))" id="tIncrCost0">cost: 1.00e100 OP</button>
+        </div>
+        <div id="tIncrementer3" class="ordAuto">
+          <span>Tick Incrementer 3</span>
+          <span id="tInceHave3">0(0)</span>
+          <button onclick="buyBulkTIncr(2, EN(1))" id="tIncrCost0">cost: 1.00e100 OP</button>
+        </div>
+        <div id="tIncrementer4" class="ordAuto">
+          <span>Tick Incrementer 4</span>
+          <span id="tInceHave5">0(0)</span>
+          <button onclick="buyBulkTIncr(3, EN(1))" id="tIncrCost0">cost: 1.00e100 OP</button>
+        </div>
+        <div id="tIncrementer5" class="ordAuto">
+          <span>Tick Incrementer 5</span>
+          <span id="tInceHave5">0(0)</span>
+          <button onclick="buyBulkTIncr(4, EN(1))" id="tIncrCost0">cost: 1.00e100 OP</button>
+        </div>
+        <div id="tIncrementer6" class="ordAuto">
+          <span>Tick Incrementer 6</span>
+          <span id="tInceHave6">0(0)</span>
+          <button onclick="buyBulkTIncr(5, EN(1))" id="tIncrCost0">cost: 1.00e100 OP</button>
+        </div>
+        <div id="tIncrementer7" class="ordAuto">
+          <span>Tick Incrementer 7</span>
+          <span id="tInceHave7">0(0)</span>
+          <button onclick="buyBulkTIncr(6, EN(1))" id="tIncrCost0">cost: 1.00e100 OP</button>
+        </div>
+        <div id="tIncrementer8" class="ordAuto">
+          <span>Tick Incrementer 8</span>
+          <span id="tInceHave8">0(0)</span>
+          <button onclick="buyBulkTIncr(7, EN(1))" id="tIncrCost0">cost: 1.00e100 OP</button>
+        </div>
+        <div id="tIncrementer9" class="ordAuto">
+          <span>Tick Incrementer 9</span>
+          <span id="tInceHave9">0(0)</span>
+          <button onclick="buyBulkTIncr(8, EN(1))" id="tIncrCost0">cost: 1.00e100 OP</button>
+        </div>
+        <div id="tIncrementer10" class="ordAuto">
+          <span>Tick Incrementer 10</span>
+          <span id="tInceHave10">0(0)</span>
+          <button onclick="buyBulkTIncr(9, EN(1))" id="tIncrCost0">cost: 1.00e100 OP</button>
         </div>
       </div>
     </div>

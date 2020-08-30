@@ -100,7 +100,9 @@ function reset() {
   autobuyersToggle : 0,
   dynamicLevel : EN(0),
   dynamicLevel2 : EN(0),
-  c7Effect : 0
+  c7Effect : 0,
+  tickHave : {0: EN(1), 1: EN(0), 2: EN(0), 3: EN(0), 4: EN(0), 5: EN(0), 6: EN(0), 7: EN(0), 8: EN(0), 9: EN(0)},
+  tickBought : {0: EN(0), 1: EN(0), 2: EN(0), 3: EN(0), 4: EN(0), 5: EN(0), 6: EN(0), 7: EN(0), 8: EN(0), 9: EN(0)}
   };
   document.getElementById("infinityTabButton").style.display = "none";
   render();
@@ -123,6 +125,8 @@ function loadGame(loadgame) {
   for (var i = 0; i < 10; i++) {
     game.autoIncrBought[i] = ENify(game.autoIncrBought[i]);
     game.autoIncrHave[i] = ENify(game.autoIncrHave[i]);
+    game.tickHave[i] = ENify(game.tickHave[i]);
+    game.tickBought[i] = ENify(game.tickBought[i]);
   }
   game.OP = ENify(game.OP);
   game.cardinals = ENify(game.cardinals);

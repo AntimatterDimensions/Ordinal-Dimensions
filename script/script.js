@@ -151,6 +151,12 @@ function randerEtc() {
   challengeReward();
 }
 
+function incrTab(num) {
+  for (var i = 0; i < 2; i++) {
+    get("incrLayer" + i).style.display = "none";
+  }
+  get("incrLayer" + num).style.display = "block";
+}
 function buyMaxIncr() {
   for (var i = 9-blockedIncr; i > -1; i--) {
     buyBulkIncr(i, 1e10);
@@ -235,6 +241,17 @@ function randerAutoIncr() {
       get("incrementer" + (i+1)).style.display = 'block';
     }
   }
+  for (var i = 0; i < 10; i++) {
+    get("autoCost" + i).innerHTML = 'cost: ' + displayOrd(game.autoIncrCost[i],game.base,game.over,game.maxOrdLength.less-1,1,0,game.colors).replace('+...', '');
+    if (i >= 10-blockedIncr) {
+      get("incrementer" + (i+1)).style.display = 'none';
+    } else {
+      get("incrementer" + (i+1)).style.display = 'block';
+    }
+  }
+}
+function buyBulkTIncr(num, bulk) {
+
 }
 
 function randerInfUpgrade() {
@@ -242,7 +259,7 @@ function randerInfUpgrade() {
     if (game.infUpgradeHave[i] == 1) {
       document.querySelector('#infUpgrade' + i + ' > button').style.display = 'none';
     } else {
-      document.querySelector('#infUpgrade' + i + ' > button').style.display = 'block';
+      document.querySelector('#infUpgrade' + i + ' > button').style.display = 'inline';
     }
   }
   randerInfTabs();
@@ -645,7 +662,7 @@ function loop(unadjusted, off = 0) {
       game.c7Effect = 0;
     }
   }
-  game.dynamic = EN.add(game.dynamic, EN.mul(EN.div(EN.pow(3, game.dynamicLevel), 100), EN.mul(calcDynamicMult(), ms/1000)));
+  game.dynamic = EN.add(game.dynamic, EN.mul(EN.div(EN.pow(game.dynamicLevel, 2), 100), EN.mul(calcDynamicMult(), ms/1000)));
   if (EN.gt(game.dynamic, EN.mul(EN.pow(4, (EN.add(game.dynamicLevel2, 1))), calcDynamicMult()))) {
     game.dynamic = EN.mul(EN.pow(4, (EN.add(game.dynamicLevel2, 1))), calcDynamicMult());
   }
@@ -730,12 +747,13 @@ function loop(unadjusted, off = 0) {
       multiThis = EN.mul(multiThis, game.c7Effect);
     }
     multiThis = EN.mul(multiThis, game.dynamic);
+    multiThis = EN.mul(multiThis, game.tickHave[0]);
     if (i != 0) {
       game.autoIncrHave[i-1] = EN(EN.add(game.autoIncrHave[i-1], EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(multPerBuy, game.autoIncrBought[i]))))));
     } else {
       game.ord = EN(EN.add(game.ord, EN.mul(game.autoIncrHave[i], EN.mul(ms/1000*2, EN.mul(multiThis, EN.pow(multPerBuy, game.autoIncrBought[i]))))));
     }
-    get("autoHave" + i).innerHTML = beautify(game.autoIncrHave[i]) + '(x' + beautify(EN.mul(multiThis, EN.pow(multPerBuy, game.autoIncrBought[i]))) + ')';
+    get("autoHave" + i).innerHTML = beautify(game.autoIncrHave[i]) + '(x' + beautify(EN.mul(multiThis, EN.pow(multPerBuy, game.autoIncrBought[i])).div(game.tickHave[0])) + ')';
   }
   if (EN.gt(0, game.ord)) {
     game.ord = EN(10);
@@ -949,7 +967,7 @@ function render() {
   const ordSub = displayOrd(game.ord,game.base,game.over,0,0,0,game.colors);
   document.getElementById("hardy").innerHTML=colorWrap("H",ordColor)+"<sub>" + ordSub + "</sub><text class=\"invisible\">l</text>"+colorWrap("(" + game.base + ")" + (game.ord >= (game.base**3) || outSize >= 10**264 || (game.ord>=5 && game.base==2) ? "" : "=" + beautify(outSize)),ordColor)
   game.canInf = EN.gte(game.ord, EN.pow(game.base, EN.pow(game.base, 2)));
-  get('manifoldIncrease').innerHTML = 'It is increasing by ' + Number(beautify(EN.mul(EN.div(EN.pow(3, game.dynamicLevel), 100), EN.mul(calcDynamicMult(), 100)))/100) + ' per second and caps at ' + EN.mul(EN.pow(4, EN.add(game.dynamicLevel2, 1)), calcDynamicMult());
+  get('manifoldIncrease').innerHTML = 'It is increasing by ' + Number(beautify(EN.mul(EN.div(EN.pow(game.dynamicLevel, 2), 100), EN.mul(calcDynamicMult(), 100)))/100) + ' per second and caps at ' + EN.mul(EN.pow(4, EN.add(game.dynamicLevel2, 1)), calcDynamicMult());
   get('dynamicCost0').innerHTML = beautify(EN.mul(1e11, EN.pow(10, EN.pow(game.dynamicLevel, 1.8))));
   get('dynamicCost1').innerHTML = beautify(EN.mul(1e12, EN.pow(10, EN.pow(game.dynamicLevel2, 2.2))));
   challengeEffects();
