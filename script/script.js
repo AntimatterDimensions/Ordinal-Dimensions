@@ -399,8 +399,7 @@ function randerAutobuyer() {
     }
     get('auto' + i + 'buy').innerHTML = '60% smaller interval<br>' + beautify(EN.mul(1e7, EN.pow(10, game.autobuyerBought[i]))) + ' OP'
     var thisAutoTick = autobuyerBaseTicks[i]*0.4**game.autobuyerBought[i];
-    var thisAutoTick = autobuyerBaseTicks[i]*0.4**game.autobuyerBought[i];
-    var autoBulk = Math.floor(1000/thisAutoTick)+1;
+    var autoBulk = Math.floor(1/thisAutoTick)+1;
     if (autoBulk > 100) {
       get('auto' + i + 'inter').innerHTML = 'Current interval: ' + beautify(autoBulk) + '/s';
     } else {
