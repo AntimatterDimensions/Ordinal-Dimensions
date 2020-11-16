@@ -649,7 +649,7 @@ function loop(unadjusted, off = 0) {
   }
   if (game.markupChallengeEntered >= 6) {
     if (game.markupChallengeEntered >= 9) {
-      game.decrementy = EN.add(game.decrementy, EN.div(EN.logBase(EN.add(game.ord, 1), 10), 1000));
+      game.decrementy = EN.add(game.decrementy, EN.div(EN.logBase(EN.add(game.ord, 1), 10), 1400));
     } else {
       game.decrementy = EN.add(game.decrementy, EN.div(EN.logBase(EN.add(game.ord, 1), 10), 333));
     }
